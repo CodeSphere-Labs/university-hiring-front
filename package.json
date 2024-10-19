@@ -1,0 +1,39 @@
+{
+  "name": "university-hiring",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\"",
+    "preview": "vite preview",
+    "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\" --fix",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@farfetched/core": "^0.12.4",
+    "atomic-router": "^0.10.1",
+    "atomic-router-react": "^0.10.0",
+    "effector": "^23.2.2",
+    "effector-logger": "^0.15.0",
+    "effector-react": "^23.2.1",
+    "history": "^5.3.0",
+    "patronum": "^2.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^8.41.0",
+    "eslint-kit": "^10.0.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "husky": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  }
+}
