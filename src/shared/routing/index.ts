@@ -10,6 +10,7 @@ import { appStarted } from '@/shared/config/init'
 
 export const routes = {
   home: createRoute(),
+  onboarding: createRoute(),
   auth: {
     register: createRoute(),
     login: createRoute(),
@@ -31,6 +32,10 @@ export const router = createHistoryRouter({
     {
       path: '/',
       route: routes.home,
+    },
+    {
+      path: '/onboarding',
+      route: routes.onboarding,
     },
   ],
   controls,

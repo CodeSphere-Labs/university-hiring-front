@@ -1,5 +1,11 @@
+import { Button, Container } from '@mantine/core'
+
 const Home = () => {
-  return <>Home test fdsf</>
+  return (
+    <Container size="lg">
+      Home test <Button>123</Button>
+    </Container>
+  )
 }
 
 // eslint-disable-next-line import/no-default-export

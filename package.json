@@ -13,8 +13,13 @@
   },
   "dependencies": {
     "@farfetched/core": "^0.12.4",
+    "@mantine/core": "^7.13.3",
+    "@mantine/dates": "^7.13.3",
+    "@mantine/form": "^7.13.3",
+    "@mantine/hooks": "^7.13.3",
     "atomic-router": "^0.10.1",
     "atomic-router-react": "^0.10.0",
+    "dayjs": "^1.11.13",
     "effector": "^23.2.2",
     "effector-logger": "^0.15.0",
     "effector-react": "^23.2.1",
@@ -32,6 +37,9 @@
     "eslint-kit": "^10.0.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "husky": "^8.0.0",
+    "postcss": "^8.4.47",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
