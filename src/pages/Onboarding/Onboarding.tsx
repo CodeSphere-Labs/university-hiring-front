@@ -8,9 +8,11 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core'
+import { Link } from 'atomic-router-react'
 
 // eslint-disable-next-line import/no-unresolved
 import image from '/onboarding.svg'
+import { routes } from '@/shared/routing'
 
 import classes from './onboarding.module.css'
 
@@ -50,10 +52,18 @@ function Onboarding() {
           </List>
 
           <Group mt={30}>
-            <Button radius="xl" size="md" className={classes.control}>
+            <Button
+              component={Link}
+              to={routes.auth.company}
+              radius="xl"
+              size="md"
+              className={classes.control}
+            >
               Компания
             </Button>
             <Button
+              component={Link}
+              to={routes.auth.university}
               variant="default"
               radius="xl"
               size="md"

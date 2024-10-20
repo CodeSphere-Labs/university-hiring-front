@@ -12,7 +12,8 @@ export const routes = {
   home: createRoute(),
   onboarding: createRoute(),
   auth: {
-    register: createRoute(),
+    university: createRoute(),
+    company: createRoute(),
     login: createRoute(),
   },
 }
@@ -22,11 +23,15 @@ export const controls = createRouterControls()
 export const router = createHistoryRouter({
   routes: [
     {
-      path: '/register',
-      route: routes.auth.register,
+      path: '/auth/company',
+      route: routes.auth.company,
     },
     {
-      path: '/login',
+      path: '/auth/university',
+      route: routes.auth.university,
+    },
+    {
+      path: '/auth',
       route: routes.auth.login,
     },
     {

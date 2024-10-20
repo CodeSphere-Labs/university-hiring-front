@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 
-import { Header } from '@/shared/ui/Header'
+import { Header } from '@/shared/ui/Header/Header'
 
 import { currentRoute } from './model'
 
