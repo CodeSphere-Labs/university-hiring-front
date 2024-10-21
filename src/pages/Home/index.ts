@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 
-import { Header } from '@/shared/ui/Header/Header'
+import { Navbar } from '@/widgets/Navbar/Navbar'
 
 import { currentRoute } from './model'
 
@@ -9,5 +9,5 @@ export const HomePage = lazy(() => import('./Home'))
 export const HomeRoute = {
   view: HomePage,
   route: currentRoute,
-  layout: Header,
+  layout: Navbar,
 }
