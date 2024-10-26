@@ -177,6 +177,10 @@ function Phone() {
     phone.$set,
   ])
 
+  const onlyNumbers = (phone: string) => {
+    return phone.replace(/\D/g, '')
+  }
+
   return (
     <Input.Wrapper
       className={classes.input}
@@ -187,7 +191,7 @@ function Phone() {
         value={phoneValue}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        onChange={(event) => phoneChanged(event.target.value)}
+        onChange={(event) => phoneChanged(onlyNumbers(event.target.value))}
         component={IMaskInput}
         mask="+7 (000) 000-00-00"
         placeholder="Введите номер телефона"
