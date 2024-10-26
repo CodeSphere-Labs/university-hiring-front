@@ -1,4 +1,13 @@
-import { Button, Center, Flex, Grid, TextInput, Title } from '@mantine/core'
+import {
+  Button,
+  Center,
+  Flex,
+  Grid,
+  Input,
+  TextInput,
+  Title,
+} from '@mantine/core'
+import { IMaskInput } from 'react-imask'
 
 import classes from './Company.module.css'
 
@@ -12,7 +21,7 @@ const Company = () => {
         direction="column"
         wrap="wrap"
       >
-        <Title order={2}>Регистрация</Title>
+        <Title order={2}>Регистрация компании</Title>
 
         <form className={classes.form}>
           <Grid>
@@ -39,11 +48,13 @@ const Company = () => {
                 label="Электронная почта"
                 placeholder="example@company.com"
               />
-              <TextInput
-                className={classes.input}
-                label="Телефон"
-                placeholder="Введите номер телефона"
-              />
+              <Input.Wrapper className={classes.input} label="Телефон">
+                <Input
+                  component={IMaskInput}
+                  mask="+7 (000) 000-00-00"
+                  placeholder="Введите номер телефона"
+                />
+              </Input.Wrapper>
               <TextInput
                 className={classes.input}
                 label="Отрасль"
