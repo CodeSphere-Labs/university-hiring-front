@@ -3,7 +3,7 @@ import { useUnit } from 'effector-react'
 import { IMaskInput } from 'react-imask'
 
 import { phone } from '../model'
-import classes from '../University/University.module.css'
+import classes from './base.module.css'
 
 const phoneErrorText = {
   empty: 'Поле не может быть пустым',

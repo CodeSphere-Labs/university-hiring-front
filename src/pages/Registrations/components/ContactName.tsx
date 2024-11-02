@@ -2,7 +2,7 @@ import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
 import { contactName } from '../model'
-import classes from '../University/University.module.css'
+import classes from './base.module.css'
 
 const contactNameErrorText = {
   empty: 'Поле не может быть пустым',

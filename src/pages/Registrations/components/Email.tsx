@@ -2,7 +2,7 @@ import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
 import { email } from '../model'
-import classes from '../University/University.module.css'
+import classes from './base.module.css'
 
 const emailErrorText = {
   empty: 'Email не может быть пустым',

@@ -1,0 +1,6 @@
+.input {
+    padding: 10px 0px;
+    @media (max-width: 768px) {
+        padding: 5px 0px;
+    }
+}
