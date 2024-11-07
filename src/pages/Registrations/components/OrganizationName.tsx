@@ -1,18 +1,21 @@
-import { TextInput } from '@mantine/core'
+import { TextInput, TextInputProps } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { university } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props extends TextInputProps {
+  model: FieldModel<string, 'empty' >
+}
 
 const universityErrorText = {
   empty: 'Поле не может быть пустым',
-  invalid: 'Поле не может быть пустым',
 }
-export const UniversityName = () => {
+export const OrganizationName = ({ model, ...props }: Props) => {
   const [universityName, universityError, universityNameChanged] = useUnit([
-    university.$value,
-    university.$error,
-    university.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   return (
@@ -20,9 +23,8 @@ export const UniversityName = () => {
       value={universityName}
       onChange={(event) => universityNameChanged(event.target.value)}
       className={classes.input}
-      label="Название университета"
-      placeholder="Введите название университета"
       error={universityError ? universityErrorText[universityError] : null}
+      {...props}
     />
   )
 }

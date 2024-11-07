@@ -2,19 +2,22 @@ import { Input } from '@mantine/core'
 import { useUnit } from 'effector-react'
 import { IMaskInput } from 'react-imask'
 
-import { phone } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props {
+  model: FieldModel<string, 'empty'>
+}
 
 const phoneErrorText = {
   empty: 'Поле не может быть пустым',
-  invalid: 'Неверный формат телефона',
 }
 
-export const Phone = () => {
+export const Phone = ({ model }: Props) => {
   const [phoneValue, phoneError, phoneChanged] = useUnit([
-    phone.$value,
-    phone.$error,
-    phone.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   const onlyNumbers = (phone: string) => {

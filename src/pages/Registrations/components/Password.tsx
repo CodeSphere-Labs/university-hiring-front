@@ -1,8 +1,21 @@
 import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { password } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props {
+  model: FieldModel<
+    string,
+    | 'empty'
+    | 'invalid_length'
+    | 'no_uppercase'
+    | 'no_uppercase'
+    | 'no_lowercase'
+    | 'no_digit'
+    | 'no_special_char'
+  >
+}
 
 const passwordErrorText = {
   empty: 'Поле не может быть пустым',
@@ -13,11 +26,11 @@ const passwordErrorText = {
   no_special_char: 'Пароль должен содержать хотя бы 1 специальный символ',
 }
 
-export const Password = () => {
+export const Password = ({ model }: Props) => {
   const [passwordValue, passwordError, passwordChanged] = useUnit([
-    password.$value,
-    password.$error,
-    password.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   return (

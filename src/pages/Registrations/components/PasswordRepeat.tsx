@@ -1,17 +1,21 @@
 import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { passwordRepeat } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props {
+  model: FieldModel<string, 'invalid'>
+}
 
 const passwordRepeatErrorText = {
   invalid: 'Пароли не совпадают',
 }
-export const PasswordRepeat = () => {
+export const PasswordRepeat = ({ model }: Props) => {
   const [passwordValue, passwordError, passwordChanged] = useUnit([
-    passwordRepeat.$value,
-    passwordRepeat.$error,
-    passwordRepeat.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   return (

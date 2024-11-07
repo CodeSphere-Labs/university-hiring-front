@@ -1,12 +1,19 @@
 import {
-  createEvent,
-  createStore,
-  Event,
-  sample,
-  StoreWritable,
+    createEvent,
+    createStore,
+    Event,
+    EventCallable,
+    sample,
+    StoreWritable,
 } from 'effector'
 
 type ErrorType = 'empty' | 'invalid' | null
+
+export interface FieldModel<Value, Error> {
+  $value: StoreWritable<Value>
+  $error: StoreWritable<Error | null>
+  $set: EventCallable<Value>
+}
 
 type ValidationRule<Value, Error extends ErrorType> = (
   value: Value,
@@ -18,7 +25,7 @@ interface FieldConfig<Value, Error extends ErrorType> {
   rules: ValidationRule<Value, Error>[]
 }
 
-function createField<Value, Error extends ErrorType>(
+export function createField<Value, Error extends ErrorType>(
   config: FieldConfig<Value, Error>,
 ) {
   const $value = createStore(config.defaultValue)
@@ -28,7 +35,7 @@ function createField<Value, Error extends ErrorType>(
   $value.on($set, (_, payload) => payload)
   return { $value, $set, $error, rules: config.rules }
 }
-function createFields<T extends Record<string, FieldConfig<any, any>>>(
+export function createFields<T extends Record<string, FieldConfig<any, any>>>(
   fields: T,
 ) {
   return Object.keys(fields).reduce(
@@ -44,64 +51,7 @@ function createFields<T extends Record<string, FieldConfig<any, any>>>(
   )
 }
 
-const fields = createFields({
-  university: {
-    defaultValue: '',
-    errorTypes: [null, 'empty'] as const,
-    rules: [(value) => (isEmpty(value) ? 'empty' : null)],
-  },
-  contactName: {
-    defaultValue: '',
-    errorTypes: [null, 'empty'] as const,
-    rules: [(value) => (isEmpty(value) ? 'empty' : null)],
-  },
-  address: {
-    defaultValue: '',
-    errorTypes: [null, 'empty'] as const,
-    rules: [(value) => (isEmpty(value) ? 'empty' : null)],
-  },
-  email: {
-    defaultValue: '',
-    errorTypes: [null, 'empty', 'invalid'] as const,
-    rules: [
-      (value) => (isEmpty(value) ? 'empty' : null),
-      (value) => (!isEmailValid(value) ? 'invalid' : null),
-    ],
-  },
-  phone: {
-    defaultValue: '',
-    errorTypes: [null, 'empty'] as const,
-    rules: [(value) => (isEmpty(value) ? 'empty' : null)],
-  },
-  password: {
-    defaultValue: '',
-    errorTypes: [null, 'empty'] as const,
-    rules: [
-      (value) => (isEmpty(value) ? 'empty' : null),
-      (value) => validatePassword(value),
-    ],
-  },
-  passwordRepeat: {
-    defaultValue: '',
-    errorTypes: [null, 'invalid'] as const,
-    rules: [(value) => (!isPasswordsEquals(value) ? 'invalid' : null)],
-  },
-})
-
-export const {
-  university,
-  email,
-  contactName,
-  phone,
-  password,
-  passwordRepeat,
-  address,
-} = fields
-
-export const pageMounted = createEvent()
-export const registretionFormSubmitted = createEvent()
-
-function setupValidation<
+export function setupValidation<
   T extends Record<
     string,
     { $value: StoreWritable<any>; $error: StoreWritable<any>; rules: any }
@@ -122,13 +72,12 @@ function setupValidation<
     })
   })
 }
-setupValidation(fields, registretionFormSubmitted)
 
-function isEmailValid(email: string) {
+export function isEmailValid(email: string) {
   return email.includes('@') && email.length > 5
 }
 
-function validatePassword(
+export function validatePassword(
   password: string,
 ):
   | 'invalid_length'
@@ -155,11 +104,13 @@ function validatePassword(
   return null
 }
 
-function isEmpty(input: string) {
+export function isEmpty(input: string) {
   return input.trim().length === 0
 }
 
-function isPasswordsEquals(repeatedPassword: string) {
-  // eslint-disable-next-line effector/no-getState
-  return repeatedPassword === password.$value.getState()
+export function isPasswordsEquals(
+  origignalPassword: string,
+  repeatedPassword: string,
+) {
+  return origignalPassword === repeatedPassword
 }

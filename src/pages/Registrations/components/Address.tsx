@@ -1,17 +1,21 @@
 import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { address } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props {
+  model: FieldModel<string, 'empty'>
+}
 
 const addressErrorText = {
   empty: 'Поле не может быть пустым',
 }
-export const Address = () => {
+export const Address = ({ model }: Props) => {
   const [addressName, addressError, addressChanged] = useUnit([
-    address.$value,
-    address.$error,
-    address.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   return (

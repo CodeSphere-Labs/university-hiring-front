@@ -1,17 +1,21 @@
 import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { contactName } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props {
+  model: FieldModel<string, 'empty'>
+}
 
 const contactNameErrorText = {
   empty: 'Поле не может быть пустым',
 }
-export const ContactName = () => {
+export const ContactName = ({ model }: Props) => {
   const [contact, contactError, contactChanged] = useUnit([
-    contactName.$value,
-    contactName.$error,
-    contactName.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   return (

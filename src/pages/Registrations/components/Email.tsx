@@ -1,19 +1,23 @@
 import { TextInput } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { email } from '../model'
+import { FieldModel } from '../model'
 import classes from './base.module.css'
+
+interface Props {
+  model: FieldModel<string, 'empty' | 'invalid'>
+}
 
 const emailErrorText = {
   empty: 'Email не может быть пустым',
   invalid: 'Неверный формат e-mail',
 }
 
-export const Email = () => {
+export const Email = ({ model }: Props) => {
   const [emailAddress, emailError, emailChanged] = useUnit([
-    email.$value,
-    email.$error,
-    email.$set,
+    model.$value,
+    model.$error,
+    model.$set,
   ])
 
   return (

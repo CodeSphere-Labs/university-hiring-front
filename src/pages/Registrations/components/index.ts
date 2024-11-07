@@ -1,7 +1,7 @@
 export { Address } from './Address'
 export { ContactName } from './ContactName'
 export { Email } from './Email'
+export { OrganizationName } from './OrganizationName'
 export { Password } from './Password'
 export { PasswordRepeat } from './PasswordRepeat'
 export { Phone } from './Phone'
-export { UniversityName } from './UniversityName'
