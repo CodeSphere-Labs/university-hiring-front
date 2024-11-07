@@ -1,17 +1,29 @@
-import {
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Input,
-  TextInput,
-  Title,
-} from '@mantine/core'
-import { IMaskInput } from 'react-imask'
+import { Button, Center, Flex, Grid, Title } from '@mantine/core'
+import { FormEventHandler, useEffect } from 'react'
 
+import {
+  Address,
+  ContactName,
+  Email,
+  Industry,
+  OrganizationName,
+  Password,
+  PasswordRepeat,
+  Phone,
+} from '../components'
 import classes from './Company.module.css'
+import { fields, pageMounted, registretionFormSubmitted } from './model'
 
 const Company = () => {
+  const onFormSubmit: FormEventHandler = (e) => {
+    e.preventDefault()
+    registretionFormSubmitted()
+  }
+
+  useEffect(() => {
+    pageMounted()
+  }, [])
+
   return (
     <Center className={classes.main}>
       <Flex
@@ -23,60 +35,29 @@ const Company = () => {
       >
         <Title order={2}>Регистрация компании</Title>
 
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={onFormSubmit}>
           <Grid>
             <Grid.Col span={{ xs: 12, sm: 6 }}>
-              <TextInput
-                className={classes.input}
+              <OrganizationName
                 label="Название компании"
                 placeholder="Введите название компании"
+                model={fields.company}
               />
-              <TextInput
-                className={classes.input}
-                label="Контактное лицо"
-                placeholder="Введите имя контактного лица"
-              />
-              <TextInput
-                className={classes.input}
-                label="Адрес"
-                placeholder="Введите адрес компании"
-              />
+              <ContactName model={fields.contactName} />
+              <Address model={fields.address} />
             </Grid.Col>
             <Grid.Col span={{ xs: 12, sm: 6 }}>
-              <TextInput
-                className={classes.input}
-                label="Электронная почта"
-                placeholder="example@company.com"
-              />
-              <Input.Wrapper className={classes.input} label="Телефон">
-                <Input
-                  component={IMaskInput}
-                  mask="+7 (000) 000-00-00"
-                  placeholder="Введите номер телефона"
-                />
-              </Input.Wrapper>
-              <TextInput
-                className={classes.input}
-                label="Отрасль"
-                placeholder="Укажите отрасль компании"
-              />
+              <Email model={fields.email} />
+              <Phone model={fields.phone} />
+
+              <Industry model={fields.industry} />
             </Grid.Col>
           </Grid>
 
-          <TextInput
-            className={classes.input}
-            classNames={{ description: classes.description }}
-            label="Пароль"
-            placeholder="Придумайте пароль"
-            description="Пароль должен содержать не менее 8 символов, включать одну заглавную букву, одну строчную букву, цифру и специальный символ (например, !@#$%)"
-          />
-          <TextInput
-            className={classes.input}
-            label="Подтверждение пароля"
-            placeholder="Повторите пароль"
-          />
+          <Password model={fields.password} />
+          <PasswordRepeat model={fields.passwordRepeat} />
 
-          <Button mt={15} w="100%">
+          <Button type="submit" mt={15} w="100%">
             Зарегистрироваться
           </Button>
         </form>

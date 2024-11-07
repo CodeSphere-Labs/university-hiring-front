@@ -3,12 +3,12 @@ import { createEvent } from 'effector'
 import { routes } from '@/shared/routing'
 
 import {
-    createFields,
-    isEmailValid,
-    isEmpty,
-    isPasswordsEquals,
-    setupValidation,
-    validatePassword,
+  createFields,
+  isEmailValid,
+  isEmpty,
+  isPasswordsEquals,
+  setupValidation,
+  validatePassword,
 } from '../model'
 
 export const currentRoute = routes.auth.university
@@ -47,11 +47,15 @@ export const fields = createFields({
   },
   password: {
     defaultValue: '',
-    errorTypes: [null, 'empty',  'invalid_length',
-     'no_uppercase',
-     'no_lowercase',
-     'no_digit',
-     'no_special_char'] as const,
+    errorTypes: [
+      null,
+      'empty',
+      'invalid_length',
+      'no_uppercase',
+      'no_lowercase',
+      'no_digit',
+      'no_special_char',
+    ] as const,
     rules: [
       (value) => (isEmpty(value) ? 'empty' : null),
       (value) => validatePassword(value),

@@ -1,10 +1,10 @@
 import {
-    createEvent,
-    createStore,
-    Event,
-    EventCallable,
-    sample,
-    StoreWritable,
+  createEvent,
+  createStore,
+  Event,
+  EventCallable,
+  sample,
+  StoreWritable,
 } from 'effector'
 
 type ErrorType = 'empty' | 'invalid' | null

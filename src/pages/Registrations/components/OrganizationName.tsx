@@ -5,7 +5,7 @@ import { FieldModel } from '../model'
 import classes from './base.module.css'
 
 interface Props extends TextInputProps {
-  model: FieldModel<string, 'empty' >
+  model: FieldModel<string, 'empty'>
 }
 
 const universityErrorText = {

@@ -26,7 +26,7 @@ export const Email = ({ model }: Props) => {
       onChange={(event) => emailChanged(event.target.value)}
       className={classes.input}
       label="Электронная почта"
-      placeholder="example@university.com"
+      placeholder="example@domain.com"
       error={emailError ? emailErrorText[emailError] : null}
     />
   )

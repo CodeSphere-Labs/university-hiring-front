@@ -10,20 +10,18 @@ import {
   PasswordRepeat,
   Phone,
 } from '../components'
-import { pageMounted, registretionFormSubmitted } from './model'
+import { fields, pageMounted, registretionFormSubmitted } from './model'
 import classes from './University.module.css'
 
-import { fields } from './model'
-
 const University = () => {
-  useEffect(() => {
-    pageMounted()
-  }, [])
-
   const onFormSubmit: FormEventHandler = (e) => {
     e.preventDefault()
     registretionFormSubmitted()
   }
+
+  useEffect(() => {
+    pageMounted()
+  }, [])
 
   return (
     <Center className={classes.main}>
@@ -39,8 +37,12 @@ const University = () => {
         <form className={classes.form} onSubmit={onFormSubmit}>
           <Grid>
             <Grid.Col span={{ xs: 12, sm: 6 }}>
-              <OrganizationName label="Название университета" placeholder="Введите название университета" model={fields.university} />
-              <ContactName model={fields.contactName}/>
+              <OrganizationName
+                label="Название университета"
+                placeholder="Введите название университета"
+                model={fields.university}
+              />
+              <ContactName model={fields.contactName} />
               <Address model={fields.address} />
             </Grid.Col>
             <Grid.Col span={{ xs: 12, sm: 6 }}>
@@ -50,7 +52,7 @@ const University = () => {
           </Grid>
 
           <Password model={fields.password} />
-          <PasswordRepeat model={fields.passwordRepeat}/>
+          <PasswordRepeat model={fields.passwordRepeat} />
 
           <Button type="submit" mt={15} w="100%">
             Зарегистрироваться
