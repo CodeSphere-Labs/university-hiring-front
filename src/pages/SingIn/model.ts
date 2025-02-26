@@ -1,7 +1,7 @@
 import { createEffect, sample } from 'effector'
 import { createForm } from 'effector-forms'
 
-import { rules } from '@/shared/config/validateRules'
+import { validateRules } from '@/shared/config/validateRules'
 import { routes } from '@/shared/routing/index'
 
 export const currentRoute = routes.signIn
@@ -10,12 +10,12 @@ export const loginForm = createForm({
   fields: {
     email: {
       init: '',
-      rules: [rules.required(), rules.email()],
+      rules: [validateRules.required(), validateRules.email()],
     },
     password: {
       validateOn: ['change'],
       init: '',
-      rules: [rules.password()],
+      rules: [validateRules.password()],
     },
   },
   validateOn: ['change'],

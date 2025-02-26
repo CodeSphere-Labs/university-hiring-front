@@ -1,37 +1,11 @@
-import { Rule } from 'effector-forms'
 import * as yup from 'yup'
 
-export function createRule<V, T = any>({
-  schema,
-  name,
-}: {
-  schema: yup.Schema<T>
-  name: string
-}): () => Rule<V> {
-  return () => ({
-    name,
-    validator: (v: V) => {
-      try {
-        schema.validateSync(v)
-        return {
-          isValid: true,
-          value: v,
-        }
-      } catch (error) {
-        return {
-          isValid: false,
-          value: v,
-          errorText: (error as Error).message,
-        }
-      }
-    },
-  })
-}
+import { createRule } from '@/shared/utils'
 
 const REQUIRED_FIELD = 'Поле обязательно'
 const EMAIL_ERROR_FIELD = 'Вы ввели не правильный email'
 
-export const rules = {
+export const validateRules = {
   required: createRule({
     name: 'required',
     schema: yup.string().required(REQUIRED_FIELD),
