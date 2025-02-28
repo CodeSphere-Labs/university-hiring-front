@@ -1,6 +1,7 @@
 import '@mantine/core/styles.css'
 
 import { MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 import { RouterProvider } from 'atomic-router-react'
 import { Suspense } from 'react'
 
@@ -12,6 +13,7 @@ export const App = () => {
   return (
     <RouterProvider router={router}>
       <MantineProvider>
+        <Notifications />
         <Suspense fallback={<LoadingPage />}>
           <Pages />
         </Suspense>

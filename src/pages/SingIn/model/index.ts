@@ -1,6 +1,7 @@
-import { createEffect, sample } from 'effector'
+import { sample } from 'effector'
 import { createForm } from 'effector-forms'
 
+import { signInMutation } from '@/pages/SingIn/api'
 import { validateRules } from '@/shared/config/validateRules'
 import { routes } from '@/shared/routing/index'
 
@@ -13,17 +14,17 @@ export const loginForm = createForm({
       rules: [validateRules.required(), validateRules.email()],
     },
     password: {
-      validateOn: ['change'],
       init: '',
       rules: [validateRules.password()],
     },
   },
-  validateOn: ['change'],
+  validateOn: ['submit'],
 })
 
-export const loginFx = createEffect()
+export const $pending = signInMutation.$pending.map((pending) => pending)
 
 sample({
   clock: loginForm.formValidated,
-  target: loginFx,
+  fn: ({ email, password }) => ({ email, password }),
+  target: signInMutation.start,
 })

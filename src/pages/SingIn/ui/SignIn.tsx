@@ -10,15 +10,16 @@ import {
 } from '@mantine/core'
 import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
+import { FormEvent } from 'react'
 
-import { loginForm, loginFx } from './model'
+import { $pending, loginForm } from '../model'
 import classes from './SignIn.module.css'
 
 const SignIn = () => {
   const { fields, submit, eachValid } = useForm(loginForm)
-  const pending = useUnit(loginFx.pending)
+  const pending = useUnit($pending)
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault()
     submit()
   }
@@ -59,7 +60,8 @@ const SignIn = () => {
         />
 
         <Button
-          disabled={!eachValid || pending}
+          loading={pending}
+          disabled={!eachValid}
           type="submit"
           fullWidth
           mt="xl"
