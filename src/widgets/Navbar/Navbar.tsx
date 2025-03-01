@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-
 import { Code, Group } from '@mantine/core'
 import { ReactNode, useState } from 'react'
 import { CgProfile, CgWorkAlt } from 'react-icons/cg'

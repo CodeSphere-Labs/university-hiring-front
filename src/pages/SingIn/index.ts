@@ -1,10 +1,19 @@
+import { createRouteView } from 'atomic-router-react'
 import { lazy } from 'react'
 
-import { currentRoute } from './model'
+import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
+
+import { anonymousRoute, currentRoute } from './model'
 
 export const SignInPage = lazy(() => import('./ui/SignIn'))
 
-export const SignInRoute = {
+const AuthorizedView = createRouteView({
+  route: anonymousRoute,
   view: SignInPage,
+  otherwise: LoadingPage,
+})
+
+export const SignInRoute = {
+  view: AuthorizedView,
   route: currentRoute,
 }

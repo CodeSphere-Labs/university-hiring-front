@@ -36,6 +36,7 @@ const createRequestInstance = <P = CreateRequestParams, R = void>({
     return ofetch(url, {
       ...fetchOptions,
       headers: newHeaders,
+      credentials: 'include',
       baseURL,
     })
   })

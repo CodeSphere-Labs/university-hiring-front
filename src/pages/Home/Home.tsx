@@ -1,10 +1,14 @@
 import { Button, Container } from '@mantine/core'
 
+import { Navbar } from '@/widgets/Navbar/Navbar'
+
 const Home = () => {
   return (
-    <Container pt={15}>
-      Home test <Button>123</Button>
-    </Container>
+    <Navbar>
+      <Container pt={15}>
+        Home test <Button>123</Button>
+      </Container>
+    </Navbar>
   )
 }
 
