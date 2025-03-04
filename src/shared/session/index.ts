@@ -23,7 +23,13 @@ export const sessionQuery = createQuery({
   }),
 })
 
-export const $user = createStore<User | null>(null)
+export const refreshQuery = createQuery({
+  effect: createCommonRequestFx<void, User>({
+    url: '/auth/refresh-token',
+  }),
+})
+
+export const $user = createStore<User | null>(null, { name: 'user info' })
 const $authenticationStatus = createStore(AuthStatus.Initial)
 
 $authenticationStatus.on(sessionQuery.$succeeded, (status) => {
@@ -73,7 +79,17 @@ export function chainAuthorized<Params extends RouteParams>(
   })
 
   sample({
-    clock: [alreadyAnonymous, sessionQuery.finished.failure],
+    clock: sessionQuery.finished.failure,
+    target: refreshQuery.start,
+  })
+
+  sample({
+    clock: refreshQuery.finished.success,
+    target: sessionQuery.start,
+  })
+
+  sample({
+    clock: [alreadyAnonymous, refreshQuery.finished.failure],
     source: { params: route.$params, query: route.$query },
     filter: route.$isOpened,
     target: sessionReceivedAnonymous,

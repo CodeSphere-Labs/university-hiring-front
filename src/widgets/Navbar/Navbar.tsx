@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Code, Group } from '@mantine/core'
 import { ReactNode, useState } from 'react'
+import { AiOutlineHome } from 'react-icons/ai'
 import { CgProfile, CgWorkAlt } from 'react-icons/cg'
 import { GoPeople } from 'react-icons/go'
 import { RxDashboard } from 'react-icons/rx'
@@ -14,12 +15,17 @@ interface Props {
 const data = [
   {
     link: '',
+    label: 'Главная',
+    icon: AiOutlineHome,
+  },
+  {
+    link: '',
     label: 'Панель управления',
     icon: RxDashboard,
   },
   {
     link: '',
-    label: 'Студенты',
+    label: 'Группы',
     icon: GoPeople,
   },
   {
@@ -70,7 +76,7 @@ export const Navbar = ({ children }: Props) => {
             className={classes.link}
             onClick={(event) => event.preventDefault()}
           >
-            <span>Logout</span>
+            <span>Выйти</span>
           </a>
         </div>
       </nav>
