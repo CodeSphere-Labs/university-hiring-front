@@ -6,15 +6,15 @@ import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
 import { authorizedRoute, currentRoute } from './model'
 import { Navbar } from '@/widgets/Navbar/Navbar'
 
-export const HomePage = lazy(() => import('./Home'))
+export const GroupsPage = lazy(() => import('./Groups'))
 
 const AuthorizedView = createRouteView({
   route: authorizedRoute,
-  view: HomePage,
+  view: GroupsPage,
   otherwise: LoadingPage,
 })
 
-export const HomeRoute = {
+export const GroupsRoute = {
   view: AuthorizedView,
   route: currentRoute,
   layout: Navbar,

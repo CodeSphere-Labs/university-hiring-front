@@ -1,64 +1,35 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Code, Group } from '@mantine/core'
-import { ReactNode, useState } from 'react'
-import { AiOutlineHome } from 'react-icons/ai'
-import { CgProfile, CgWorkAlt } from 'react-icons/cg'
-import { GoPeople } from 'react-icons/go'
-import { RxDashboard } from 'react-icons/rx'
-
+import { Code, Group, NavLink } from '@mantine/core'
+import { ReactNode } from 'react'
+import { $links } from './links'
 import classes from './Navbar.module.css'
+
+import { useList, useUnit } from 'effector-react'
+import { Link } from 'atomic-router-react'
 
 interface Props {
   children: ReactNode
 }
 
-const data = [
-  {
-    link: '',
-    label: 'Главная',
-    icon: AiOutlineHome,
-  },
-  {
-    link: '',
-    label: 'Панель управления',
-    icon: RxDashboard,
-  },
-  {
-    link: '',
-    label: 'Группы',
-    icon: GoPeople,
-  },
-  {
-    link: '',
-    label: 'Стажировки',
-    icon: CgWorkAlt,
-  },
-  {
-    link: '',
-    label: 'Профиль',
-    icon: CgProfile,
-  },
-]
-
 export const Navbar = ({ children }: Props) => {
-  const [active, setActive] = useState('Billing')
+  const links = useList($links, {
+    getKey: (link) => link.label,
+    fn(link) {
+      const isActive = useUnit(link.active?.$isOpened ?? link.route.$isOpened)
 
-  const links = data.map((item) => (
-    <a
-      key={item.label}
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      href={item.link}
-      onClick={(event) => {
-        event.preventDefault()
-        setActive(item.label)
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke="1.5" />
-
-      <span>{item.label}</span>
-    </a>
-  ))
+      return (
+        <NavLink
+          className={classes.link}
+          component={Link}
+          active={isActive}
+          key={link.label}
+          to={link.route}
+          leftSection={<link.icon className={classes.linkIcon} stroke="1.5" />}
+          label={link.label}
+        />
+      )
+    },
+  })
 
   return (
     <main className={classes.main}>
@@ -81,7 +52,7 @@ export const Navbar = ({ children }: Props) => {
         </div>
       </nav>
 
-      <div>{children}</div>
+      <main>{children}</main>
     </main>
   )
 }

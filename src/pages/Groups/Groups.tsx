@@ -1,8 +1,8 @@
 import { Container } from '@mantine/core'
 
-const Home = () => {
-  return <Container pt={15}>home</Container>
+const Dashboard = () => {
+  return <Container pt={15}>groups</Container>
 }
 
 // eslint-disable-next-line import/no-default-export
-export default Home
+export default Dashboard
