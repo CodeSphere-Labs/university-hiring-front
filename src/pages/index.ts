@@ -7,6 +7,7 @@ import { HomeRoute } from './Home'
 import { DashboardRoute } from '@/pages/Dashboard'
 import { GroupsRoute } from '@/pages/Groups'
 import { InternshipRoute } from '@/pages/Internship'
+import { ProfileRoute } from '@/pages/Profile'
 
 export const Pages = createRoutesView({
   routes: [
@@ -15,6 +16,7 @@ export const Pages = createRoutesView({
     DashboardRoute,
     GroupsRoute,
     InternshipRoute,
+    ProfileRoute,
   ],
   otherwise: NotFoundPage,
 })
