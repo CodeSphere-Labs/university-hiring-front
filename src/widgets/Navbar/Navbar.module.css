@@ -72,3 +72,13 @@
   width: rem(25px);
   height: rem(25px);
 }
+
+.socialLink {
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  display: inline-block;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}

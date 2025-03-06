@@ -1,9 +1,9 @@
 import { createStore } from 'effector'
-
 import { AiOutlineHome } from 'react-icons/ai'
 import { CgProfile, CgWorkAlt } from 'react-icons/cg'
 import { GoPeople } from 'react-icons/go'
 import { RxDashboard } from 'react-icons/rx'
+
 import { routes } from '@/shared/routing'
 
 export const $links = createStore([

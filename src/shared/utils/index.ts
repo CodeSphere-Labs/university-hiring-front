@@ -27,3 +27,5 @@ export function createRule<V, T = any>({
     },
   })
 }
+
+export * from './role'

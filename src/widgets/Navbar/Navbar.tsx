@@ -1,11 +1,21 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { Code, Group, NavLink } from '@mantine/core'
+import {
+  Avatar,
+  Badge,
+  Button,
+  Group,
+  NavLink,
+  Stack,
+  Text,
+} from '@mantine/core'
+import { Link } from 'atomic-router-react'
+import { useList, useUnit } from 'effector-react'
 import { ReactNode } from 'react'
+
+import { $user, logoutQuery, userLogouted } from '@/shared/session'
+import { getRoleInRussian } from '@/shared/utils'
+
 import { $links } from './links'
 import classes from './Navbar.module.css'
-
-import { useList, useUnit } from 'effector-react'
-import { Link } from 'atomic-router-react'
 
 interface Props {
   children: ReactNode
@@ -15,14 +25,14 @@ export const Navbar = ({ children }: Props) => {
   const links = useList($links, {
     getKey: (link) => link.label,
     fn(link) {
-      const isActive = useUnit(link.active?.$isOpened ?? link.route.$isOpened)
+      const isActive = useUnit(link.active.$isOpened ?? link.route.$isOpened)
 
       return (
         <NavLink
+          key={link.label}
           className={classes.link}
           component={Link}
           active={isActive}
-          key={link.label}
           to={link.route}
           leftSection={<link.icon className={classes.linkIcon} stroke="1.5" />}
           label={link.label}
@@ -31,28 +41,65 @@ export const Navbar = ({ children }: Props) => {
     },
   })
 
+  const pending = useUnit(logoutQuery.$pending)
+
   return (
     <main className={classes.main}>
       <nav className={classes.navbar}>
         <div className={classes.navbarMain}>
           <Group className={classes.header} justify="space-between">
-            <Code fw={700}>account name</Code>
+            <Stack gap="xs">
+              <Group>
+                <UserAvatar />
+                <UserInfo />
+              </Group>
+            </Stack>
           </Group>
           {links}
         </div>
 
         <div className={classes.footer}>
-          <a
-            href="#"
+          <Button
+            loading={pending}
+            variant="subtle"
+            fullWidth
             className={classes.link}
-            onClick={(event) => event.preventDefault()}
+            onClick={() => userLogouted()}
           >
             <span>Выйти</span>
-          </a>
+          </Button>
         </div>
       </nav>
 
       <main>{children}</main>
     </main>
+  )
+}
+
+function UserAvatar() {
+  const user = useUnit($user)
+  return (
+    <Avatar
+      src={user?.avatar}
+      alt={`${user?.firstName} ${user?.lastName}`}
+      radius="xl"
+      size="md"
+    />
+  )
+}
+
+function UserInfo() {
+  const user = useUnit($user)
+  const userRole = getRoleInRussian(user?.role)
+
+  return (
+    <Stack gap={0}>
+      <Text fw={700} size="md">
+        {user?.firstName} {user?.lastName}
+      </Text>
+      <Badge color={userRole.color} variant="light" size="sm">
+        {userRole.label}
+      </Badge>
+    </Stack>
   )
 }

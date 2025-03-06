@@ -15,9 +15,17 @@ module.exports = configure({
       },
     }),
     presets.node(),
-    presets.prettier(),
+    presets.prettier({
+      endOfLine: 'auto',
+    }),
     presets.typescript(),
     presets.react(),
     presets.effector(),
   ],
+
+  extend: {
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
 })
