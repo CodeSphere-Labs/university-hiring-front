@@ -1,8 +1,11 @@
+import {
+  IconBriefcase,
+  IconHome,
+  IconLayoutDashboard,
+  IconUser,
+  IconUsers,
+} from '@tabler/icons-react'
 import { createStore } from 'effector'
-import { AiOutlineHome } from 'react-icons/ai'
-import { CgProfile, CgWorkAlt } from 'react-icons/cg'
-import { GoPeople } from 'react-icons/go'
-import { RxDashboard } from 'react-icons/rx'
 
 import { routes } from '@/shared/routing'
 
@@ -10,31 +13,31 @@ export const $links = createStore([
   {
     route: routes.home,
     label: 'Главная',
-    icon: AiOutlineHome,
+    icon: IconHome,
     active: routes.home,
   },
   {
     route: routes.dashboard,
     label: 'Панель управления',
-    icon: RxDashboard,
+    icon: IconLayoutDashboard,
     active: routes.dashboard,
   },
   {
     route: routes.groups,
     label: 'Группы',
-    icon: GoPeople,
+    icon: IconUsers,
     active: routes.groups,
   },
   {
     route: routes.internship,
     label: 'Стажировки',
-    icon: CgWorkAlt,
+    icon: IconBriefcase,
     active: routes.internship,
   },
   {
     route: routes.profile,
     label: 'Профиль',
-    icon: CgProfile,
+    icon: IconUser,
     active: routes.profile,
   },
 ])

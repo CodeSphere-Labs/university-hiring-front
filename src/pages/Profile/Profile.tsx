@@ -1,7 +1,5 @@
-import { Container } from '@mantine/core'
-
 const Profile = () => {
-  return <Container pt={15}>profile</Container>
+  return <>profile</>
 }
 
 // eslint-disable-next-line import/no-default-export

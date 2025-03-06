@@ -1,7 +1,7 @@
-import { Container } from '@mantine/core'
+import { AdminActions } from '@/features/ActionCards'
 
 const Home = () => {
-  return <Container pt={15}>home</Container>
+  return <AdminActions />
 }
 
 // eslint-disable-next-line import/no-default-export

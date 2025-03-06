@@ -2,6 +2,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Container,
   Group,
   NavLink,
   Stack,
@@ -71,7 +72,9 @@ export const Navbar = ({ children }: Props) => {
         </div>
       </nav>
 
-      <main>{children}</main>
+      <Container fluid pt={15} w="100%">
+        {children}
+      </Container>
     </main>
   )
 }

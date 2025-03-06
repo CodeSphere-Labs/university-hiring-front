@@ -2,9 +2,9 @@ import { createRouteView } from 'atomic-router-react'
 import { lazy } from 'react'
 
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
+import { Navbar } from '@/widgets/Navbar/Navbar'
 
 import { authorizedRoute, currentRoute } from './model'
-import { Navbar } from '@/widgets/Navbar/Navbar'
 
 export const HomePage = lazy(() => import('./Home'))
 
