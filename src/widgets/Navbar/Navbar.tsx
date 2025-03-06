@@ -99,7 +99,7 @@ function UserAvatar() {
 
   return (
     <Avatar
-      src={user.avatar}
+      src={user.avatarUrl}
       alt={`${user.firstName} ${user.lastName}`}
       radius="xl"
       size="md"
@@ -120,9 +120,7 @@ function UserInfo() {
     )
   }
 
-  if (!user) {
-    return null // Этот случай не должен происходить, но TypeScript требует проверки
-  }
+  if (!user) return null
 
   const userRole = getRoleInRussian(user.role)
 

@@ -11,7 +11,7 @@ const Profile = () => {
   return (
     <Stack>
       <Group justify="space-between" wrap="wrap" gap="md">
-        <UserInfoIcons />
+        <UserTopInfo />
         <Button>Редактировать</Button>
       </Group>
       asda
@@ -22,7 +22,7 @@ const Profile = () => {
 // eslint-disable-next-line import/no-default-export
 export default Profile
 
-function UserInfoIcons() {
+function UserTopInfo() {
   const user = useUnit($user)
   if (!user) return null
 
@@ -32,7 +32,7 @@ function UserInfoIcons() {
     <div>
       <Group wrap="nowrap">
         <Avatar
-          src={user.avatar}
+          src={user.avatarUrl}
           alt={`${user.firstName} ${user.lastName}`}
           size={134}
           radius="md"

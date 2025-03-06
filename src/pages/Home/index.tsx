@@ -1,21 +1,25 @@
 import { createRouteView } from 'atomic-router-react'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
-
-import { authorizedRoute, currentRoute } from './model'
 import { Navbar } from '@/widgets/Navbar/Navbar'
 
-export const DashboardPage = lazy(() => import('./Dashboard'))
+import { authorizedRoute, currentRoute } from './model'
+
+export const HomePage = lazy(() => import('./Home'))
 
 const AuthorizedView = createRouteView({
   route: authorizedRoute,
-  view: DashboardPage,
+  view: HomePage,
   otherwise: LoadingPage,
 })
 
-export const DashboardRoute = {
-  view: AuthorizedView,
+export const HomeRoute = {
+  view: () => (
+    <Suspense fallback={<LoadingPage />}>
+      <AuthorizedView />
+    </Suspense>
+  ),
   route: currentRoute,
   layout: Navbar,
 }
