@@ -7,6 +7,7 @@ import {
   RouteParamsAndQuery,
 } from 'atomic-router'
 import {
+  combine,
   createEffect,
   createEvent,
   createStore,
@@ -26,16 +27,6 @@ enum AuthStatus {
   RefreshPending,
 }
 
-export const userLogouted = createEvent()
-const showFailedNotificationFx = createEffect({
-  handler: () =>
-    notifications.show({
-      color: 'red',
-      title: 'Ошибка при попытке выйти',
-      message: 'Упс, что то пошло не так, попробуйте снова',
-      position: 'top-right',
-    }),
-})
 export const sessionQuery = createQuery({
   effect: createCommonRequestFx<void, User>({
     url: '/users/profile',
@@ -55,7 +46,23 @@ export const logoutQuery = createQuery({
 })
 
 export const $user = createStore<User | null>(null, { name: 'user info' })
+export const $sessionPending = combine(
+  sessionQuery.$pending,
+  refreshQuery.$pending,
+  (sessionPending, refreshPending) => sessionPending || refreshPending,
+)
 const $authenticationStatus = createStore(AuthStatus.Initial)
+
+export const userLogouted = createEvent()
+const showFailedNotificationFx = createEffect({
+  handler: () =>
+    notifications.show({
+      color: 'red',
+      title: 'Ошибка при попытке выйти',
+      message: 'Упс, что то пошло не так, попробуйте снова',
+      position: 'top-right',
+    }),
+})
 
 // Логика обработки аутентификации:
 // 1. При первом запросе статус Initial -> Pending

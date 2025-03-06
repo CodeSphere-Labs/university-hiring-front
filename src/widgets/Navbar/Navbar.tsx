@@ -5,6 +5,7 @@ import {
   Container,
   Group,
   NavLink,
+  Skeleton,
   Stack,
   Text,
 } from '@mantine/core'
@@ -12,7 +13,12 @@ import { Link } from 'atomic-router-react'
 import { useList, useUnit } from 'effector-react'
 import { ReactNode } from 'react'
 
-import { $user, logoutQuery, userLogouted } from '@/shared/session'
+import {
+  $sessionPending,
+  $user,
+  logoutQuery,
+  userLogouted,
+} from '@/shared/session'
 import { getRoleInRussian } from '@/shared/utils'
 
 import { $links } from './links'
@@ -81,10 +87,20 @@ export const Navbar = ({ children }: Props) => {
 
 function UserAvatar() {
   const user = useUnit($user)
+  const pending = useUnit($sessionPending)
+
+  if (pending) {
+    return <Skeleton circle height={40} />
+  }
+
+  if (!user) {
+    return null // Этот случай не должен происходить, но TypeScript требует проверки
+  }
+
   return (
     <Avatar
-      src={user?.avatar}
-      alt={`${user?.firstName} ${user?.lastName}`}
+      src={user.avatar}
+      alt={`${user.firstName} ${user.lastName}`}
       radius="xl"
       size="md"
     />
@@ -93,12 +109,27 @@ function UserAvatar() {
 
 function UserInfo() {
   const user = useUnit($user)
-  const userRole = getRoleInRussian(user?.role)
+  const pending = useUnit($sessionPending)
+
+  if (pending) {
+    return (
+      <Stack gap={0}>
+        <Skeleton height={20} width={150} mb={4} />
+        <Skeleton height={20} width={100} />
+      </Stack>
+    )
+  }
+
+  if (!user) {
+    return null // Этот случай не должен происходить, но TypeScript требует проверки
+  }
+
+  const userRole = getRoleInRussian(user.role)
 
   return (
     <Stack gap={0}>
       <Text fw={700} size="md">
-        {user?.firstName} {user?.lastName}
+        {user.firstName} {user.lastName}
       </Text>
       <Badge color={userRole.color} variant="light" size="sm">
         {userRole.label}
