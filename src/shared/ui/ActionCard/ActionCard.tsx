@@ -1,4 +1,4 @@
-import { Stack, Text, UnstyledButton } from '@mantine/core'
+import { Button, Stack, Text } from '@mantine/core'
 import { ReactNode } from 'react'
 
 import classes from './ActionCard.module.css'
@@ -9,17 +9,13 @@ interface ActionCardProps {
   onClick?: () => void
 }
 
-/**
- * Компонент карточки действия
- * @param icon - Иконка действия
- * @param title - Название действия
- * @param onClick - Функция, вызываемая при клике на карточку
- */
 export const ActionCard = ({ icon, title, onClick }: ActionCardProps) => {
   return (
-    <UnstyledButton
+    <Button
       className={classes.button}
+      variant="filled"
       h={80}
+      radius="md"
       w={{ base: '100%', sm: '48%', md: '23%' }}
       onClick={onClick}
     >
@@ -27,6 +23,6 @@ export const ActionCard = ({ icon, title, onClick }: ActionCardProps) => {
         {icon}
         <Text size="sm">{title}</Text>
       </Stack>
-    </UnstyledButton>
+    </Button>
   )
 }

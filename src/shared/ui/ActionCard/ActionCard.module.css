@@ -1,14 +1,4 @@
-.button {
-  border-radius: 10px;
-  border: 1px solid #e9ecef;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
 .button:hover {
-  border-color: var(--mantine-color-gray-3);
-  background-color: var(--mantine-color-gray-0);
+  background-color: var(--mantine-color-blue-8);
   transition: all 0.2s ease;
 }
