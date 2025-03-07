@@ -1,14 +1,18 @@
 import {
   Avatar,
   Badge,
+  Burger,
   Button,
   Container,
+  Drawer,
   Group,
   NavLink,
   Skeleton,
   Stack,
   Text,
+  useMantineTheme,
 } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { Link } from 'atomic-router-react'
 import { useList, useUnit } from 'effector-react'
 import { ReactNode } from 'react'
@@ -29,6 +33,9 @@ interface Props {
 }
 
 export const Navbar = ({ children }: Props) => {
+  const [opened, { toggle, close }] = useDisclosure(false)
+  const theme = useMantineTheme()
+
   const links = useList($links, {
     getKey: (link) => link.label,
     fn(link) {
@@ -43,6 +50,7 @@ export const Navbar = ({ children }: Props) => {
           to={link.route}
           leftSection={<link.icon className={classes.linkIcon} stroke="1.5" />}
           label={link.label}
+          onClick={() => close()}
         />
       )
     },
@@ -50,32 +58,69 @@ export const Navbar = ({ children }: Props) => {
 
   const pending = useUnit(logoutQuery.$pending)
 
+  const navbarContent = (
+    <>
+      <div className={classes.navbarMain}>{links}</div>
+
+      <div className={classes.footer}>
+        <Button
+          loading={pending}
+          variant="subtle"
+          fullWidth
+          className={classes.link}
+          onClick={() => userLogouted()}
+        >
+          <span>Выйти</span>
+        </Button>
+      </div>
+    </>
+  )
+
   return (
     <main className={classes.main}>
-      <nav className={classes.navbar}>
-        <div className={classes.navbarMain}>
-          <Group className={classes.header} justify="space-between">
+      <div className={classes.mobileNavbar}>
+        <Drawer
+          opened={opened}
+          onClose={close}
+          size="sm"
+          padding="md"
+          title={
             <Stack gap="xs">
               <Group>
                 <UserAvatar />
                 <UserInfo />
               </Group>
             </Stack>
-          </Group>
-          {links}
-        </div>
+          }
+          zIndex={1000}
+          overlayProps={{ opacity: 0.5, blur: 4 }}
+        >
+          {navbarContent}
+        </Drawer>
 
-        <div className={classes.footer}>
-          <Button
-            loading={pending}
-            variant="subtle"
-            fullWidth
-            className={classes.link}
-            onClick={() => userLogouted()}
-          >
-            <span>Выйти</span>
-          </Button>
-        </div>
+        <Group p="md" h={70} justify="space-between" style={{ width: '100%' }}>
+          <div />
+          <Burger
+            className={classes.burger}
+            opened={opened}
+            onClick={toggle}
+            size="md"
+            color={theme.colors.blue[7]}
+          />
+        </Group>
+      </div>
+
+      <nav className={classes.navbar}>
+        <Group className={classes.header} justify="space-between">
+          <Stack gap="xs">
+            <Group>
+              <UserAvatar />
+              <UserInfo />
+            </Group>
+          </Stack>
+        </Group>
+
+        {navbarContent}
       </nav>
 
       <Container fluid pt={15} w="100%">
@@ -93,9 +138,7 @@ function UserAvatar() {
     return <Skeleton circle height={40} />
   }
 
-  if (!user) {
-    return null // Этот случай не должен происходить, но TypeScript требует проверки
-  }
+  if (!user) return null
 
   return (
     <Avatar

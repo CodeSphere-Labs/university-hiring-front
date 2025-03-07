@@ -1,4 +1,14 @@
-import { Avatar, Button, Group, Stack, Text } from '@mantine/core'
+import {
+  Avatar,
+  Button,
+  Grid,
+  Group,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+  Title,
+} from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
 import { useUnit } from 'effector-react'
 
@@ -9,18 +19,101 @@ import classes from './UserInfoIcons.module.css'
 
 const Profile = () => {
   return (
-    <Stack>
+    <Stack className="shell_main">
       <Group justify="space-between" wrap="wrap" gap="md">
         <UserTopInfo />
-        <Button>Редактировать</Button>
+        <Button onClick={() => console.log('object')}>
+          Сохранить изменения
+        </Button>
       </Group>
-      asda
+      <BaseUserForm />
     </Stack>
   )
 }
 
 // eslint-disable-next-line import/no-default-export
 export default Profile
+
+function BaseUserForm() {
+  const user = useUnit($user)
+
+  if (!user) return null
+
+  return (
+    <Group>
+      <Title order={3}>Основная информация</Title>
+      <Grid
+        type="media"
+        breakpoints={{
+          xs: '300px',
+          sm: '400px',
+          md: '600px',
+          lg: '1100px',
+          xl: '1200px',
+        }}
+      >
+        <Grid.Col span={{ sm: 12, md: 6, lg: 4 }}>
+          <TextInput
+            label="Имя"
+            description="Ваше имя"
+            placeholder="Введите имя"
+            value={user.firstName}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            label="Фамилия"
+            description="Ваша фамилия"
+            placeholder="Введите фамилию"
+            value={user.lastName}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            label="Отчество"
+            description="Ваше отчество"
+            placeholder="Введите отчество"
+            value={user.patronymic}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            label="Email"
+            description="Ваш email адрес"
+            placeholder="Введите email"
+            value={user.email}
+          />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            label="Telegram"
+            description="Ссылка на ваш Telegram"
+            placeholder="Введите ссылку на Telegram"
+            value={user.telegramLink || ''}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            label="ВКонтакте"
+            description="Ссылка на ваш профиль ВК"
+            placeholder="Введите ссылку на ВК"
+            value={user.vkLink || ''}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12 }}>
+          <Textarea
+            label="О себе"
+            description="Расскажите о себе"
+            placeholder="Введите информацию о себе"
+            value={user.aboutMe || ''}
+            minRows={3}
+          />
+        </Grid.Col>
+      </Grid>
+    </Group>
+  )
+}
 
 function UserTopInfo() {
   const user = useUnit($user)

@@ -1,0 +1,9 @@
+:root {
+  --header-mobile-size: 60px;
+}
+
+@media (max-width: 768px) {
+  .shell_main {
+    padding-top: var(--header-mobile-size);
+  }
+}

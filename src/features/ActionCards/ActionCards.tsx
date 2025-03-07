@@ -11,7 +11,7 @@ import { ActionCard } from '@/shared/ui/ActionCard'
 
 export const AdminActions = () => {
   return (
-    <Flex w="100%" wrap="wrap" gap="md">
+    <Flex className="shell_main" w="100%" wrap="wrap" gap="md">
       <WithRoleCheck allowedRoles={['ADMIN', 'STAFF']}>
         <ActionCard
           icon={<IconUserPlus size={28} />}

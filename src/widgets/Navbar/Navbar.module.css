@@ -12,6 +12,34 @@
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
+@media (max-width: 768px) {
+  .navbar {
+    display: none;
+  }
+  .header {
+    display: none;
+  }
+}
+
+.mobileNavbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileNavbar {
+    display: block;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background-color: var(--mantine-color-gray-0);
+    height: var(--header-mobile-size);
+  }
+}
+
 .navbarMain {
   flex: 1;
 }
@@ -79,5 +107,12 @@
 
   &:hover {
     transform: translateY(-2px);
+  }
+}
+
+/* Адаптивные стили для основного контента */
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
   }
 }
