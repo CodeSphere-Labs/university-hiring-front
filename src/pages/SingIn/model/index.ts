@@ -5,7 +5,8 @@ import { createForm } from 'effector-forms'
 import { signInMutation } from '@/pages/SingIn/api'
 import { validateRules } from '@/shared/config/validateRules'
 import { routes } from '@/shared/routing/index'
-import { chainAnonymous, sessionQuery } from '@/shared/session'
+import { chainAnonymous } from '@/shared/session'
+import { sessionQuery } from '@/shared/session/api'
 
 export const currentRoute = routes.signIn
 export const anonymousRoute = chainAnonymous(currentRoute, {

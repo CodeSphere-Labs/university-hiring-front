@@ -1,4 +1,3 @@
-import { createQuery } from '@farfetched/core'
 import { notifications } from '@mantine/notifications'
 import {
   chainRoute,
@@ -16,8 +15,8 @@ import {
   sample,
 } from 'effector'
 
-import { createCommonRequestFx } from '@/shared/api/requests'
 import { User } from '@/shared/api/types'
+import { logoutQuery, refreshQuery, sessionQuery } from '@/shared/session/api'
 
 enum AuthStatus {
   Initial,
@@ -26,27 +25,6 @@ enum AuthStatus {
   Authenticated,
   RefreshPending,
 }
-
-export const sessionQuery = createQuery({
-  effect: createCommonRequestFx<void, User>({
-    url: '/users/profile',
-  }),
-})
-
-export const refreshQuery = createQuery({
-  effect: createCommonRequestFx<void, User>({
-    url: '/auth/refresh-token',
-  }),
-})
-
-export const logoutQuery = createQuery({
-  effect: createCommonRequestFx<number, void>((id) => ({
-    url: '/auth/logout',
-    query: {
-      id,
-    },
-  })),
-})
 
 export const $user = createStore<User | null>(null, { name: 'user info' })
 export const $sessionPending = combine(
