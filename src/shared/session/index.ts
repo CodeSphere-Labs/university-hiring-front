@@ -40,9 +40,12 @@ export const refreshQuery = createQuery({
 })
 
 export const logoutQuery = createQuery({
-  effect: createCommonRequestFx<void, void>({
-    url: '/auth/log-out',
-  }),
+  effect: createCommonRequestFx<number, void>((id) => ({
+    url: '/auth/logout',
+    query: {
+      id,
+    },
+  })),
 })
 
 export const $user = createStore<User | null>(null, { name: 'user info' })
@@ -103,6 +106,9 @@ $authenticationStatus.on(sessionQuery.finished.failure, (status) => {
 
 sample({
   clock: userLogouted,
+  source: $user,
+  filter: (user) => user !== null,
+  fn: (user) => user!.id,
   target: logoutQuery.start,
 })
 
