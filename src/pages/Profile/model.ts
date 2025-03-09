@@ -38,11 +38,13 @@ export const baseForm = createForm({
     },
     telegramLink: {
       init: '',
-      rules: [validateRules.required(), validateRules.telegramLink()],
+      rules: [validateRules.telegramLink()],
+      validateOn: ['change'],
     },
     vkLink: {
       init: '',
-      rules: [validateRules.required(), validateRules.vkLink()],
+      rules: [validateRules.vkLink()],
+      validateOn: ['change'],
     },
   },
   validateOn: ['submit'],

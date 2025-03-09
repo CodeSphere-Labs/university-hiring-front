@@ -20,18 +20,13 @@ import { getRoleInRussian } from '@/shared/utils'
 import classes from './UserInfoIcons.module.css'
 
 const Profile = () => {
-  const { isDirty, eachValid } = useForm(baseForm)
+  const { isDirty, eachValid, fields } = useForm(baseForm)
 
   return (
     <Stack className="shell_main">
       <Group justify="space-between" wrap="wrap" gap="md">
         <UserTopInfo />
-        <Button
-          disabled={!isDirty || !eachValid}
-          onClick={() => console.log('object')}
-        >
-          Сохранить изменения
-        </Button>
+        <Button disabled={!isDirty || !eachValid}>Сохранить изменения</Button>
       </Group>
       <BaseUserForm />
     </Stack>
@@ -43,7 +38,7 @@ export default Profile
 
 function BaseUserForm() {
   const user = useUnit($user)
-  const { fields, submit, eachValid } = useForm(baseForm)
+  const { fields } = useForm(baseForm)
 
   if (!user) return null
 
@@ -108,7 +103,7 @@ function BaseUserForm() {
           <TextInput
             label="Telegram"
             description="Ссылка на ваш Telegram"
-            placeholder="Введите ссылку на Telegram"
+            placeholder="https://t.me/username"
             value={fields.telegramLink.value}
             onChange={(e) => fields.telegramLink.onChange(e.target.value)}
             error={fields.telegramLink.errorText()}
@@ -118,7 +113,7 @@ function BaseUserForm() {
           <TextInput
             label="ВКонтакте"
             description="Ссылка на ваш профиль ВК"
-            placeholder="Введите ссылку на ВК"
+            placeholder="https://vk.com/username"
             value={fields.vkLink.value}
             onChange={(e) => fields.vkLink.onChange(e.target.value)}
             error={fields.vkLink.errorText()}

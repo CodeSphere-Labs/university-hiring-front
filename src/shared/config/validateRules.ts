@@ -31,18 +31,24 @@ export const validateRules = {
     name: 'telegramLink',
     schema: yup
       .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
       .matches(
         /^https:\/\/t\.me\/[a-zA-Z0-9_]{5,32}$/,
         VALIDATE_MESSAGES.invalid.telegram,
-      ),
+      )
+      .nullable(),
   }),
   vkLink: createRule<string>({
     name: 'vkLink',
     schema: yup
       .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
       .matches(
         /^https:\/\/vk\.com\/[a-zA-Z0-9_]{3,32}$/,
         VALIDATE_MESSAGES.invalid.vk,
-      ),
+      )
+      .nullable(),
   }),
 }
