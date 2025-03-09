@@ -10,19 +10,26 @@ import {
   Title,
 } from '@mantine/core'
 import { IconAt } from '@tabler/icons-react'
+import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
+import { baseForm } from '@/pages/Profile/model'
 import { $user } from '@/shared/session'
 import { getRoleInRussian } from '@/shared/utils'
 
 import classes from './UserInfoIcons.module.css'
 
 const Profile = () => {
+  const { isDirty, eachValid } = useForm(baseForm)
+
   return (
     <Stack className="shell_main">
       <Group justify="space-between" wrap="wrap" gap="md">
         <UserTopInfo />
-        <Button onClick={() => console.log('object')}>
+        <Button
+          disabled={!isDirty || !eachValid}
+          onClick={() => console.log('object')}
+        >
           Сохранить изменения
         </Button>
       </Group>
@@ -36,6 +43,7 @@ export default Profile
 
 function BaseUserForm() {
   const user = useUnit($user)
+  const { fields, submit, eachValid } = useForm(baseForm)
 
   if (!user) return null
 
@@ -57,7 +65,10 @@ function BaseUserForm() {
             label="Имя"
             description="Ваше имя"
             placeholder="Введите имя"
-            value={user.firstName}
+            value={fields.firstName.value}
+            onChange={(e) => fields.firstName.onChange(e.target.value)}
+            error={fields.firstName.errorText()}
+            required
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
@@ -65,7 +76,10 @@ function BaseUserForm() {
             label="Фамилия"
             description="Ваша фамилия"
             placeholder="Введите фамилию"
-            value={user.lastName}
+            value={fields.lastName.value}
+            onChange={(e) => fields.lastName.onChange(e.target.value)}
+            error={fields.lastName.errorText()}
+            required
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
@@ -73,7 +87,10 @@ function BaseUserForm() {
             label="Отчество"
             description="Ваше отчество"
             placeholder="Введите отчество"
-            value={user.patronymic}
+            value={fields.patronymic.value}
+            onChange={(e) => fields.patronymic.onChange(e.target.value)}
+            error={fields.patronymic.errorText()}
+            required
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
@@ -81,7 +98,9 @@ function BaseUserForm() {
             label="Email"
             description="Ваш email адрес"
             placeholder="Введите email"
-            value={user.email}
+            value={fields.email.value}
+            onChange={(e) => fields.email.onChange(e.target.value)}
+            required
           />
         </Grid.Col>
 
@@ -90,7 +109,9 @@ function BaseUserForm() {
             label="Telegram"
             description="Ссылка на ваш Telegram"
             placeholder="Введите ссылку на Telegram"
-            value={user.telegramLink || ''}
+            value={fields.telegramLink.value}
+            onChange={(e) => fields.telegramLink.onChange(e.target.value)}
+            error={fields.telegramLink.errorText()}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
@@ -98,7 +119,9 @@ function BaseUserForm() {
             label="ВКонтакте"
             description="Ссылка на ваш профиль ВК"
             placeholder="Введите ссылку на ВК"
-            value={user.vkLink || ''}
+            value={fields.vkLink.value}
+            onChange={(e) => fields.vkLink.onChange(e.target.value)}
+            error={fields.vkLink.errorText()}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12 }}>
@@ -106,8 +129,10 @@ function BaseUserForm() {
             label="О себе"
             description="Расскажите о себе"
             placeholder="Введите информацию о себе"
-            value={user.aboutMe || ''}
+            value={fields.aboutMe.value}
+            onChange={(e) => fields.aboutMe.onChange(e.target.value)}
             minRows={3}
+            error={fields.aboutMe.errorText()}
           />
         </Grid.Col>
       </Grid>
