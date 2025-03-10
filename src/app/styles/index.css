@@ -2,7 +2,7 @@
   --header-mobile-size: 60px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .shell_main {
     padding-top: var(--header-mobile-size);
   }

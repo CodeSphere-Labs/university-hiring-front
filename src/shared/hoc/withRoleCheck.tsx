@@ -1,9 +1,8 @@
 import { useUnit } from 'effector-react'
 import { ReactNode } from 'react'
 
+import { Role } from '@/shared/api/types'
 import { $user } from '@/shared/session'
-
-type Role = 'ADMIN' | 'STAFF' | 'STUDENT'
 
 interface WithRoleCheckProps {
   allowedRoles: Role[]

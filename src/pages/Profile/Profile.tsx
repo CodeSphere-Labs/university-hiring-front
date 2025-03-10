@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  Flex,
   Grid,
   Group,
   Stack,
@@ -14,14 +15,22 @@ import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
 import { baseForm } from '@/pages/Profile/model'
+import { withConditionalRender } from '@/shared/hoc'
+import { AddPetProjectIcon } from '@/shared/icons/AddPetProjectIcon'
 import { $user } from '@/shared/session'
 import { getRoleInRussian } from '@/shared/utils'
 
 import classes from './UserInfoIcons.module.css'
 
-const Profile = () => {
-  const { isDirty, eachValid, fields } = useForm(baseForm)
+const ConditionalStudentProfileForm = withConditionalRender<{
+  isStudent: boolean
+}>(StudentProfileForm, (props) => props.isStudent)
 
+const Profile = () => {
+  const { isDirty, eachValid } = useForm(baseForm)
+  const user = useUnit($user)
+
+  if (!user) return null
   return (
     <Stack className="shell_main">
       <Group justify="space-between" wrap="wrap" gap="md">
@@ -29,6 +38,7 @@ const Profile = () => {
         <Button disabled={!isDirty || !eachValid}>Сохранить изменения</Button>
       </Group>
       <BaseUserForm />
+      <ConditionalStudentProfileForm isStudent={user.role === 'STUDENT'} />
     </Stack>
   )
 }
@@ -167,5 +177,51 @@ function UserTopInfo() {
         </div>
       </Group>
     </div>
+  )
+}
+
+function StudentProfileForm() {
+  return (
+    <Stack>
+      <Title order={3}>Профиль студента</Title>
+      <Grid grow gutter="md">
+        <Grid.Col span={{ base: 12, sm: 4, lg: 4 }}>
+          <Flex direction="column" gap="xs">
+            <TextInput
+              label="Github"
+              description="Ссылка на github"
+              placeholder="https://github.com/zeroqs"
+            />
+            <TextInput
+              label="Github"
+              description="Ссылка на github"
+              placeholder="https://github.com/zeroqs"
+            />
+            <TextInput label="Ваша группа" value="ИСТ-21-1" readOnly />
+          </Flex>
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, sm: 8, lg: 8 }}>
+          <Stack align="center" justify="center" gap="md">
+            <Button
+              h="auto"
+              variant="gradient"
+              gradient={{ from: '#f0f9ff', to: '#e6f2ff' }}
+              radius="md"
+              p="md"
+              className={classes.addPetProjectButton}
+              w={{ base: '100%', sm: '80%' }}
+            >
+              <Stack gap={5} align="center">
+                <AddPetProjectIcon width={280} height={180} />
+                <Text fw={500} size="lg" c="blue.9">
+                  Добавить учебный проект
+                </Text>
+              </Stack>
+            </Button>
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </Stack>
   )
 }
