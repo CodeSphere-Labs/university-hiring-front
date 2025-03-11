@@ -1,4 +1,4 @@
-export const getRoleInRussian = (
+export const getRole = (
   role: string | undefined,
 ): { label: string; color: string } => {
   if (!role) return { label: 'Неизвестно', color: 'gray' }

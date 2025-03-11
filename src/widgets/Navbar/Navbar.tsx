@@ -19,7 +19,7 @@ import { ReactNode } from 'react'
 
 import { $sessionPending, $user, userLogouted } from '@/shared/session'
 import { logoutQuery } from '@/shared/session/api'
-import { getRoleInRussian } from '@/shared/utils'
+import { getRole } from '@/shared/utils'
 
 import { $links } from './links'
 import classes from './Navbar.module.css'
@@ -161,7 +161,7 @@ function UserInfo() {
 
   if (!user) return null
 
-  const userRole = getRoleInRussian(user.role)
+  const userRole = getRole(user.role)
 
   return (
     <Stack gap={0}>

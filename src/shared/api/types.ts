@@ -68,9 +68,8 @@ export interface StudentProfile {
   userId: number
   resume: string | null
   githubLink: string | null
-  projects: any | null
+  projects: Project[] | null
 
-  groupId: number | null
   group: Group | null
 
   createdAt: string
@@ -78,6 +77,14 @@ export interface StudentProfile {
 
   user: User
   opportunityResponses?: OpportunityResponse[]
+}
+
+interface Project {
+  name: string
+  githubUrl: string
+  description: string
+  websiteUrl: string
+  technologies: string[]
 }
 
 export interface Opportunity {
@@ -117,12 +124,9 @@ export interface Skill {
 export interface Group {
   id: number
   name: string
-  students: StudentProfile[]
 
   createdAt: string
   updatedAt: string
-
-  invitations?: Invitation[]
 }
 
 export interface AuthDto {

@@ -8,6 +8,7 @@ const VALIDATE_MESSAGES = {
     email: 'Вы ввели не правильный email',
     telegram: 'Невалидная ссылка на Telegram',
     vk: 'Невалидная ссылка на ВКонтакте',
+    github: 'Невалидная ссылка на Github',
   },
 } as const
 
@@ -34,7 +35,7 @@ export const validateRules = {
       .nullable()
       .transform((value) => (value === '' ? null : value))
       .matches(
-        /^https:\/\/t\.me\/[a-zA-Z0-9_]{5,32}$/,
+        /^https:\/\/t\.me\/[a-zA-Z0-9_]+$/,
         VALIDATE_MESSAGES.invalid.telegram,
       )
       .nullable(),
@@ -46,8 +47,20 @@ export const validateRules = {
       .nullable()
       .transform((value) => (value === '' ? null : value))
       .matches(
-        /^https:\/\/vk\.com\/[a-zA-Z0-9_]{3,32}$/,
+        /^https:\/\/vk\.com\/[a-zA-Z0-9_]+$/,
         VALIDATE_MESSAGES.invalid.vk,
+      )
+      .nullable(),
+  }),
+  gitHubLink: createRule<string>({
+    name: 'gitHubLink',
+    schema: yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        /^https:\/\/github\.com\/[a-zA-Z0-9_-]+$/,
+        VALIDATE_MESSAGES.invalid.github,
       )
       .nullable(),
   }),

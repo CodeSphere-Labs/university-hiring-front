@@ -1,9 +1,13 @@
 import {
   Avatar,
+  Badge,
   Button,
+  Card,
+  FileInput,
   Flex,
   Grid,
   Group,
+  Image,
   Stack,
   Text,
   Textarea,
@@ -14,11 +18,11 @@ import { IconAt } from '@tabler/icons-react'
 import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
-import { baseForm } from '@/pages/Profile/model'
+import { baseForm, studentForm } from '@/pages/Profile/model'
 import { withConditionalRender } from '@/shared/hoc'
 import { AddPetProjectIcon } from '@/shared/icons/AddPetProjectIcon'
 import { $user } from '@/shared/session'
-import { getRoleInRussian } from '@/shared/utils'
+import { getRole } from '@/shared/utils'
 
 import classes from './UserInfoIcons.module.css'
 
@@ -149,7 +153,7 @@ function UserTopInfo() {
   const user = useUnit($user)
   if (!user) return null
 
-  const userRole = getRoleInRussian(user.role)
+  const userRole = getRole(user.role)
 
   return (
     <div>
@@ -181,6 +185,7 @@ function UserTopInfo() {
 }
 
 function StudentProfileForm() {
+  const { fields } = useForm(studentForm)
   return (
     <Stack>
       <Title order={3}>Профиль студента</Title>
@@ -191,13 +196,22 @@ function StudentProfileForm() {
               label="Github"
               description="Ссылка на github"
               placeholder="https://github.com/zeroqs"
+              value={fields.githubLink.value}
+              onChange={(e) => fields.githubLink.onChange(e.target.value)}
+              error={fields.githubLink.errorText()}
+            />
+            <FileInput
+              label="Резюме"
+              description="Резюме в формате pdf"
+              placeholder="Прикрепите резюме"
+              onChange={(e) => fields.resume.onChange(e)}
+              error={fields.resume.errorText()}
             />
             <TextInput
-              label="Github"
-              description="Ссылка на github"
-              placeholder="https://github.com/zeroqs"
+              label="Ваша группа"
+              value={fields.group.value}
+              readOnly
             />
-            <TextInput label="Ваша группа" value="ИСТ-21-1" readOnly />
           </Flex>
         </Grid.Col>
 
@@ -214,7 +228,7 @@ function StudentProfileForm() {
             >
               <Stack gap={5} align="center">
                 <AddPetProjectIcon width={280} height={180} />
-                <Text fw={500} size="lg" c="blue.9">
+                <Text fw={500} size="lg" c="dark.9">
                   Добавить учебный проект
                 </Text>
               </Stack>
@@ -222,6 +236,70 @@ function StudentProfileForm() {
           </Stack>
         </Grid.Col>
       </Grid>
+
+      <Projects />
     </Stack>
+  )
+}
+
+function Projects() {
+  const user = useUnit($user)
+  if (!user?.studentProfile) return null
+
+  const technologies = user.studentProfile.projects?.map((project) =>
+    project.technologies.map((technology) => (
+      <Badge key={technology} variant="light">
+        {technology}
+      </Badge>
+    )),
+  )
+
+  return (
+    <>
+      <Title order={3}>Твои проекты</Title>
+      <Grid grow>
+        {user.studentProfile.projects?.map((project) => (
+          <Grid.Col key={project.name} span={{ base: 12, sm: 6, lg: 4 }}>
+            <Card withBorder radius="md" p="md" className={classes.card}>
+              <Card.Section className={classes.section} mt="sm">
+                <Group justify="apart">
+                  <Stack gap={0}>
+                    <Badge variant="dot">Название проекта</Badge>
+                    <Text fz="lg" fw={500}>
+                      {project.name}
+                    </Text>
+                  </Stack>
+                </Group>
+                <Stack gap={0} mt="md">
+                  <Badge variant="dot">О проекте</Badge>
+                  <Text fz="sm">{project.description}</Text>
+                </Stack>
+              </Card.Section>
+
+              <Card.Section className={classes.section}>
+                <Text mt="md" className={classes.label} c="dimmed">
+                  Технологии
+                </Text>
+                <Group gap={7} mt={5}>
+                  {technologies}
+                </Group>
+              </Card.Section>
+
+              <Group mt="xs">
+                <Button
+                  component="a"
+                  href={project.githubUrl}
+                  target="_blank"
+                  radius="md"
+                  style={{ flex: 1 }}
+                >
+                  Перейти на github
+                </Button>
+              </Group>
+            </Card>
+          </Grid.Col>
+        ))}
+      </Grid>
+    </>
   )
 }

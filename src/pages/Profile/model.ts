@@ -1,5 +1,5 @@
 import { sample } from 'effector'
-import { createForm } from 'effector-forms'
+import { createForm, ValidationEvent } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import { routes } from '@/shared/routing/index'
@@ -11,55 +11,131 @@ export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open,
 })
 
-export const baseForm = createForm({
-  fields: {
-    firstName: {
-      init: '',
-      rules: [validateRules.required()],
-      validateOn: ['change'],
-    },
-    lastName: {
-      init: '',
-      rules: [validateRules.required()],
-      validateOn: ['change'],
-    },
-    patronymic: {
-      init: '',
-      rules: [validateRules.required()],
-      validateOn: ['change'],
-    },
-    email: {
-      init: '',
-      rules: [validateRules.required(), validateRules.email()],
-    },
-    aboutMe: {
-      init: '',
-      rules: [validateRules.required()],
-    },
-    telegramLink: {
-      init: '',
-      rules: [validateRules.telegramLink()],
-      validateOn: ['change'],
-    },
-    vkLink: {
-      init: '',
-      rules: [validateRules.vkLink()],
-      validateOn: ['change'],
-    },
+const createBaseFields = () => ({
+  firstName: {
+    init: '',
+    rules: [validateRules.required()],
+    validateOn: ['change'] as ValidationEvent[],
   },
-  validateOn: ['submit'],
+  lastName: {
+    init: '',
+    rules: [validateRules.required()],
+    validateOn: ['change'] as ValidationEvent[],
+  },
+  patronymic: {
+    init: '',
+    rules: [validateRules.required()],
+    validateOn: ['change'] as ValidationEvent[],
+  },
+  email: {
+    init: '',
+    rules: [validateRules.required(), validateRules.email()],
+  },
+  aboutMe: {
+    init: '',
+    rules: [validateRules.required()],
+  },
+  telegramLink: {
+    init: '',
+    rules: [validateRules.telegramLink()],
+    validateOn: ['change'] as ValidationEvent[],
+  },
+  vkLink: {
+    init: '',
+    rules: [validateRules.vkLink()],
+    validateOn: ['change'] as ValidationEvent[],
+  },
 })
+
+const createStudentFields = () => ({
+  ...createBaseFields(),
+  group: {
+    init: '',
+    rules: [validateRules.required()],
+  },
+  githubLink: {
+    init: '',
+    rules: [validateRules.required(), validateRules.gitHubLink()],
+    validateOn: ['change'] as ValidationEvent[],
+  },
+  resume: {
+    init: null as File | null,
+    rules: [validateRules.required()],
+  },
+})
+
+const createCompanyFields = () => ({
+  ...createBaseFields(),
+  companyName: {
+    init: '',
+    rules: [validateRules.required()],
+  },
+  position: {
+    init: '',
+    rules: [validateRules.required()],
+  },
+})
+
+export const baseForm = createForm({
+  fields: createBaseFields(),
+  validateOn: ['submit'] as ValidationEvent[],
+})
+
+export const studentForm = createForm({
+  fields: createStudentFields(),
+  validateOn: ['submit'] as ValidationEvent[],
+})
+
+export const companyForm = createForm({
+  fields: createCompanyFields(),
+  validateOn: ['submit'] as ValidationEvent[],
+})
+
+export const getFormByRole = (role: string) => {
+  switch (role) {
+    case 'STUDENT':
+      return studentForm
+    case 'COMPANY':
+      return companyForm
+    default:
+      return baseForm
+  }
+}
 
 sample({
   clock: sessionQuery.finished.success,
-  fn: ({ result }) => ({
-    firstName: result.firstName,
-    lastName: result.lastName,
-    patronymic: result.patronymic,
-    email: result.email,
-    aboutMe: result.aboutMe || '',
-    telegramLink: result.telegramLink || '',
-    vkLink: result.vkLink || '',
-  }),
-  target: baseForm.setInitialForm,
+  fn: ({ result }) => {
+    const baseData = {
+      firstName: result.firstName,
+      lastName: result.lastName,
+      patronymic: result.patronymic,
+      email: result.email,
+      aboutMe: result.aboutMe || '',
+      telegramLink: result.telegramLink || '',
+      vkLink: result.vkLink || '',
+    }
+
+    if (result.role === 'STUDENT') {
+      return {
+        ...baseData,
+        group: result.studentProfile?.group?.name || '',
+        githubLink: result.studentProfile?.githubLink || '',
+        resume: result.studentProfile?.resume || null,
+      }
+    }
+
+    // if (result.role === 'STAFF') {
+    //   return {
+    //     ...baseData,
+    //     companyName: result.companyProfile?.companyName || '',
+    //     position: result.companyProfile?.position || '',
+    //   }
+    // }
+    return baseData
+  },
+  target: [
+    baseForm.setInitialForm,
+    studentForm.setInitialForm,
+    companyForm.setInitialForm,
+  ],
 })
