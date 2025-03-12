@@ -1,4 +1,4 @@
-import { combine, createStore, sample } from 'effector'
+import { createStore, sample } from 'effector'
 import { createForm, ValidationEvent } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'

@@ -28,6 +28,7 @@ import {
   $availableGroupedSkills,
   $availableGroupedSkillsLoading,
   baseForm,
+  getFormByRole,
   studentForm,
 } from './model'
 import classes from './UserInfoIcons.module.css'
@@ -37,10 +38,12 @@ const ConditionalStudentProfileForm = withConditionalRender<{
 }>(StudentProfileForm, (props) => props.isStudent)
 
 const Profile = () => {
-  const { isDirty, eachValid } = useForm(baseForm)
   const user = useUnit($user)
-
   if (!user) return null
+
+  const form = getFormByRole(user.role)
+  const { isDirty, eachValid } = useForm(form as typeof baseForm)
+
   return (
     <Stack className="shell_main">
       <Group justify="space-between" wrap="wrap" gap="md">
