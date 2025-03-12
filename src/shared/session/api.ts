@@ -23,3 +23,9 @@ export const logoutQuery = createQuery({
     },
   })),
 })
+
+export const getAvailableGroupedSkillsQuery = createQuery({
+  effect: createCommonRequestFx<void, string[]>({
+    url: '/skills/grouped',
+  }),
+})

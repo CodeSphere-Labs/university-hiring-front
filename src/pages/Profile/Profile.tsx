@@ -7,7 +7,8 @@ import {
   Flex,
   Grid,
   Group,
-  Image,
+  Loader,
+  MultiSelect,
   Stack,
   Text,
   Textarea,
@@ -18,12 +19,17 @@ import { IconAt } from '@tabler/icons-react'
 import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
-import { baseForm, studentForm } from '@/pages/Profile/model'
 import { withConditionalRender } from '@/shared/hoc'
 import { AddPetProjectIcon } from '@/shared/icons/AddPetProjectIcon'
 import { $user } from '@/shared/session'
 import { getRole } from '@/shared/utils'
 
+import {
+  $availableGroupedSkills,
+  $availableGroupedSkillsLoading,
+  baseForm,
+  studentForm,
+} from './model'
 import classes from './UserInfoIcons.module.css'
 
 const ConditionalStudentProfileForm = withConditionalRender<{
@@ -185,6 +191,10 @@ function UserTopInfo() {
 }
 
 function StudentProfileForm() {
+  const [availableGroupedSkills, availableGroupedSkillsLoading] = useUnit([
+    $availableGroupedSkills,
+    $availableGroupedSkillsLoading,
+  ])
   const { fields } = useForm(studentForm)
   return (
     <Stack>
@@ -211,6 +221,19 @@ function StudentProfileForm() {
               label="Ваша группа"
               value={fields.group.value}
               readOnly
+            />
+            <MultiSelect
+              label="Ваши навыки"
+              value={fields.skills.value}
+              onChange={(e) => fields.skills.onChange(e)}
+              data={availableGroupedSkills}
+              rightSection={
+                availableGroupedSkillsLoading && <Loader size={16} />
+              }
+              disabled={availableGroupedSkillsLoading}
+              nothingFoundMessage="Ничего не найдено"
+              searchable
+              hidePickedOptions
             />
           </Flex>
         </Grid.Col>

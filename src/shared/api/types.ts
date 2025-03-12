@@ -5,24 +5,6 @@ export enum OrganizationType {
   UNIVERSITY = 'UNIVERSITY',
 }
 
-export interface Organization {
-  id: number
-  name: string
-  type: OrganizationType
-  email: string
-  logoUrl: string | null
-  websiteUrl: string
-  about: string
-
-  users?: User[]
-  invitations?: Invitation[]
-  favoriteStudents?: User[]
-  opportunities?: Opportunity[]
-
-  createdAt: string
-  updatedAt: string
-}
-
 export interface User {
   id: number
   firstName: string
@@ -45,7 +27,12 @@ export interface User {
   updatedAt: string
 }
 
-export interface Invitation {
+export interface AuthDto {
+  email: string
+  password: string
+}
+
+interface Invitation {
   id: number
   email: string
   token: string
@@ -63,7 +50,7 @@ export interface Invitation {
   updatedAt: string
 }
 
-export interface StudentProfile {
+interface StudentProfile {
   id: number
   userId: number
   resume: string | null
@@ -71,11 +58,11 @@ export interface StudentProfile {
   projects: Project[] | null
 
   group: Group | null
+  skills: string[]
 
   createdAt: string
   updatedAt: string
 
-  user: User
   opportunityResponses?: OpportunityResponse[]
 }
 
@@ -87,11 +74,11 @@ interface Project {
   technologies: string[]
 }
 
-export interface Opportunity {
+interface Opportunity {
   id: number
   title: string
   description: string | null
-  requiredSkills: Skill[]
+  requiredSkills: string[]
   organizationId: number
   organization: Organization
   responses: OpportunityResponse[]
@@ -100,7 +87,7 @@ export interface Opportunity {
   status: 'active' | 'inactive'
 }
 
-export interface OpportunityResponse {
+interface OpportunityResponse {
   id: number
   studentId: number
   student: StudentProfile
@@ -110,26 +97,28 @@ export interface OpportunityResponse {
   coverLetter: string | null
 }
 
-export interface Skill {
+interface Group {
   id: number
   name: string
-  category: string
-  description: string | null
+
+  createdAt: string
+  updatedAt: string
+}
+
+interface Organization {
+  id: number
+  name: string
+  type: OrganizationType
+  email: string
+  logoUrl: string | null
+  websiteUrl: string
+  about: string
+
+  users?: User[]
+  invitations?: Invitation[]
+  favoriteStudents?: User[]
   opportunities?: Opportunity[]
 
   createdAt: string
   updatedAt: string
-}
-
-export interface Group {
-  id: number
-  name: string
-
-  createdAt: string
-  updatedAt: string
-}
-
-export interface AuthDto {
-  email: string
-  password: string
 }

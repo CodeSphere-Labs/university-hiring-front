@@ -1,14 +1,32 @@
-import { sample } from 'effector'
+import { combine, createStore, sample } from 'effector'
 import { createForm, ValidationEvent } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import { routes } from '@/shared/routing/index'
 import { chainAuthorized } from '@/shared/session'
-import { sessionQuery } from '@/shared/session/api'
+import {
+  getAvailableGroupedSkillsQuery,
+  sessionQuery,
+} from '@/shared/session/api'
 
 export const currentRoute = routes.profile
 export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open,
+})
+
+export const $availableGroupedSkills = createStore<string[]>([])
+export const $availableGroupedSkillsLoading =
+  getAvailableGroupedSkillsQuery.$pending.map((pending) => pending)
+$availableGroupedSkills.on(
+  getAvailableGroupedSkillsQuery.finished.success,
+  (_, { result }) => {
+    return result
+  },
+)
+
+sample({
+  clock: authorizedRoute.opened,
+  target: getAvailableGroupedSkillsQuery.start,
 })
 
 const createBaseFields = () => ({
@@ -60,6 +78,10 @@ const createStudentFields = () => ({
   },
   resume: {
     init: null as File | null,
+    rules: [validateRules.required()],
+  },
+  skills: {
+    init: [] as string[],
     rules: [validateRules.required()],
   },
 })
@@ -121,6 +143,7 @@ sample({
         group: result.studentProfile?.group?.name || '',
         githubLink: result.studentProfile?.githubLink || '',
         resume: result.studentProfile?.resume || null,
+        skills: result.studentProfile?.skills || [],
       }
     }
 
