@@ -63,7 +63,7 @@ sample({
 })
 
 sample({
-  clock: projectModalConfirmFx,
+  clock: projectForm.formValidated,
   source: projectForm.$values,
   target: addProjectQuery.start,
 })

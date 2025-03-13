@@ -248,14 +248,14 @@ function StudentProfileForm() {
               error={fields.githubLink.errorText()}
               disabled={loading}
             />
-            <FileInput
+            {/* <FileInput
               label="Резюме"
               description="Резюме в формате pdf"
               placeholder="Прикрепите резюме"
               onChange={(e) => fields.resume.onChange(e)}
               error={fields.resume.errorText()}
               disabled={loading}
-            />
+            /> */}
             <TextInput
               label="Ваша группа"
               value={fields.group.value}
