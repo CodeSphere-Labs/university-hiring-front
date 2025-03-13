@@ -20,6 +20,7 @@ import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
 import {
+  $addProjectLoading,
   projectForm,
   projectModalOpened,
 } from '@/pages/Profile/addProject.model'
@@ -373,7 +374,7 @@ export function AddProjectModalForm() {
     useUnit([
       $availableGroupedSkills,
       $availableGroupedSkillsLoading,
-      $updateProfileLoading,
+      $addProjectLoading,
     ])
   return (
     <Stack>
@@ -384,6 +385,7 @@ export function AddProjectModalForm() {
         onChange={(e) => fields.name.onChange(e.target.value)}
         error={fields.name.errorText()}
         required
+        disabled={loading}
       />
       <Flex gap="md" wrap={{ base: 'wrap', sm: 'nowrap' }}>
         <TextInput
@@ -394,6 +396,7 @@ export function AddProjectModalForm() {
           onChange={(e) => fields.githubUrl.onChange(e.target.value)}
           error={fields.githubUrl.errorText()}
           required
+          disabled={loading}
         />
         <TextInput
           label="Ссылка на сайт"
@@ -411,6 +414,7 @@ export function AddProjectModalForm() {
         onChange={(e) => fields.description.onChange(e.target.value)}
         error={fields.description.errorText()}
         required
+        disabled={loading}
       />
       <MultiSelect
         label="Технологии используемые в проекте"

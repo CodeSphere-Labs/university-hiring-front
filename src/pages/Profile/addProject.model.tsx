@@ -13,6 +13,10 @@ const projectModalConfirmFx = createEffect(() => {
   projectForm.submit()
 })
 
+export const $addProjectLoading = addProjectQuery.$pending.map(
+  (pending) => pending,
+)
+
 const openModalFx = createEffect(() =>
   modals.openConfirmModal({
     title: 'Добавить проект',
@@ -24,6 +28,9 @@ const openModalFx = createEffect(() =>
     zIndex: 1002,
   }),
 )
+const projectModalCloseFx = createEffect(() => {
+  modals.closeAll()
+})
 
 export const projectForm = createForm({
   fields: {
@@ -59,6 +66,11 @@ sample({
   clock: projectModalConfirmFx,
   source: projectForm.$values,
   target: addProjectQuery.start,
+})
+
+sample({
+  clock: addProjectQuery.finished.success,
+  target: projectModalCloseFx,
 })
 
 $user.on(addProjectQuery.finished.success, (_, { result }) => result)
