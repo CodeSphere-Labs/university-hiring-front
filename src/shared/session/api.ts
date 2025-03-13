@@ -1,7 +1,7 @@
 import { createQuery } from '@farfetched/core'
 
 import { createCommonRequestFx } from '@/shared/api/requests'
-import { User } from '@/shared/api/types'
+import { Project, User } from '@/shared/api/types'
 
 export const sessionQuery = createQuery({
   effect: createCommonRequestFx<void, User>({
@@ -35,5 +35,13 @@ export const updateUserQuery = createQuery({
     url: '/users/profile',
     method: 'PATCH',
     body: user,
+  })),
+})
+
+export const addProjectQuery = createQuery({
+  effect: createCommonRequestFx<Project, User>((body) => ({
+    url: '/students/projects',
+    method: 'POST',
+    body,
   })),
 })

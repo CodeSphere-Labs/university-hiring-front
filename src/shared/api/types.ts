@@ -32,6 +32,14 @@ export interface AuthDto {
   password: string
 }
 
+export interface Project {
+  name: string
+  githubUrl: string
+  description: string
+  websiteUrl: string
+  technologies: string[]
+}
+
 interface Invitation {
   id: number
   email: string
@@ -64,14 +72,6 @@ interface StudentProfile {
   updatedAt: string
 
   opportunityResponses?: OpportunityResponse[]
-}
-
-interface Project {
-  name: string
-  githubUrl: string
-  description: string
-  websiteUrl: string
-  technologies: string[]
 }
 
 interface Opportunity {

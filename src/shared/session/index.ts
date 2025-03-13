@@ -54,7 +54,7 @@ $authenticationStatus.on(sessionQuery.$succeeded, (status) => {
 
 $user.on(sessionQuery.$data, (_, user) => user)
 $user.on(refreshQuery.$data, (_, user) => user)
-$user.on(updateUserQuery.$data, (_, user) => user)
+$user.on(updateUserQuery.finished.success, (_, { result }) => result)
 
 $authenticationStatus.on(
   sessionQuery.finished.success,

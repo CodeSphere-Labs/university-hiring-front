@@ -56,14 +56,26 @@ export const validateRules = {
       )
       .nullable(),
   }),
-  gitHubLink: createRule<string>({
-    name: 'gitHubLink',
+  gitHubUserLink: createRule<string>({
+    name: 'gitHubUserLink',
     schema: yup
       .string()
       .nullable()
       .transform((value) => (value === '' ? null : value))
       .matches(
         /^https:\/\/github\.com\/[a-zA-Z0-9_-]+$/,
+        VALIDATE_MESSAGES.invalid.github,
+      )
+      .nullable(),
+  }),
+  gitHubRepoLink: createRule<string>({
+    name: 'gitHubRepoLink',
+    schema: yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        /^https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,
         VALIDATE_MESSAGES.invalid.github,
       )
       .nullable(),

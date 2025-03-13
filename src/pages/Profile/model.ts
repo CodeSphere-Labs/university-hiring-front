@@ -172,7 +172,7 @@ function createStudentFields() {
     },
     githubLink: {
       init: '',
-      rules: [validateRules.required(), validateRules.gitHubLink()],
+      rules: [validateRules.required(), validateRules.gitHubUserLink()],
       validateOn: ['change'] as ValidationEvent[],
     },
     resume: {

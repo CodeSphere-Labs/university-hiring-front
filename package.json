@@ -17,7 +17,9 @@
     "@mantine/dates": "^7.13.3",
     "@mantine/form": "^7.13.3",
     "@mantine/hooks": "^7.13.3",
+    "@mantine/modals": "^7.17.1",
     "@mantine/notifications": "^7.17.0",
+    "@tabler/icons-react": "3.17.0",
     "atomic-router": "^0.10.1",
     "atomic-router-react": "^0.10.0",
     "dayjs": "^1.11.13",
@@ -29,7 +31,6 @@
     "patronum": "1.18.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@tabler/icons-react": "3.17.0",
     "react-imask": "^7.6.1",
     "yup": "^1.6.1"
   },
