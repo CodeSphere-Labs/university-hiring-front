@@ -7,8 +7,9 @@ import {
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
 import { routes } from '@/shared/routing/index'
-import { chainAuthorized } from '@/shared/session'
+import { $user, chainAuthorized } from '@/shared/session'
 import {
+  deleteProjectQuery,
   getAvailableGroupedSkillsQuery,
   sessionQuery,
   updateUserQuery,
@@ -33,6 +34,8 @@ export const $updateProfileLoading = updateUserQuery.$pending.map(
 )
 
 export const profileSaved = createEvent()
+export const projectDeleted = createEvent<string>()
+$user.on(deleteProjectQuery.finished.success, (_, { result }) => result)
 
 export const baseForm = createForm({
   fields: createBaseFields(),
@@ -122,6 +125,27 @@ sample({
   target: showSuccessNotificationFx.prepend(() => ({
     title: 'Профиль обновлен',
     message: 'Ваши данные успешно сохранены',
+  })),
+})
+
+sample({
+  clock: projectDeleted,
+  target: deleteProjectQuery.start,
+})
+
+sample({
+  clock: deleteProjectQuery.finished.success,
+  target: showSuccessNotificationFx.prepend(() => ({
+    title: 'Проект удален',
+    message: 'Проект успешно удален',
+  })),
+})
+
+sample({
+  clock: deleteProjectQuery.finished.failure,
+  target: showErrorNotificationFx.prepend(() => ({
+    title: 'Ошибка при удалении проекта',
+    message: 'Упс, что то пошло не так, попробуйте снова',
   })),
 })
 

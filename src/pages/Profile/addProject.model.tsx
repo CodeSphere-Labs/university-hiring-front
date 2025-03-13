@@ -3,6 +3,7 @@ import { createEffect, createEvent, sample } from 'effector'
 import { createForm } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
+import { showSuccessNotificationFx } from '@/shared/notifications/model'
 import { $user } from '@/shared/session'
 import { addProjectQuery } from '@/shared/session/api'
 
@@ -70,7 +71,13 @@ sample({
 
 sample({
   clock: addProjectQuery.finished.success,
-  target: projectModalCloseFx,
+  target: [
+    projectModalCloseFx,
+    showSuccessNotificationFx.prepend(() => ({
+      title: 'Проект добавлен',
+      message: 'Проект успешно добавлен',
+    })),
+  ],
 })
 
 $user.on(addProjectQuery.finished.success, (_, { result }) => result)

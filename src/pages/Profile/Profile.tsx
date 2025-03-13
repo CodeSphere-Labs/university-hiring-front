@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Button,
@@ -15,7 +16,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import { IconAt } from '@tabler/icons-react'
+import { IconAt, IconTrash } from '@tabler/icons-react'
 import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
@@ -35,6 +36,7 @@ import {
   $updateProfileLoading,
   baseForm,
   getFormByRole,
+  projectDeleted,
   studentForm,
 } from './model'
 import classes from './UserInfoIcons.module.css'
@@ -322,13 +324,21 @@ function Projects() {
           <Grid.Col key={project.name} span={{ base: 12, sm: 6, lg: 4 }}>
             <Card withBorder radius="md" p="md" className={classes.card}>
               <Card.Section className={classes.section} mt="sm">
-                <Group justify="apart">
+                <Group justify="space-between">
                   <Stack gap={0}>
                     <Badge variant="dot">Название проекта</Badge>
                     <Text fz="lg" fw={500}>
                       {project.name}
                     </Text>
                   </Stack>
+                  <ActionIcon
+                    onClick={() => projectDeleted(project.id)}
+                    variant="subtle"
+                    size="lg"
+                    color="red"
+                  >
+                    <IconTrash />
+                  </ActionIcon>
                 </Group>
                 <Stack gap={0} mt="md">
                   <Badge variant="dot">О проекте</Badge>

@@ -33,6 +33,7 @@ export interface AuthDto {
 }
 
 export interface Project {
+  id: string
   name: string
   githubUrl: string
   description: string

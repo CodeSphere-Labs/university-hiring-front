@@ -39,9 +39,16 @@ export const updateUserQuery = createQuery({
 })
 
 export const addProjectQuery = createQuery({
-  effect: createCommonRequestFx<Project, User>((body) => ({
+  effect: createCommonRequestFx<Omit<Project, 'id'>, User>((body) => ({
     url: '/students/projects',
     method: 'POST',
     body,
+  })),
+})
+
+export const deleteProjectQuery = createQuery({
+  effect: createCommonRequestFx<string, User>((id) => ({
+    url: `/students/projects/${id}`,
+    method: 'DELETE',
   })),
 })
