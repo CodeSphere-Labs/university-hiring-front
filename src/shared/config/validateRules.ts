@@ -17,6 +17,10 @@ export const validateRules = {
     name: 'required',
     schema: yup.string().required(VALIDATE_MESSAGES.required),
   }),
+  requiredArray: createRule({
+    name: 'requiredArray',
+    schema: yup.array().min(1, VALIDATE_MESSAGES.required),
+  }),
   email: createRule<string>({
     name: 'email',
     schema: yup

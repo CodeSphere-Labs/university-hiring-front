@@ -29,3 +29,11 @@ export const getAvailableGroupedSkillsQuery = createQuery({
     url: '/skills/grouped',
   }),
 })
+
+export const updateUserQuery = createQuery({
+  effect: createCommonRequestFx<Partial<User>, User>((user) => ({
+    url: '/users/profile',
+    method: 'PATCH',
+    body: user,
+  })),
+})

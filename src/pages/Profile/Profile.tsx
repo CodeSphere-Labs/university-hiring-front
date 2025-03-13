@@ -27,6 +27,7 @@ import { getRole } from '@/shared/utils'
 import {
   $availableGroupedSkills,
   $availableGroupedSkillsLoading,
+  $updateProfileLoading,
   baseForm,
   getFormByRole,
   studentForm,
@@ -40,15 +41,32 @@ const ConditionalStudentProfileForm = withConditionalRender<{
 const Profile = () => {
   const user = useUnit($user)
   if (!user) return null
+  return <ProfileContent />
+}
+
+// eslint-disable-next-line import/no-default-export
+export default Profile
+
+const ProfileContent = () => {
+  const [user, loading] = useUnit([$user, $updateProfileLoading])
+  if (!user) return null
 
   const form = getFormByRole(user.role)
-  const { isDirty, eachValid } = useForm(form as typeof baseForm)
+  const { isDirty, eachValid, submit } = useForm(form as typeof baseForm)
+
+  const onHandleSubmit = () => submit()
 
   return (
     <Stack className="shell_main">
       <Group justify="space-between" wrap="wrap" gap="md">
         <UserTopInfo />
-        <Button disabled={!isDirty || !eachValid}>Сохранить изменения</Button>
+        <Button
+          onClick={onHandleSubmit}
+          loading={loading}
+          disabled={!isDirty || !eachValid}
+        >
+          Сохранить изменения
+        </Button>
       </Group>
       <BaseUserForm />
       <ConditionalStudentProfileForm isStudent={user.role === 'STUDENT'} />
@@ -56,14 +74,13 @@ const Profile = () => {
   )
 }
 
-// eslint-disable-next-line import/no-default-export
-export default Profile
-
 function BaseUserForm() {
   const user = useUnit($user)
-  const { fields } = useForm(baseForm)
-
   if (!user) return null
+
+  const loading = useUnit($updateProfileLoading)
+  const form = getFormByRole(user.role)
+  const { fields } = useForm(form as typeof baseForm)
 
   return (
     <Group>
@@ -86,6 +103,7 @@ function BaseUserForm() {
             value={fields.firstName.value}
             onChange={(e) => fields.firstName.onChange(e.target.value)}
             error={fields.firstName.errorText()}
+            disabled={loading}
             required
           />
         </Grid.Col>
@@ -97,6 +115,7 @@ function BaseUserForm() {
             value={fields.lastName.value}
             onChange={(e) => fields.lastName.onChange(e.target.value)}
             error={fields.lastName.errorText()}
+            disabled={loading}
             required
           />
         </Grid.Col>
@@ -108,6 +127,7 @@ function BaseUserForm() {
             value={fields.patronymic.value}
             onChange={(e) => fields.patronymic.onChange(e.target.value)}
             error={fields.patronymic.errorText()}
+            disabled={loading}
             required
           />
         </Grid.Col>
@@ -118,6 +138,7 @@ function BaseUserForm() {
             placeholder="Введите email"
             value={fields.email.value}
             onChange={(e) => fields.email.onChange(e.target.value)}
+            disabled={loading}
             required
           />
         </Grid.Col>
@@ -130,6 +151,7 @@ function BaseUserForm() {
             value={fields.telegramLink.value}
             onChange={(e) => fields.telegramLink.onChange(e.target.value)}
             error={fields.telegramLink.errorText()}
+            disabled={loading}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
@@ -140,6 +162,7 @@ function BaseUserForm() {
             value={fields.vkLink.value}
             onChange={(e) => fields.vkLink.onChange(e.target.value)}
             error={fields.vkLink.errorText()}
+            disabled={loading}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12 }}>
@@ -151,6 +174,7 @@ function BaseUserForm() {
             onChange={(e) => fields.aboutMe.onChange(e.target.value)}
             minRows={3}
             error={fields.aboutMe.errorText()}
+            disabled={loading}
           />
         </Grid.Col>
       </Grid>
@@ -194,11 +218,16 @@ function UserTopInfo() {
 }
 
 function StudentProfileForm() {
-  const [availableGroupedSkills, availableGroupedSkillsLoading] = useUnit([
-    $availableGroupedSkills,
-    $availableGroupedSkillsLoading,
-  ])
-  const { fields } = useForm(studentForm)
+  const user = useUnit($user)
+  const [availableGroupedSkills, availableGroupedSkillsLoading, loading] =
+    useUnit([
+      $availableGroupedSkills,
+      $availableGroupedSkillsLoading,
+      $updateProfileLoading,
+    ])
+  const form = getFormByRole(user?.role || '')
+  const { fields } = useForm(form as typeof studentForm)
+
   return (
     <Stack>
       <Title order={3}>Профиль студента</Title>
@@ -212,6 +241,7 @@ function StudentProfileForm() {
               value={fields.githubLink.value}
               onChange={(e) => fields.githubLink.onChange(e.target.value)}
               error={fields.githubLink.errorText()}
+              disabled={loading}
             />
             <FileInput
               label="Резюме"
@@ -219,11 +249,13 @@ function StudentProfileForm() {
               placeholder="Прикрепите резюме"
               onChange={(e) => fields.resume.onChange(e)}
               error={fields.resume.errorText()}
+              disabled={loading}
             />
             <TextInput
               label="Ваша группа"
               value={fields.group.value}
               readOnly
+              disabled={loading}
             />
             <MultiSelect
               label="Ваши навыки"
@@ -233,10 +265,12 @@ function StudentProfileForm() {
               rightSection={
                 availableGroupedSkillsLoading && <Loader size={16} />
               }
-              disabled={availableGroupedSkillsLoading}
+              disabled={availableGroupedSkillsLoading || loading}
               nothingFoundMessage="Ничего не найдено"
               searchable
               hidePickedOptions
+              clearable
+              error={fields.skills.errorText()}
             />
           </Flex>
         </Grid.Col>
@@ -244,6 +278,7 @@ function StudentProfileForm() {
         <Grid.Col span={{ base: 12, sm: 8, lg: 8 }}>
           <Stack align="center" justify="center" gap="md">
             <Button
+              disabled={loading}
               h="auto"
               variant="gradient"
               gradient={{ from: '#f0f9ff', to: '#e6f2ff' }}
@@ -270,6 +305,7 @@ function StudentProfileForm() {
 
 function Projects() {
   const user = useUnit($user)
+
   if (!user?.studentProfile) return null
 
   const technologies = user.studentProfile.projects?.map((project) =>

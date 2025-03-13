@@ -1,4 +1,3 @@
-import { notifications } from '@mantine/notifications'
 import {
   chainRoute,
   RouteInstance,
@@ -7,7 +6,6 @@ import {
 } from 'atomic-router'
 import {
   combine,
-  createEffect,
   createEvent,
   createStore,
   Effect,
@@ -16,7 +14,13 @@ import {
 } from 'effector'
 
 import { User } from '@/shared/api/types'
-import { logoutQuery, refreshQuery, sessionQuery } from '@/shared/session/api'
+import { showErrorNotificationFx } from '@/shared/notifications/model'
+import {
+  logoutQuery,
+  refreshQuery,
+  sessionQuery,
+  updateUserQuery,
+} from '@/shared/session/api'
 
 enum AuthStatus {
   Initial,
@@ -35,15 +39,6 @@ export const $sessionPending = combine(
 const $authenticationStatus = createStore(AuthStatus.Initial)
 
 export const userLogouted = createEvent()
-const showFailedNotificationFx = createEffect({
-  handler: () =>
-    notifications.show({
-      color: 'red',
-      title: 'Ошибка при попытке выйти',
-      message: 'Упс, что то пошло не так, попробуйте снова',
-      position: 'top-right',
-    }),
-})
 
 // Логика обработки аутентификации:
 // 1. При первом запросе статус Initial -> Pending
@@ -59,6 +54,7 @@ $authenticationStatus.on(sessionQuery.$succeeded, (status) => {
 
 $user.on(sessionQuery.$data, (_, user) => user)
 $user.on(refreshQuery.$data, (_, user) => user)
+$user.on(updateUserQuery.$data, (_, user) => user)
 
 $authenticationStatus.on(
   sessionQuery.finished.success,
@@ -103,7 +99,10 @@ sample({
 
 sample({
   clock: logoutQuery.finished.failure,
-  target: showFailedNotificationFx,
+  target: showErrorNotificationFx.prepend(() => ({
+    title: 'Ошибка при попытке выйти',
+    message: 'Упс, что то пошло не так, попробуйте снова',
+  })),
 })
 
 sample({

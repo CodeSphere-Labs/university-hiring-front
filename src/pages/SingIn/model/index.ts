@@ -1,9 +1,9 @@
-import { notifications } from '@mantine/notifications'
-import { createEffect, sample } from 'effector'
+import { sample } from 'effector'
 import { createForm } from 'effector-forms'
 
 import { signInMutation } from '@/pages/SingIn/api'
 import { validateRules } from '@/shared/config/validateRules'
+import { showErrorNotificationFx } from '@/shared/notifications/model'
 import { routes } from '@/shared/routing/index'
 import { chainAnonymous } from '@/shared/session'
 import { sessionQuery } from '@/shared/session/api'
@@ -29,16 +29,6 @@ export const loginForm = createForm({
 
 export const $pending = signInMutation.$pending.map((pending) => pending)
 
-const showFailedNotificationFx = createEffect({
-  handler: () =>
-    notifications.show({
-      color: 'red',
-      title: 'Ошибка входа',
-      message: 'Упс, что то пошло не так, попробуйте снова',
-      position: 'top-right',
-    }),
-})
-
 sample({
   clock: loginForm.formValidated,
   fn: ({ email, password }) => ({ email, password }),
@@ -53,5 +43,8 @@ sample({
 sample({
   clock: signInMutation.$failed,
   filter: signInMutation.$failed.map((isFailed) => isFailed),
-  target: showFailedNotificationFx,
+  target: showErrorNotificationFx.prepend(() => ({
+    title: 'Ошибка входа',
+    message: 'Упс, что то пошло не так, попробуйте снова',
+  })),
 })
