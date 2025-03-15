@@ -8,7 +8,8 @@ import {
 
 import { WithRoleCheck } from '@/shared/hoc'
 import { ActionCard } from '@/shared/ui/ActionCard'
-
+import { modalOpened } from './CreateOrganization/model'
+import { modalOpened as inviteUserModalOpened } from './InviteUser/model'
 export const AdminActions = () => {
   return (
     <Flex className="shell_main" w="100%" wrap="wrap" gap="md">
@@ -16,9 +17,7 @@ export const AdminActions = () => {
         <ActionCard
           icon={<IconUserPlus size={28} />}
           title="Пригласить пользователя"
-          onClick={() => {
-            console.log('Пригласить пользователя')
-          }}
+          onClick={() => inviteUserModalOpened()}
         />
       </WithRoleCheck>
 
@@ -36,9 +35,7 @@ export const AdminActions = () => {
         <ActionCard
           icon={<IconBuildingCommunity size={28} />}
           title="Создать организацию"
-          onClick={() => {
-            console.log('Создать организацию')
-          }}
+          onClick={() => modalOpened()}
         />
       </WithRoleCheck>
 

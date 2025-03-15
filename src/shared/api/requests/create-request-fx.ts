@@ -23,12 +23,12 @@ function getConfig<P>(payload: Payload<P>, params: P): CreateRequestParams {
   return typeof payload === 'function' ? payload(params) : payload
 }
 
-const createRequestInstance = <P = CreateRequestParams, R = void>({
+const createRequestInstance = <P = CreateRequestParams, R = void, E = Error>({
   baseURL,
   headers,
   payload,
 }: CreateRequestInstanceParams<P>) =>
-  createEffect<P, R>((params) => {
+  createEffect<P, R, E>((params) => {
     const { url, ...fetchOptions } = getConfig(payload, params)
 
     const newHeaders = new Headers(headers)
@@ -43,8 +43,8 @@ const createRequestInstance = <P = CreateRequestParams, R = void>({
 
 export const createRequestFx =
   (params: CreateRequestFxParams) =>
-  <P = CreateRequestParams, R = void>(payload: Payload<P>) =>
-    createRequestInstance<P, R>({
+  <P = CreateRequestParams, R = void, E = Error>(payload: Payload<P>) =>
+    createRequestInstance<P, R, E>({
       ...(params as CreateRequestParams),
       payload,
     })

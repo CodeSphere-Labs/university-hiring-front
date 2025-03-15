@@ -10,28 +10,10 @@ import { addProjectQuery } from '@/shared/session/api'
 import { AddProjectModalForm } from './Profile'
 
 export const projectModalOpened = createEvent()
-const projectModalConfirmFx = createEffect(() => {
-  projectForm.submit()
-})
 
 export const $addProjectLoading = addProjectQuery.$pending.map(
   (pending) => pending,
 )
-
-const openModalFx = createEffect(() =>
-  modals.openConfirmModal({
-    title: 'Добавить проект',
-    children: <AddProjectModalForm />,
-    labels: { confirm: 'Добавить', cancel: 'Отменить' },
-    onConfirm: () => projectModalConfirmFx(),
-    closeOnConfirm: false,
-    size: 'lg',
-    zIndex: 1002,
-  }),
-)
-const projectModalCloseFx = createEffect(() => {
-  modals.closeAll()
-})
 
 export const projectForm = createForm({
   fields: {
@@ -58,19 +40,39 @@ export const projectForm = createForm({
   validateOn: ['submit'],
 })
 
+const projectModalConfirmFx = createEffect(() => {
+  projectForm.submit()
+})
+
+const openModalFx = createEffect(() =>
+  modals.openConfirmModal({
+    title: 'Добавить проект',
+    children: <AddProjectModalForm />,
+    labels: { confirm: 'Добавить', cancel: 'Отменить' },
+    onConfirm: () => projectModalConfirmFx(),
+    closeOnConfirm: false,
+    size: 'lg',
+    zIndex: 1002,
+  }),
+)
+
+const projectModalCloseFx = createEffect<string, void, Error>((id) => {
+  modals.close(id)
+})
+
 sample({
   clock: projectModalOpened,
-  target: openModalFx,
+  target: [projectForm.reset, openModalFx],
 })
 
 sample({
   clock: projectForm.formValidated,
-  source: projectForm.$values,
   target: addProjectQuery.start,
 })
 
 sample({
   clock: addProjectQuery.finished.success,
+  source: openModalFx.doneData,
   target: [
     projectModalCloseFx,
     showSuccessNotificationFx.prepend(() => ({

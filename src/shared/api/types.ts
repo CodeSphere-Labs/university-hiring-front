@@ -41,6 +41,15 @@ export interface Project {
   technologies: string[]
 }
 
+export interface Organization {
+  id: number
+  name: string
+  email: string
+  logoUrl: string | null
+  websiteUrl: string
+  about: string
+}
+
 interface Invitation {
   id: number
   email: string
@@ -101,24 +110,6 @@ interface OpportunityResponse {
 interface Group {
   id: number
   name: string
-
-  createdAt: string
-  updatedAt: string
-}
-
-interface Organization {
-  id: number
-  name: string
-  type: OrganizationType
-  email: string
-  logoUrl: string | null
-  websiteUrl: string
-  about: string
-
-  users?: User[]
-  invitations?: Invitation[]
-  favoriteStudents?: User[]
-  opportunities?: Opportunity[]
 
   createdAt: string
   updatedAt: string

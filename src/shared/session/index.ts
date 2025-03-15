@@ -17,10 +17,10 @@ import { User } from '@/shared/api/types'
 import { showErrorNotificationFx } from '@/shared/notifications/model'
 import {
   logoutQuery,
-  refreshQuery,
   sessionQuery,
   updateUserQuery,
 } from '@/shared/session/api'
+import { refreshQuery } from '@/shared/session/refresh'
 
 enum AuthStatus {
   Initial,

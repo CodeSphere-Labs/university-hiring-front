@@ -9,6 +9,7 @@ const VALIDATE_MESSAGES = {
     telegram: 'Невалидная ссылка на Telegram',
     vk: 'Невалидная ссылка на ВКонтакте',
     github: 'Невалидная ссылка на Github',
+    url: 'Невалидная ссылка',
   },
 } as const
 
@@ -20,6 +21,10 @@ export const validateRules = {
   requiredArray: createRule({
     name: 'requiredArray',
     schema: yup.array().min(1, VALIDATE_MESSAGES.required),
+  }),
+  requiredObject: createRule({
+    name: 'requiredObject',
+    schema: yup.object().required(VALIDATE_MESSAGES.required),
   }),
   email: createRule<string>({
     name: 'email',
@@ -77,6 +82,18 @@ export const validateRules = {
       .matches(
         /^https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,
         VALIDATE_MESSAGES.invalid.github,
+      )
+      .nullable(),
+  }),
+  url: createRule<string>({
+    name: 'url',
+    schema: yup
+      .string()
+      .nullable()
+      .transform((value) => (value === '' ? null : value))
+      .matches(
+        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
+        VALIDATE_MESSAGES.invalid.url,
       )
       .nullable(),
   }),
