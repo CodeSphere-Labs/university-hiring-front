@@ -2,10 +2,6 @@ import { modals } from '@mantine/modals'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { createForm } from 'effector-forms'
 
-import {
-  $createdOrganizationId,
-  modalConfirmFx as organizationModalConfirmFx,
-} from '@/features/ActionCards/CreateOrganization/model'
 import { Organization } from '@/shared/api/types'
 import { validateRules } from '@/shared/config/validateRules'
 import {
@@ -22,7 +18,6 @@ export const $organizationsLoading = getOrganizationsQuery.$pending.map(
   (pending) => pending,
 )
 
-// Обновляем список организаций при успешном создании новой
 sample({
   clock: createOrganizationQuery.finished.success,
   source: $organizations,
@@ -54,7 +49,7 @@ export const form = createForm({
       rules: [validateRules.required(), validateRules.url()],
     },
     role: {
-      init: 'STAFF',
+      init: '',
       rules: [validateRules.required()],
     },
   },

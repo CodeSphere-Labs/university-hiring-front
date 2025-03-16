@@ -1,4 +1,4 @@
-export type Role = 'ADMIN' | 'STAFF' | 'STUDENT'
+export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF'
 
 export enum OrganizationType {
   COMPANY = 'COMPANY',

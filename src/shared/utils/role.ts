@@ -7,9 +7,11 @@ export const getRole = (
     case 'ADMIN':
       return { label: 'Администратор', color: 'red' }
     case 'STAFF':
-      return { label: 'Сотрудник', color: 'blue' }
+      return { label: 'Сотрудник компании', color: 'blue' }
     case 'STUDENT':
       return { label: 'Студент', color: 'green' }
+    case 'UNIVERSITY_STAFF':
+      return { label: 'Сотрудник университета', color: 'purple' }
     default:
       return { label: 'Неизвестно', color: 'gray' }
   }
