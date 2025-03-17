@@ -12,32 +12,27 @@ import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
 import { modalOpened } from '@/features/ActionCards/CreateOrganization/model'
-import { Role } from '@/shared/api/types'
 import { $user } from '@/shared/session'
+import { getRoleOptions } from '@/shared/utils'
 
-import { $organizations, $organizationsLoading, form } from './model'
-
-const ROLE_OPTIONS = {
-  ADMIN: [
-    { label: 'Сотрудник университета', value: 'UNIVERSITY_STAFF' },
-    { label: 'Сотрудник компании', value: 'STAFF' },
-    { label: 'Студент', value: 'STUDENT' },
-  ],
-  UNIVERSITY_STAFF: [
-    { label: 'Сотрудник университета', value: 'UNIVERSITY_STAFF' },
-    { label: 'Студент', value: 'STUDENT' },
-    { label: 'Сотрудник компании', value: 'STAFF' },
-  ],
-  STAFF: [{ label: 'Сотрудник компании', value: 'STAFF' }],
-  STUDENT: [],
-} as const
+import { modalOpened as createGroupModalOpened } from '../CreateGroup/model'
+import {
+  $groups,
+  $groupsLoading,
+  $organizations,
+  $organizationsLoading,
+  form,
+} from './model'
 
 export const InviteUser = () => {
-  const [organizations, organizationsLoading, user] = useUnit([
-    $organizations,
-    $organizationsLoading,
-    $user,
-  ])
+  const [organizations, groups, organizationsLoading, groupsLoading, user] =
+    useUnit([
+      $organizations,
+      $groups,
+      $organizationsLoading,
+      $groupsLoading,
+      $user,
+    ])
 
   const { fields } = useForm(form)
 
@@ -46,7 +41,12 @@ export const InviteUser = () => {
     value: organization.id.toString(),
   }))
 
-  const availableRoles = user ? ROLE_OPTIONS[user.role as Role] : []
+  const groupsData = groups.map((group) => ({
+    label: group.name,
+    value: group.id.toString(),
+  }))
+
+  const availableRoles = getRoleOptions(user?.role)
 
   return (
     <Stack>
@@ -115,6 +115,7 @@ export const InviteUser = () => {
           middlewares: { flip: false, shift: true },
           withinPortal: false,
         }}
+        error={fields.role.errorText()}
       />
       {fields.role.value === 'STUDENT' && (
         <Flex
@@ -123,8 +124,15 @@ export const InviteUser = () => {
           gap="md"
         >
           <Select
-            error={fields.organization.errorText()}
-            data={organizationsData}
+            value={fields.group.value?.id.toString() ?? null}
+            onChange={(value) => {
+              const selectedGroup = groups.find(
+                (group) => group.id.toString() === value,
+              )
+              fields.group.onChange(selectedGroup ?? null)
+            }}
+            error={fields.group.errorText()}
+            data={groupsData}
             comboboxProps={{
               position: 'bottom',
               middlewares: { flip: false, shift: true },
@@ -136,14 +144,14 @@ export const InviteUser = () => {
             w={{ base: '100%', xs: '75%' }}
             required
             searchable
-            rightSection={organizationsLoading && <Loader size={16} />}
-            disabled={organizationsLoading}
+            rightSection={groupsLoading && <Loader size={16} />}
+            disabled={groupsLoading}
             clearable
           />
           <Group w={{ base: '100%', xs: '25%' }}>
             <Input.Wrapper label="Нет подходящей группы?">
               <Button
-                onClick={() => modalOpened()}
+                onClick={() => createGroupModalOpened()}
                 mt={10}
                 variant="outline"
                 fullWidth

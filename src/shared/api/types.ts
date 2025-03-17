@@ -1,3 +1,7 @@
+export interface ErrorResponse extends Error {
+  statusCode: number
+}
+
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF'
 
 export enum OrganizationType {
@@ -50,12 +54,25 @@ export interface Organization {
   about: string
 }
 
+export interface Group {
+  id: number
+  name: string
+
+  createdAt: string
+  updatedAt: string
+}
+
+export interface InvitationCreate {
+  organizationId: number
+  groupId?: number
+  email: string
+  role: Role
+}
+
 interface Invitation {
   id: number
   email: string
-  token: string
   role: Role
-  organization: Organization
   organizationId: number
 
   groupId: number | null
@@ -105,12 +122,4 @@ interface OpportunityResponse {
   opportunity: Opportunity
   createdAt: string
   coverLetter: string | null
-}
-
-interface Group {
-  id: number
-  name: string
-
-  createdAt: string
-  updatedAt: string
 }

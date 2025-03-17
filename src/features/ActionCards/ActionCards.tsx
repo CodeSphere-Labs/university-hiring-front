@@ -9,7 +9,8 @@ import {
 import { WithRoleCheck } from '@/shared/hoc'
 import { ActionCard } from '@/shared/ui/ActionCard'
 
-import { modalOpened } from './CreateOrganization/model'
+import { modalOpened as createGroupModalOpened } from './CreateGroup/model'
+import { modalOpened as createOrganizationModalOpened } from './CreateOrganization/model'
 import { modalOpened as inviteUserModalOpened } from './InviteUser/model'
 
 export const AdminActions = () => {
@@ -27,9 +28,7 @@ export const AdminActions = () => {
         <ActionCard
           icon={<IconUsers size={28} />}
           title="Создать учебную группу"
-          onClick={() => {
-            console.log('Создать учебную группу')
-          }}
+          onClick={() => createGroupModalOpened()}
         />
       </WithRoleCheck>
 
@@ -37,7 +36,7 @@ export const AdminActions = () => {
         <ActionCard
           icon={<IconBuildingCommunity size={28} />}
           title="Создать организацию"
-          onClick={() => modalOpened()}
+          onClick={() => createOrganizationModalOpened()}
         />
       </WithRoleCheck>
 

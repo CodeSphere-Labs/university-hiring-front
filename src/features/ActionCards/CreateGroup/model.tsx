@@ -7,32 +7,18 @@ import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
-import { createOrganizationQuery } from '@/shared/session/api'
+import { createGroupQuery } from '@/shared/session/api'
 
-import { CreateOrganization } from './CreateOrganization'
+import { CreateGroup } from './CreateGroup'
 
 export const modalOpened = createEvent()
-export const $loading = createOrganizationQuery.$pending.map(
-  (pending) => pending,
-)
+export const $loading = createGroupQuery.$pending.map((pending) => pending)
 
 export const form = createForm({
   fields: {
     name: {
       init: '',
       rules: [validateRules.required()],
-    },
-    email: {
-      init: '',
-      rules: [validateRules.required(), validateRules.email()],
-    },
-    about: {
-      init: '',
-      rules: [validateRules.required()],
-    },
-    websiteUrl: {
-      init: '',
-      rules: [validateRules.required(), validateRules.url()],
     },
   },
   validateOn: ['submit'],
@@ -44,8 +30,8 @@ export const modalConfirmFx = createEffect(() => {
 
 const openModalFx = createEffect(() =>
   modals.openConfirmModal({
-    title: 'Создать организацию',
-    children: <CreateOrganization />,
+    title: 'Создать группу',
+    children: <CreateGroup />,
     labels: { confirm: 'Создать', cancel: 'Назад' },
     onConfirm: () => modalConfirmFx(),
     closeOnConfirm: false,
@@ -65,26 +51,26 @@ sample({
 
 sample({
   clock: form.formValidated,
-  target: createOrganizationQuery.start,
+  target: createGroupQuery.start,
 })
 
 sample({
-  clock: createOrganizationQuery.finished.success,
+  clock: createGroupQuery.finished.success,
   source: openModalFx.doneData,
   target: [
     modalCloseFx,
     showSuccessNotificationFx.prepend(() => ({
-      title: 'Организация создана',
-      message: 'Организация успешно создана',
+      title: 'Группа создана',
+      message: 'Группа успешно создана',
     })),
   ],
 })
 
 sample({
-  clock: createOrganizationQuery.finished.failure,
+  clock: createGroupQuery.finished.failure,
   filter: ({ error }) => error.statusCode !== 403,
   target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при создании проекта',
+    title: 'Ошибка при создании группы',
     message: 'Упс, что то пошло не так, попробуйте снова',
   })),
 })

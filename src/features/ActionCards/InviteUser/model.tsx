@@ -2,10 +2,17 @@ import { modals } from '@mantine/modals'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { createForm } from 'effector-forms'
 
-import { Organization } from '@/shared/api/types'
+import { Group, Organization, Role } from '@/shared/api/types'
 import { validateRules } from '@/shared/config/validateRules'
 import {
+  showErrorNotificationFx,
+  showSuccessNotificationFx,
+} from '@/shared/notifications/model'
+import {
+  createGroupQuery,
+  createInvitation,
   createOrganizationQuery,
+  getGroupsQuery,
   getOrganizationsQuery,
 } from '@/shared/session/api'
 
@@ -13,22 +20,19 @@ import { InviteUser } from './InviteUser'
 import classes from './styles.module.css'
 
 export const modalOpened = createEvent()
+
 export const $organizations = createStore<Organization[]>([])
 export const $organizationsLoading = getOrganizationsQuery.$pending.map(
   (pending) => pending,
 )
-
-sample({
-  clock: createOrganizationQuery.finished.success,
-  source: $organizations,
-  fn: (organizations, { result }) => [...organizations, result],
-  target: $organizations,
-})
-
 $organizations.on(
   getOrganizationsQuery.finished.success,
   (_, { result }) => result,
 )
+
+export const $groups = createStore<Group[]>([])
+export const $groupsLoading = getGroupsQuery.$pending.map((pending) => pending)
+$groups.on(getGroupsQuery.finished.success, (_, { result }) => result)
 
 export const form = createForm({
   fields: {
@@ -40,17 +44,13 @@ export const form = createForm({
       init: '',
       rules: [validateRules.required(), validateRules.email()],
     },
-    about: {
-      init: '',
-      rules: [validateRules.required()],
-    },
-    websiteUrl: {
-      init: '',
-      rules: [validateRules.required(), validateRules.url()],
-    },
     role: {
       init: '',
       rules: [validateRules.required()],
+    },
+    group: {
+      init: null as Group | null,
+      rules: [validateRules.requiredGroup()],
     },
   },
   validateOn: ['submit'],
@@ -58,6 +58,10 @@ export const form = createForm({
 
 const modalConfirmFx = createEffect(() => {
   form.submit()
+})
+
+const modalCloseFx = createEffect<string, void, Error>((id) => {
+  modals.close(id)
 })
 
 const openModalFx = createEffect(() =>
@@ -83,7 +87,14 @@ sample({
 sample({
   clock: modalOpened,
   filter: $organizations.map((organizations) => organizations.length === 0),
-  target: getOrganizationsQuery.start,
+  target: [getOrganizationsQuery.start, getGroupsQuery.start],
+})
+
+sample({
+  clock: createOrganizationQuery.finished.success,
+  source: $organizations,
+  fn: (organizations, { result }) => [...organizations, result],
+  target: $organizations,
 })
 
 sample({
@@ -92,4 +103,51 @@ sample({
     organization: result,
   }),
   target: form.setForm,
+})
+
+sample({
+  clock: createGroupQuery.finished.success,
+  source: $groups,
+  fn: (groups, { result }) => [...groups, result],
+  target: $groups,
+})
+
+sample({
+  clock: createGroupQuery.finished.success,
+  fn: ({ result }) => ({
+    group: result,
+  }),
+  target: form.setForm,
+})
+
+sample({
+  clock: form.formValidated,
+  fn: ({ organization, role, email, group }) => ({
+    organizationId: organization!.id,
+    groupId: group ? Number(group.id) : undefined,
+    email,
+    role: role as Role,
+  }),
+  target: createInvitation.start,
+})
+
+sample({
+  clock: createInvitation.finished.success,
+  source: openModalFx.doneData,
+  target: [
+    modalCloseFx,
+    showSuccessNotificationFx.prepend(() => ({
+      title: 'Приглашение создано',
+      message: 'Приглашение успешно создано и отправлено',
+    })),
+  ],
+})
+
+sample({
+  clock: createInvitation.finished.failure,
+  filter: ({ error }) => error.statusCode !== 403,
+  target: showErrorNotificationFx.prepend(() => ({
+    title: 'Ошибка при создании приглашения',
+    message: 'Упс, что то пошло не так, попробуйте снова',
+  })),
 })

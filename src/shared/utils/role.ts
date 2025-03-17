@@ -1,3 +1,23 @@
+import { Role } from '@/shared/api/types'
+
+const ROLE_OPTIONS = {
+  ADMIN: [
+    { label: 'Сотрудник университета', value: 'UNIVERSITY_STAFF' },
+    { label: 'Сотрудник компании', value: 'STAFF' },
+    { label: 'Студент', value: 'STUDENT' },
+  ],
+  UNIVERSITY_STAFF: [
+    { label: 'Сотрудник университета', value: 'UNIVERSITY_STAFF' },
+    { label: 'Студент', value: 'STUDENT' },
+    { label: 'Сотрудник компании', value: 'STAFF' },
+  ],
+  STAFF: [{ label: 'Сотрудник компании', value: 'STAFF' }],
+  STUDENT: [],
+}
+
+export const getRoleOptions = (role: Role | undefined) =>
+  role ? ROLE_OPTIONS[role] : []
+
 export const getRole = (
   role: string | undefined,
 ): { label: string; color: string } => {

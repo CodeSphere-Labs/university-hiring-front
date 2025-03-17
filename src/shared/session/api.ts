@@ -1,7 +1,14 @@
 import { createQuery } from '@farfetched/core'
 
 import { createCommonRequestFx } from '@/shared/api/requests'
-import { Organization, Project, User } from '@/shared/api/types'
+import {
+  ErrorResponse,
+  Group,
+  InvitationCreate,
+  Organization,
+  Project,
+  User,
+} from '@/shared/api/types'
 
 import { attachAuthHandler } from './auth-barrier'
 
@@ -49,11 +56,22 @@ export const deleteProjectQuery = createQuery({
   })),
 })
 
+export const getOrganizationsQuery = createQuery({
+  effect: createCommonRequestFx<void, Organization[]>({
+    url: '/organizations',
+  }),
+})
+
+export const getGroupsQuery = createQuery({
+  effect: createCommonRequestFx<void, Group[]>({
+    url: '/groups',
+  }),
+})
+
 export const createOrganizationQuery = createQuery({
   effect: createCommonRequestFx<
     Omit<Organization, 'id' | 'logoUrl'>,
-    Organization,
-    Error & { statusCode: number }
+    Organization
   >((body) => ({
     url: '/organizations',
     method: 'POST',
@@ -61,10 +79,20 @@ export const createOrganizationQuery = createQuery({
   })),
 })
 
-export const getOrganizationsQuery = createQuery({
-  effect: createCommonRequestFx<void, Organization[]>({
-    url: '/organizations',
-  }),
+export const createGroupQuery = createQuery({
+  effect: createCommonRequestFx<Pick<Group, 'name'>, Group>((body) => ({
+    url: '/groups',
+    method: 'POST',
+    body,
+  })),
+})
+
+export const createInvitation = createQuery({
+  effect: createCommonRequestFx<InvitationCreate, void>((body) => ({
+    url: '/invitation/create-invitation',
+    method: 'POST',
+    body,
+  })),
 })
 
 attachAuthHandler(updateUserQuery)
@@ -74,3 +102,5 @@ attachAuthHandler(createOrganizationQuery)
 attachAuthHandler(getOrganizationsQuery)
 attachAuthHandler(getAvailableGroupedSkillsQuery)
 attachAuthHandler(logoutQuery)
+attachAuthHandler(createGroupQuery)
+attachAuthHandler(createInvitation)

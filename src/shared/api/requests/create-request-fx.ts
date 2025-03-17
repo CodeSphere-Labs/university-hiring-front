@@ -1,6 +1,8 @@
 import { createEffect } from 'effector'
 import { type FetchOptions, ofetch } from 'ofetch'
 
+import { ErrorResponse } from '@/shared/api/types'
+
 type CreateRequestParams = FetchOptions & {
   url: string
   responseType?: 'json' | undefined
@@ -43,7 +45,7 @@ const createRequestInstance = <P = CreateRequestParams, R = void, E = Error>({
 
 export const createRequestFx =
   (params: CreateRequestFxParams) =>
-  <P = CreateRequestParams, R = void, E = Error>(payload: Payload<P>) =>
+  <P = CreateRequestParams, R = void, E = ErrorResponse>(payload: Payload<P>) =>
     createRequestInstance<P, R, E>({
       ...(params as CreateRequestParams),
       payload,

@@ -14,24 +14,24 @@ const VALIDATE_MESSAGES = {
 } as const
 
 export const validateRules = {
-  required: createRule({
+  required: () => ({
     name: 'required',
-    schema: yup.string().required(VALIDATE_MESSAGES.required),
+    validator: (value: string) => Boolean(value),
+    errorText: 'Это поле обязательное',
   }),
   requiredArray: createRule({
     name: 'requiredArray',
     schema: yup.array().min(1, VALIDATE_MESSAGES.required),
   }),
-  requiredObject: createRule({
-    name: 'requiredObject',
-    schema: yup.object().required(VALIDATE_MESSAGES.required),
+  requiredObject: () => ({
+    name: 'required',
+    validator: (value: unknown) => Boolean(value),
+    errorText: 'Это поле обязательное',
   }),
-  email: createRule<string>({
+  email: () => ({
     name: 'email',
-    schema: yup
-      .string()
-      .email(VALIDATE_MESSAGES.invalid.email)
-      .required(VALIDATE_MESSAGES.required),
+    validator: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+    errorText: 'Введите корректный email',
   }),
   password: createRule<string>({
     name: 'password',
@@ -85,16 +85,16 @@ export const validateRules = {
       )
       .nullable(),
   }),
-  url: createRule<string>({
+  url: () => ({
     name: 'url',
-    schema: yup
-      .string()
-      .nullable()
-      .transform((value) => (value === '' ? null : value))
-      .matches(
-        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
-        VALIDATE_MESSAGES.invalid.url,
-      )
-      .nullable(),
+    validator: (value: string) =>
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(value),
+    errorText: 'Введите корректный URL',
+  }),
+  requiredGroup: () => ({
+    name: 'required',
+    validator: (value: unknown, { role }: { role: string }) =>
+      role === 'STUDENT' ? Boolean(value) : true,
+    errorText: 'Выберите группу',
   }),
 }
