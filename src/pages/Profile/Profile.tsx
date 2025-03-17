@@ -27,7 +27,7 @@ import {
 } from '@/pages/Profile/addProject.model'
 import { withConditionalRender } from '@/shared/hoc'
 import { AddPetProjectIcon } from '@/shared/icons/AddPetProjectIcon'
-import { $user } from '@/shared/session'
+import { $user } from '@/shared/session/model'
 import { getRole } from '@/shared/utils'
 
 import {

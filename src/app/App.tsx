@@ -17,7 +17,7 @@ export const App = () => {
     <RouterProvider router={router}>
       <MantineProvider>
         <ModalsProvider>
-          <Notifications />
+          <Notifications zIndex={1005} />
           <Suspense fallback={<LoadingPage />}>
             <Pages />
           </Suspense>

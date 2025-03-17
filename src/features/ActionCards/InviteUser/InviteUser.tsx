@@ -12,7 +12,7 @@ import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
 import { modalOpened } from '@/features/ActionCards/CreateOrganization/model'
-import { $user } from '@/shared/session'
+import { $user } from '@/shared/session/model'
 import { getRoleOptions } from '@/shared/utils'
 
 import { modalOpened as createGroupModalOpened } from '../CreateGroup/model'

@@ -14,7 +14,10 @@ import {
 } from 'effector'
 
 import { User } from '@/shared/api/types'
-import { showErrorNotificationFx } from '@/shared/notifications/model'
+import {
+  showError,
+  showErrorNotificationFx,
+} from '@/shared/notifications/model'
 import {
   logoutQuery,
   sessionQuery,
@@ -99,10 +102,7 @@ sample({
 
 sample({
   clock: logoutQuery.finished.failure,
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при попытке выйти',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка при попытке выйти'),
 })
 
 sample({

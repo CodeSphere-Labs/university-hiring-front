@@ -3,17 +3,18 @@ import { createForm, ValidationEvent } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import {
+  showError,
   showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
 import { routes } from '@/shared/routing/index'
-import { $user, chainAuthorized } from '@/shared/session'
 import {
   deleteProjectQuery,
   getAvailableGroupedSkillsQuery,
   sessionQuery,
   updateUserQuery,
 } from '@/shared/session/api'
+import { $user, chainAuthorized } from '@/shared/session/model'
 
 export const currentRoute = routes.profile
 export const authorizedRoute = chainAuthorized(currentRoute, {
@@ -114,10 +115,7 @@ sample({
 
 sample({
   clock: updateUserQuery.finished.failure,
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при обновлении профиля',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка при обновлении профиля'),
 })
 
 sample({
@@ -143,10 +141,7 @@ sample({
 
 sample({
   clock: deleteProjectQuery.finished.failure,
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при удалении проекта',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка при удалении проекта'),
 })
 
 function createBaseFields() {
@@ -200,7 +195,7 @@ function createStudentFields() {
       validateOn: ['change'] as ValidationEvent[],
     },
     resume: {
-      init: null as File | null,
+      init: '',
       rules: [validateRules.required()],
     },
     skills: {

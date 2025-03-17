@@ -5,7 +5,7 @@ import { createForm } from 'effector-forms'
 import { Group, Organization, Role } from '@/shared/api/types'
 import { validateRules } from '@/shared/config/validateRules'
 import {
-  showErrorNotificationFx,
+  showError,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
 import {
@@ -146,8 +146,5 @@ sample({
 sample({
   clock: createInvitation.finished.failure,
   filter: ({ error }) => error.statusCode !== 403,
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при создании приглашения',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка при создании приглашения'),
 })

@@ -2,7 +2,7 @@ import { useUnit } from 'effector-react'
 import { ReactNode } from 'react'
 
 import { Role } from '@/shared/api/types'
-import { $user } from '@/shared/session'
+import { $user } from '@/shared/session/model'
 
 interface WithRoleCheckProps {
   allowedRoles: Role[]

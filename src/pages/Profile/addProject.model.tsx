@@ -4,8 +4,8 @@ import { createForm } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import { showSuccessNotificationFx } from '@/shared/notifications/model'
-import { $user } from '@/shared/session'
 import { addProjectQuery } from '@/shared/session/api'
+import { $user } from '@/shared/session/model'
 
 import { AddProjectModalForm } from './Profile'
 

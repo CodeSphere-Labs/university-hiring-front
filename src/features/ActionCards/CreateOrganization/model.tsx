@@ -4,6 +4,7 @@ import { createForm } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import {
+  showError,
   showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
@@ -83,8 +84,5 @@ sample({
 sample({
   clock: createOrganizationQuery.finished.failure,
   filter: ({ error }) => error.statusCode !== 403,
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при создании проекта',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка при создании организации'),
 })

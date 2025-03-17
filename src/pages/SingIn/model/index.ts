@@ -3,10 +3,13 @@ import { createForm } from 'effector-forms'
 
 import { signInMutation } from '@/pages/SingIn/api'
 import { validateRules } from '@/shared/config/validateRules'
-import { showErrorNotificationFx } from '@/shared/notifications/model'
+import {
+  showError,
+  showErrorNotificationFx,
+} from '@/shared/notifications/model'
 import { routes } from '@/shared/routing/index'
-import { chainAnonymous } from '@/shared/session'
 import { sessionQuery } from '@/shared/session/api'
+import { chainAnonymous } from '@/shared/session/model'
 
 export const currentRoute = routes.signIn
 export const anonymousRoute = chainAnonymous(currentRoute, {
@@ -41,10 +44,7 @@ sample({
 })
 
 sample({
-  clock: signInMutation.$failed,
+  clock: signInMutation.finished.failure,
   filter: signInMutation.$failed.map((isFailed) => isFailed),
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка входа',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка входа'),
 })

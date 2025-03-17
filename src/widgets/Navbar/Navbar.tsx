@@ -17,8 +17,8 @@ import { Link } from 'atomic-router-react'
 import { useList, useUnit } from 'effector-react'
 import { ReactNode } from 'react'
 
-import { $sessionPending, $user, userLogouted } from '@/shared/session'
 import { logoutQuery } from '@/shared/session/api'
+import { $sessionPending, $user, userLogouted } from '@/shared/session/model'
 import { getRole } from '@/shared/utils'
 
 import { $links } from './links'

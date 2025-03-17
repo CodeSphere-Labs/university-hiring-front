@@ -4,7 +4,7 @@ import { createForm } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import {
-  showErrorNotificationFx,
+  showError,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
 import { createGroupQuery } from '@/shared/session/api'
@@ -69,8 +69,5 @@ sample({
 sample({
   clock: createGroupQuery.finished.failure,
   filter: ({ error }) => error.statusCode !== 403,
-  target: showErrorNotificationFx.prepend(() => ({
-    title: 'Ошибка при создании группы',
-    message: 'Упс, что то пошло не так, попробуйте снова',
-  })),
+  target: showError('Ошибка при создании группы'),
 })

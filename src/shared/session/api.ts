@@ -2,7 +2,6 @@ import { createQuery } from '@farfetched/core'
 
 import { createCommonRequestFx } from '@/shared/api/requests'
 import {
-  ErrorResponse,
   Group,
   InvitationCreate,
   Organization,

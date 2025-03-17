@@ -1,5 +1,16 @@
-export interface ErrorResponse extends Error {
-  statusCode: number
+import type { FetchError } from 'ofetch'
+
+import { ErrorMessages } from '@/shared/config/errorCodes'
+
+export interface ErrorResponse extends FetchError {
+  data?: {
+    message: keyof typeof ErrorMessages
+  }
+  meta: {
+    stopErrorPropagation: boolean
+    stale: boolean
+  }
+  params: unknown
 }
 
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF'
