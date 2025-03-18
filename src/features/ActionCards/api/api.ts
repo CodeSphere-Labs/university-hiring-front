@@ -14,7 +14,7 @@ export const createGroupQuery = createQuery({
 
 export const createInvitation = createQuery({
   effect: createCommonRequestFx<InvitationCreate, void>((body) => ({
-    url: '/invitation/create-invitation',
+    url: '/invitations/create-invitation',
     method: 'POST',
     body,
   })),
