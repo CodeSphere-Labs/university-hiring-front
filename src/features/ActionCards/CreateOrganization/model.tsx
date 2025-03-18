@@ -5,11 +5,10 @@ import { createForm } from 'effector-forms'
 import { validateRules } from '@/shared/config/validateRules'
 import {
   showError,
-  showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
-import { createOrganizationQuery } from '@/shared/session/api'
 
+import { createOrganizationQuery } from '../api/api'
 import { CreateOrganization } from './CreateOrganization'
 
 export const modalOpened = createEvent()

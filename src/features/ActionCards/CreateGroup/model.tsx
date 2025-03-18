@@ -7,8 +7,8 @@ import {
   showError,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
-import { createGroupQuery } from '@/shared/session/api'
 
+import { createGroupQuery } from '../api/api'
 import { CreateGroup } from './CreateGroup'
 
 export const modalOpened = createEvent()

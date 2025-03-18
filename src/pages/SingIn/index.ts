@@ -3,7 +3,7 @@ import { lazy } from 'react'
 
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
 
-import { anonymousRoute, currentRoute } from './model'
+import { anonymousRoute, currentRoute } from './model/model'
 
 export const SignInPage = lazy(() => import('./ui/SignIn'))
 

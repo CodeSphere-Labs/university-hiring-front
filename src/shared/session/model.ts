@@ -13,16 +13,10 @@ import {
   sample,
 } from 'effector'
 
+import { updateUserQuery } from '@/pages/Profile/api/api'
 import { User } from '@/shared/api/types'
-import {
-  showError,
-  showErrorNotificationFx,
-} from '@/shared/notifications/model'
-import {
-  logoutQuery,
-  sessionQuery,
-  updateUserQuery,
-} from '@/shared/session/api'
+import { showError } from '@/shared/notifications/model'
+import { logoutQuery, sessionQuery } from '@/shared/session/api'
 import { refreshQuery } from '@/shared/session/refresh'
 
 enum AuthStatus {

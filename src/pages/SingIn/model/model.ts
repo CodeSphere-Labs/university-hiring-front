@@ -1,7 +1,7 @@
 import { sample } from 'effector'
 import { createForm } from 'effector-forms'
 
-import { signInMutation } from '@/pages/SingIn/api'
+import { signInMutation } from '@/pages/SingIn/api/api'
 import { validateRules } from '@/shared/config/validateRules'
 import {
   showError,

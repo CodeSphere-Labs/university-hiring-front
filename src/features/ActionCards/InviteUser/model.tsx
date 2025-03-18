@@ -8,14 +8,14 @@ import {
   showError,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
+
 import {
   createGroupQuery,
   createInvitation,
   createOrganizationQuery,
   getGroupsQuery,
   getOrganizationsQuery,
-} from '@/shared/session/api'
-
+} from '../api/api'
 import { InviteUser } from './InviteUser'
 import classes from './styles.module.css'
 

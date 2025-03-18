@@ -12,7 +12,7 @@ import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 import { FormEvent } from 'react'
 
-import { $pending, loginForm } from '../model'
+import { $pending, loginForm } from '../model/model'
 import classes from './SignIn.module.css'
 
 const SignIn = () => {

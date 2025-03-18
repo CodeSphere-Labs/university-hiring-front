@@ -4,10 +4,11 @@ import { createForm } from 'effector-forms'
 
 import { validateRules } from '@/shared/config/validateRules'
 import { showSuccessNotificationFx } from '@/shared/notifications/model'
-import { addProjectQuery } from '@/shared/session/api'
 import { $user } from '@/shared/session/model'
 
-import { AddProjectModalForm } from './Profile'
+import { addProjectQuery } from '../api/api'
+import { AddProjectModal } from '../ui/AddProjectModal/AddProjectModal'
+import classes from '../ui/AddProjectModal/AddProjectModal.module.css'
 
 export const projectModalOpened = createEvent()
 
@@ -47,12 +48,15 @@ const projectModalConfirmFx = createEffect(() => {
 const openModalFx = createEffect(() =>
   modals.openConfirmModal({
     title: 'Добавить проект',
-    children: <AddProjectModalForm />,
+    children: <AddProjectModal />,
     labels: { confirm: 'Добавить', cancel: 'Отменить' },
     onConfirm: () => projectModalConfirmFx(),
     closeOnConfirm: false,
     size: 'lg',
     zIndex: 1002,
+    classNames: {
+      inner: classes.modalInner,
+    },
   }),
 )
 

@@ -1,0 +1,8 @@
+.addPetProjectButton {
+  transition: all 0.2s ease;
+}
+
+.addPetProjectButton:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mantine-shadow-sm);
+}

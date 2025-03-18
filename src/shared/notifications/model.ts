@@ -34,19 +34,37 @@ interface ApiErrorParams {
   message: string
 }
 
-const apiErrorFx = createEffect(
-  ({ error, message = 'Произошла ошибка' }: ApiErrorParams) => {
-    notifications.show({
-      color: 'red',
-      title: ErrorMessages[error.data?.message ?? 'default'],
-      message,
-      position: 'top-right',
-    })
-  },
-)
+interface ApiSuccessParams {
+  title: string
+  message: string
+}
+
+const apiErrorFx = createEffect(({ error, message }: ApiErrorParams) => {
+  notifications.show({
+    color: 'red',
+    title: ErrorMessages[error.data?.message ?? 'default'],
+    message,
+    position: 'top-right',
+  })
+})
+
+const apiSuccessFx = createEffect(({ title, message }: ApiSuccessParams) => {
+  notifications.show({
+    color: 'green',
+    title,
+    message,
+    position: 'top-right',
+  })
+})
 
 export const showError = (message: string) =>
   apiErrorFx.prepend(({ error }: { error: ErrorResponse }) => ({
     error,
+    message,
+  }))
+
+export const showSuccess = (title: string, message: string) =>
+  apiSuccessFx.prepend(() => ({
+    title,
     message,
   }))

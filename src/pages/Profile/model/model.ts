@@ -4,17 +4,17 @@ import { createForm, ValidationEvent } from 'effector-forms'
 import { validateRules } from '@/shared/config/validateRules'
 import {
   showError,
-  showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/notifications/model'
 import { routes } from '@/shared/routing/index'
+import { sessionQuery } from '@/shared/session/api'
+import { $user, chainAuthorized } from '@/shared/session/model'
+
 import {
   deleteProjectQuery,
   getAvailableGroupedSkillsQuery,
-  sessionQuery,
   updateUserQuery,
-} from '@/shared/session/api'
-import { $user, chainAuthorized } from '@/shared/session/model'
+} from '../api/api'
 
 export const currentRoute = routes.profile
 export const authorizedRoute = chainAuthorized(currentRoute, {

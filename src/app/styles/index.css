@@ -7,3 +7,13 @@
     padding-top: var(--header-mobile-size);
   }
 }
+
+.select {
+  .modalInner > section {
+    overflow-y: visible !important;
+  }
+
+  .modalInner {
+    overflow: visible !important;
+  }
+}

@@ -1,7 +1,7 @@
 import { Query } from '@farfetched/core'
 import { createEffect, createEvent, sample } from 'effector'
 
-import { refreshQuery } from './refresh'
+import { refreshQuery } from '@/shared/session/refresh'
 
 export const retryLastRequest = createEvent<{
   query: Query<any, any, any>
