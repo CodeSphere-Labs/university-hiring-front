@@ -80,6 +80,13 @@ export interface InvitationCreate {
   role: Role
 }
 
+export interface InvitationsStats {
+  label: string
+  stats: number
+  color: string
+  icon: 'all' | 'accept' | 'wait' | 'expired'
+}
+
 interface Invitation {
   id: number
   email: string

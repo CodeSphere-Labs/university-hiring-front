@@ -26,9 +26,7 @@ export const $availableGroupedSkillsLoading =
   getAvailableGroupedSkillsQuery.$pending.map((pending) => pending)
 $availableGroupedSkills.on(
   getAvailableGroupedSkillsQuery.finished.success,
-  (_, { result }) => {
-    return result
-  },
+  (_, { result }) => result,
 )
 export const $updateProfileLoading = updateUserQuery.$pending.map(
   (pending) => pending,
