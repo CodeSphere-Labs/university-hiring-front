@@ -15,6 +15,7 @@ export const routes = {
   groups: createRoute(),
   internship: createRoute(),
   profile: createRoute(),
+  invitations: createRoute(),
 }
 
 export const controls = createRouterControls()
@@ -44,6 +45,10 @@ export const router = createHistoryRouter({
     {
       path: '/profile',
       route: routes.profile,
+    },
+    {
+      path: '/invitations',
+      route: routes.invitations,
     },
   ],
   controls,

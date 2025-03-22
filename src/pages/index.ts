@@ -3,6 +3,7 @@ import { createRoutesView } from 'atomic-router-react'
 import { DashboardRoute } from '@/pages/Dashboard'
 import { GroupsRoute } from '@/pages/Groups'
 import { InternshipRoute } from '@/pages/Internship'
+import { InvitationsRoute } from '@/pages/Invitations'
 import { NotFoundPage } from '@/pages/NotFound/NotFound'
 import { ProfileRoute } from '@/pages/Profile'
 import { SignInRoute } from '@/pages/SingIn'
@@ -17,6 +18,7 @@ export const Pages = createRoutesView({
     GroupsRoute,
     InternshipRoute,
     ProfileRoute,
+    InvitationsRoute,
   ],
   otherwise: NotFoundPage,
 })

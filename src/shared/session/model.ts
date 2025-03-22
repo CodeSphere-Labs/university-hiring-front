@@ -14,7 +14,7 @@ import {
 } from 'effector'
 
 import { updateUserQuery } from '@/pages/Profile/api/api'
-import { User } from '@/shared/api/types'
+import { Role, User } from '@/shared/api/types'
 import { showError } from '@/shared/notifications/model'
 import { logoutQuery, sessionQuery } from '@/shared/session/api'
 import { refreshQuery } from '@/shared/session/refresh'
@@ -234,5 +234,44 @@ export function chainAnonymous<Params extends RouteParams>(
     beforeOpen: sessionCheckStarted,
     openOn: [alreadyAnonymous, refreshQuery.finished.failure],
     cancelOn: sessionReceivedAuthenticated,
+  })
+}
+
+export function chainRole<Params extends RouteParams>(
+  route: RouteInstance<Params>,
+  roles: Role[],
+  { otherwise }: ChainParams<Params> = {},
+): RouteInstance<Params> {
+  const roleCheckStarted = createEvent<RouteParamsAndQuery<Params>>()
+
+  sample({
+    clock: route.opened,
+    target: roleCheckStarted,
+  })
+
+  const roleCheckSuccess = sample({
+    clock: roleCheckStarted,
+    source: $user,
+    filter: (user) => user !== null && roles.includes(user.role),
+  })
+
+  const roleCheckFailure = sample({
+    clock: roleCheckStarted,
+    source: $user,
+    filter: (user) => user !== null && !roles.includes(user.role),
+  })
+
+  if (otherwise) {
+    sample({
+      clock: roleCheckFailure,
+      target: otherwise as Effect<void, any, any>,
+    })
+  }
+
+  return chainRoute({
+    route,
+    beforeOpen: roleCheckStarted,
+    openOn: [roleCheckSuccess],
+    cancelOn: roleCheckFailure,
   })
 }

@@ -2803,6 +2803,11 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+mantine-datatable@^7.17.1:
+  version "7.17.1"
+  resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-7.17.1.tgz#155373bfa318d5463f1aa8468b8117f97b033a2e"
+  integrity sha512-5GBpSTZyvVGqe2TqEaBYrZQyQjLgHuMqkb2wry+wPvwalRY0oFKG1kdFd43bxch9FOG0K0CREEa6+cYIDby55Q==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz#a0dd74be81e2aa5c2f27e65ce283605ee4e2b7f9"

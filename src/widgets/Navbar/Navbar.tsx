@@ -17,6 +17,7 @@ import { Link } from 'atomic-router-react'
 import { useList, useUnit } from 'effector-react'
 import { ReactNode } from 'react'
 
+import { WithRoleCheck } from '@/shared/hoc'
 import { logoutQuery } from '@/shared/session/api'
 import { $sessionPending, $user, userLogouted } from '@/shared/session/model'
 import { getRole } from '@/shared/utils'
@@ -38,16 +39,20 @@ export const Navbar = ({ children }: Props) => {
       const isActive = useUnit(link.active.$isOpened ?? link.route.$isOpened)
 
       return (
-        <NavLink
-          key={link.label}
-          className={classes.link}
-          component={Link}
-          active={isActive}
-          to={link.route}
-          leftSection={<link.icon className={classes.linkIcon} stroke="1.5" />}
-          label={link.label}
-          onClick={() => close()}
-        />
+        <WithRoleCheck allowedRoles={link.roles}>
+          <NavLink
+            key={link.label}
+            className={classes.link}
+            component={Link}
+            active={isActive}
+            to={link.route}
+            leftSection={
+              <link.icon className={classes.linkIcon} stroke="1.5" />
+            }
+            label={link.label}
+            onClick={() => close()}
+          />
+        </WithRoleCheck>
       )
     },
   })

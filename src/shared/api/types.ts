@@ -14,6 +14,8 @@ export interface ErrorResponse extends FetchError {
 }
 
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF'
+export type InvitationStatus = 'all' | 'accept' | 'wait' | 'expired'
+export type InvitationFilter = 'createdByMe' | 'all'
 
 export enum OrganizationType {
   COMPANY = 'COMPANY',
@@ -84,23 +86,42 @@ export interface InvitationsStats {
   label: string
   stats: number
   color: string
-  icon: 'all' | 'accept' | 'wait' | 'expired'
+  status: InvitationStatus
 }
 
-interface Invitation {
+export interface Invitation {
   id: number
   email: string
   role: Role
-  organizationId: number
 
-  groupId: number | null
-  group: Group | null
+  organization: Organization
+  createdBy: Pick<
+    User,
+    'id' | 'firstName' | 'lastName' | 'email' | 'role'
+  > | null
 
   used: boolean
-  expiresAt: string
 
+  expiresAt: string
   createdAt: string
   updatedAt: string
+}
+
+export interface InvintationResponse {
+  data: Invitation[]
+  meta: {
+    page: number
+    limit: number
+    totalItems: number
+    totalPages: number
+  }
+}
+
+export interface InvitationParams {
+  filter: InvitationFilter
+  status: InvitationStatus
+  page?: number
+  limit?: number
 }
 
 interface StudentProfile {

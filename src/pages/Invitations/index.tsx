@@ -4,17 +4,17 @@ import { lazy, Suspense } from 'react'
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
 import { Navbar } from '@/widgets/Navbar/Navbar'
 
-import { authorizedRoute, currentRoute } from './model/model'
+import { authorizedRoute, currentRoute } from './model'
 
-export const DashboardPage = lazy(() => import('./ui/Dashboard'))
+export const InvitationsPage = lazy(() => import('./Invitations'))
 
 const AuthorizedView = createRouteView({
   route: authorizedRoute,
-  view: DashboardPage,
+  view: InvitationsPage,
   otherwise: LoadingPage,
 })
 
-export const DashboardRoute = {
+export const InvitationsRoute = {
   view: () => (
     <Suspense fallback={<LoadingPage />}>
       <AuthorizedView />
