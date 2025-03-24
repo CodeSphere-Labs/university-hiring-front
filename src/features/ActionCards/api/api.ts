@@ -43,8 +43,17 @@ export const getOrganizationsQuery = createQuery({
   }),
 })
 
+export const refreshInvitation = createQuery({
+  effect: createCommonRequestFx<InvitationCreate, void>((body) => ({
+    url: '/invitations/refresh-invitation',
+    method: 'PATCH',
+    body,
+  })),
+})
+
 attachAuthHandler(createGroupQuery)
 attachAuthHandler(createInvitation)
 attachAuthHandler(createOrganizationQuery)
 attachAuthHandler(getGroupsQuery)
 attachAuthHandler(getOrganizationsQuery)
+attachAuthHandler(refreshInvitation)

@@ -207,7 +207,7 @@ const Invitations = () => {
 }
 
 const formatDate = (dateString: string) => {
-  return dayjs(dateString).format('DD.MM.YYYY HH:mm')
+  return dayjs(dateString).format('DD.MM.YYYY')
 }
 
 // eslint-disable-next-line import/no-default-export

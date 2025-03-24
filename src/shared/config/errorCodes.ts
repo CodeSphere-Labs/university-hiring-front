@@ -28,6 +28,7 @@ export const ErrorMessages = {
   invalid_invitation: 'Недействительное приглашение',
   invintation_used: 'Приглашение уже использовано',
   invintation_expired: 'Срок действия приглашения истек',
+  invitation_not_found: 'Приглашение не найдено',
 
   // Organization related
   organization_not_found: 'Организация не найдена',
