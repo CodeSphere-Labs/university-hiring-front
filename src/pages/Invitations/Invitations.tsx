@@ -2,6 +2,7 @@ import {
   Badge,
   Flex,
   Group,
+  Menu,
   Paper,
   SegmentedControl,
   Stack,
@@ -9,7 +10,7 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core'
-import { IconCheck, IconX } from '@tabler/icons-react'
+import { IconCheck, IconRefresh, IconTrash, IconX } from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import { useUnit } from 'effector-react'
 import { DataTable, DataTableColumn } from 'mantine-datatable'
@@ -30,9 +31,11 @@ import {
   $page,
   $recordsPerPage,
   $status,
+  deletedInvitation,
   filterChanged,
   pageChanged,
   recordsPerPageChanged,
+  refreshedInvitation,
   statusChanged,
 } from './model'
 import classes from './styles.module.css'
@@ -90,6 +93,11 @@ const Invitations = () => {
       accessor: 'createdAt',
       title: 'Дата создания',
       render: (invitation) => formatDate(invitation.createdAt),
+    },
+    {
+      accessor: 'updatedAt',
+      title: 'Дата обновления',
+      render: (invitation) => formatDate(invitation.updatedAt),
     },
     {
       accessor: 'expiresAt',
@@ -197,12 +205,55 @@ const Invitations = () => {
         onRecordsPerPageChange={recordsPerPageChanged}
         noRecordsText="Пусто"
         loadingText="Загрузка данных..."
+        onRowClick={(record) => console.log(record)}
         paginationText={({ from, to, totalRecords }) =>
           `${from}-${to} из ${totalRecords}`
         }
         className={classes.table}
+        rowFactory={({ record, children }) => (
+          <DropdownMenu record={record}>{children}</DropdownMenu>
+        )}
       />
     </Stack>
+  )
+}
+
+const DropdownMenu = ({
+  record,
+  children,
+}: {
+  record: Invitation
+  children: React.ReactNode
+}) => {
+  const status = useUnit($status)
+
+  const actions = [
+    status === 'expired' && (
+      <Menu.Item
+        key="refresh"
+        leftSection={<IconRefresh size={14} />}
+        onClick={() => refreshedInvitation(record.id)}
+      >
+        Обновить приглашение
+      </Menu.Item>
+    ),
+    <Menu.Item
+      key="delete"
+      leftSection={<IconTrash size={14} />}
+      color="red"
+      onClick={() => deletedInvitation(record.id)}
+    >
+      Удалить приглашение
+    </Menu.Item>,
+  ].filter(Boolean)
+
+  return (
+    <Menu position="bottom-start">
+      <Menu.Target>
+        <tr>{children}</tr>
+      </Menu.Target>
+      {actions.length > 0 && <Menu.Dropdown>{actions}</Menu.Dropdown>}
+    </Menu>
   )
 }
 

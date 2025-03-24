@@ -1,12 +1,5 @@
 import { modals } from '@mantine/modals'
-import {
-  combine,
-  createEffect,
-  createEvent,
-  createStore,
-  merge,
-  sample,
-} from 'effector'
+import { createEffect, createEvent, createStore, sample } from 'effector'
 import { createForm } from 'effector-forms'
 
 import { RenewInvite } from '@/features/ActionCards/InviteUser/RenewInvite'

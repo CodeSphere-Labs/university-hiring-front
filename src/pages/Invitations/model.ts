@@ -7,10 +7,18 @@ import {
   InvitationParams,
   InvitationStatus,
 } from '@/shared/api/types'
+import {
+  showError,
+  showSuccessNotificationFx,
+} from '@/shared/notifications/model'
 import { controls, routes } from '@/shared/routing/index'
 import { $user, chainAuthorized, chainRole } from '@/shared/session/model'
 
-import { getInvitationsQuery } from './api'
+import {
+  deleteInvitationQuery,
+  getInvitationsQuery,
+  refreshInvitationQuery,
+} from './api'
 
 const DEFAULT_FILTER = 'createdByMe'
 const DEFAULT_STATUS = 'all'
@@ -35,6 +43,9 @@ export const recordsPerPageChanged = createEvent<number>()
 export const filterChanged = createEvent<InvitationFilter>()
 export const statusChanged = createEvent<InvitationStatus>()
 
+export const deletedInvitation = createEvent<number>()
+export const refreshedInvitation = createEvent<number>()
+
 export const $invitations = createStore<InvintationResponse>({
   data: [],
   meta: {
@@ -45,6 +56,20 @@ export const $invitations = createStore<InvintationResponse>({
   },
 })
 $invitations.on(getInvitationsQuery.finished.success, (_, { result }) => result)
+$invitations.on(
+  deleteInvitationQuery.finished.success,
+  (state, { result }) => ({
+    ...state,
+    data: state.data.filter((invitation) => invitation.id !== result.id),
+  }),
+)
+$invitations.on(
+  refreshInvitationQuery.finished.success,
+  (state, { result }) => ({
+    ...state,
+    data: state.data.filter((invitation) => invitation.id !== result.id),
+  }),
+)
 
 export const $loading = getInvitationsQuery.$pending.map((pending) => pending)
 
@@ -140,4 +165,40 @@ sample({
     limit: recordsPerPage,
   }),
   target: getInvitationsQuery.start,
+})
+
+sample({
+  clock: deletedInvitation,
+  target: deleteInvitationQuery.start,
+})
+
+sample({
+  clock: deleteInvitationQuery.finished.success,
+  target: showSuccessNotificationFx.prepend(() => ({
+    title: 'Приглашение удалено',
+    message: 'Приглашение успешно удалено',
+  })),
+})
+
+sample({
+  clock: deleteInvitationQuery.finished.failure,
+  target: showError('Не удалось удалить приглашение'),
+})
+
+sample({
+  clock: refreshedInvitation,
+  target: refreshInvitationQuery.start,
+})
+
+sample({
+  clock: refreshInvitationQuery.finished.success,
+  target: showSuccessNotificationFx.prepend(() => ({
+    title: 'Приглашение обновлено',
+    message: 'Приглашение успешно обновлено',
+  })),
+})
+
+sample({
+  clock: refreshInvitationQuery.finished.failure,
+  target: showError('Не удалось обновить приглашение'),
 })

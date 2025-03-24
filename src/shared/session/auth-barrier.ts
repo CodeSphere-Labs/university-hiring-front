@@ -1,5 +1,5 @@
 import { Query } from '@farfetched/core'
-import { createEffect, createEvent, sample } from 'effector'
+import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { refreshQuery } from '@/shared/session/refresh'
 
@@ -9,8 +9,9 @@ export const retryLastRequest = createEvent<{
 }>()
 
 const retryRequestFx = createEffect(
-  ({ query, params }: { query: Query<any, any, any>; params: any }) =>
-    query.start(params),
+  ({ query, params }: { query: Query<any, any, any>; params: any }) => {
+    return query.start(params)
+  },
 )
 
 sample({
@@ -25,10 +26,17 @@ sample({
 })
 
 export function attachAuthHandler(query: Query<any, any, any>) {
+  const $retryCount = createStore(0)
+
+  $retryCount
+    .on(retryLastRequest, (state) => state + 1)
+    .reset(query.finished.success)
+
   sample({
     clock: query.finished.failure,
-    filter: (failure) => failure.error.status === 403,
-    fn: (failure) => ({
+    source: $retryCount,
+    filter: (count, failure) => failure.error.status === 403 && count < 1,
+    fn: (_, failure) => ({
       query,
       params: failure.params,
     }),
