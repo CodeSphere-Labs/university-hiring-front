@@ -120,6 +120,7 @@ export interface InvintationResponse {
 export interface InvitationParams {
   filter: InvitationFilter
   status: InvitationStatus
+  search?: string
   page?: number
   limit?: number
 }

@@ -7,10 +7,17 @@ import {
   SegmentedControl,
   Stack,
   Text,
+  TextInput,
   Title,
   Tooltip,
 } from '@mantine/core'
-import { IconCheck, IconRefresh, IconTrash, IconX } from '@tabler/icons-react'
+import {
+  IconCheck,
+  IconRefresh,
+  IconTrash,
+  IconX,
+  IconSearch,
+} from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import { useUnit } from 'effector-react'
 import { DataTable, DataTableColumn } from 'mantine-datatable'
@@ -30,27 +37,38 @@ import {
   $loading,
   $page,
   $recordsPerPage,
+  $search,
   $status,
   deletedInvitation,
   filterChanged,
   pageChanged,
   recordsPerPageChanged,
   refreshedInvitation,
+  searchChanged,
   statusChanged,
 } from './model'
 import classes from './styles.module.css'
 
 const Invitations = () => {
-  const [invitations, loading, page, recordsPerPage, filter, status, user] =
-    useUnit([
-      $invitations,
-      $loading,
-      $page,
-      $recordsPerPage,
-      $filter,
-      $status,
-      $user,
-    ])
+  const [
+    invitations,
+    loading,
+    page,
+    recordsPerPage,
+    filter,
+    status,
+    user,
+    search,
+  ] = useUnit([
+    $invitations,
+    $loading,
+    $page,
+    $recordsPerPage,
+    $filter,
+    $status,
+    $user,
+    $search,
+  ])
 
   const isAdmin = user?.role === 'ADMIN'
 
@@ -185,6 +203,16 @@ const Invitations = () => {
           </Group>
         </Stack>
       </Paper>
+
+      <TextInput
+        leftSectionPointerEvents="none"
+        leftSection={<IconSearch size={16} />}
+        label="Поиск"
+        placeholder="Поиск"
+        description="Поиск по email"
+        value={search}
+        onChange={(e) => searchChanged(e.target.value)}
+      />
 
       <DataTable
         minHeight={180}
