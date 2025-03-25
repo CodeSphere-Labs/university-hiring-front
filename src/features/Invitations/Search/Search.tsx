@@ -4,7 +4,7 @@ import { useUnit } from 'effector-react'
 
 import { $search, searchChanged } from './model'
 
-export const Search = () => {
+export const InvitationsSearch = () => {
   const search = useUnit($search)
 
   return (

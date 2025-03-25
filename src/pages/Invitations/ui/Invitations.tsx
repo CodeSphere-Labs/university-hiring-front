@@ -1,6 +1,6 @@
 import { Stack, Title } from '@mantine/core'
 
-import { Filters, Search } from '@/features/Invitations'
+import { InvitationsFilters, InvitationsSearch } from '@/features/Invitations'
 import { InvitationsTable } from '@/widgets'
 
 const Invitations = () => {
@@ -10,8 +10,8 @@ const Invitations = () => {
         Приглашения
       </Title>
 
-      <Filters />
-      <Search />
+      <InvitationsFilters />
+      <InvitationsSearch />
       <InvitationsTable />
     </Stack>
   )

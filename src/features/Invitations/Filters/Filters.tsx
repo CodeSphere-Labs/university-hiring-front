@@ -6,7 +6,7 @@ import { WithRoleCheck } from '@/shared/hoc'
 
 import { $filter, $status, filterChanged, statusChanged } from './model'
 
-export const Filters = () => {
+export const InvitationsFilters = () => {
   const [filter, status] = useUnit([$filter, $status])
 
   return (
