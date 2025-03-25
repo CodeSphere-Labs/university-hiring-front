@@ -123,27 +123,31 @@ function InvitationStats() {
   }
 
   return (
-    <Card radius="md" bg="var(--mantine-color-blue-filled)">
-      <Flex justify="space-between" align="center">
-        <Title c="white" order={3} fw={700}>
-          Статистика приглашений
-        </Title>
-        <WithRoleCheck allowedRoles={['ADMIN']}>
-          <SegmentedControl
-            size="md"
-            data={[
-              { label: 'Созданные мной', value: 'createdByMe' },
-              { label: 'Все', value: 'all' },
-            ]}
-            color="dark"
-            value={filter}
-            onChange={(value) => statsFilterChanged(value as InvitationFilter)}
-          />
-        </WithRoleCheck>
-      </Flex>
-      <SimpleGrid p="xl" pl={0} cols={{ base: 1, sm: 2 }}>
-        {stats}
-      </SimpleGrid>
-    </Card>
+    <WithRoleCheck allowedRoles={['ADMIN', 'UNIVERSITY_STAFF', 'STAFF']}>
+      <Card radius="md" bg="var(--mantine-color-blue-filled)">
+        <Flex justify="space-between" align="center">
+          <Title c="white" order={3} fw={700}>
+            Статистика приглашений
+          </Title>
+          <WithRoleCheck allowedRoles={['ADMIN']}>
+            <SegmentedControl
+              size="md"
+              data={[
+                { label: 'Созданные мной', value: 'createdByMe' },
+                { label: 'Все', value: 'all' },
+              ]}
+              color="dark"
+              value={filter}
+              onChange={(value) =>
+                statsFilterChanged(value as InvitationFilter)
+              }
+            />
+          </WithRoleCheck>
+        </Flex>
+        <SimpleGrid p="xl" pl={0} cols={{ base: 1, sm: 2 }}>
+          {stats}
+        </SimpleGrid>
+      </Card>
+    </WithRoleCheck>
   )
 }
