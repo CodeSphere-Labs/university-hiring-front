@@ -36,7 +36,7 @@ export const Navbar = ({ children }: Props) => {
   const links = useList($links, {
     getKey: (link) => link.label,
     fn(link) {
-      const isActive = useUnit(link.active.$isOpened ?? link.route.$isOpened)
+      const isActive = useUnit(link.active.$isOpened)
 
       return (
         <WithRoleCheck allowedRoles={link.roles}>
