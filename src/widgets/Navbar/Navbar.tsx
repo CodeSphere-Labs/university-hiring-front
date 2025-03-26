@@ -111,8 +111,8 @@ export const Navbar = ({ children }: Props) => {
       <div className={classes.footer}>
         <Button
           fullWidth
-          className={classes.link}
           variant='subtle'
+          color='red'
           loading={pending}
           onClick={() => userLogouted()}
         >
