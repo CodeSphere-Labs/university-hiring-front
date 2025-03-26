@@ -17,7 +17,7 @@ export const validateRules = {
   required: () => ({
     name: 'required',
     validator: (value: string) => Boolean(value),
-    errorText: 'Это поле обязательное'
+    errorText: VALIDATE_MESSAGES.required
   }),
   requiredArray: createRule({
     name: 'requiredArray',
@@ -26,12 +26,12 @@ export const validateRules = {
   requiredObject: () => ({
     name: 'required',
     validator: (value: unknown) => Boolean(value),
-    errorText: 'Это поле обязательное'
+    errorText: VALIDATE_MESSAGES.required
   }),
   email: () => ({
     name: 'email',
     validator: (value: string) => /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/.test(value),
-    errorText: 'Введите корректный email'
+    errorText: VALIDATE_MESSAGES.invalid.email
   }),
   password: createRule<string>({
     name: 'password',
@@ -78,12 +78,12 @@ export const validateRules = {
     validator: (value: string) =>
       // eslint-disable-next-line regexp/no-unused-capturing-group, regexp/no-super-linear-backtracking, regexp/no-misleading-capturing-group
       /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*$/.test(value),
-    errorText: 'Введите корректный URL'
+    errorText: VALIDATE_MESSAGES.invalid.url
   }),
   requiredGroup: () => ({
     name: 'required',
     validator: (value: unknown, { role }: { role: string }) =>
       role === 'STUDENT' ? Boolean(value) : true,
-    errorText: 'Выберите группу'
+    errorText: VALIDATE_MESSAGES.required
   })
 };

@@ -17,6 +17,7 @@ import { useList, useUnit } from 'effector-react';
 
 import type { InvitationFilter } from '@/shared/api/types';
 
+import { AdminActions } from '@/features/ActionCards';
 import { WithRoleCheck } from '@/shared/hoc';
 
 import {
@@ -132,6 +133,7 @@ const InvitationStats = () => {
 const Dashboard = () => {
   return (
     <Stack className='shell_main'>
+      <AdminActions />
       <InvitationStats />
     </Stack>
   );

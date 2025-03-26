@@ -1,8 +1,5 @@
-import { AdminActions } from '@/features/ActionCards'
-
 const Home = () => {
-  return <AdminActions />
-}
+  return <>home</>;
+};
 
- 
-export default Home
+export default Home;
