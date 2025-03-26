@@ -6,7 +6,6 @@ import { Button, Stack, Text } from '@mantine/core';
 import classes from './ActionCard.module.css';
 
 interface ActionCardProps extends ButtonProps {
-  grow?: boolean;
   icon: ReactNode;
   title: string;
   onClick?: () => void;
