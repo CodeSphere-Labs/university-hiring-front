@@ -1,4 +1,4 @@
-import { Role } from '@/shared/api/types'
+import type { Role } from '@/shared/api/types'
 
 const ROLE_OPTIONS = {
   ADMIN: [

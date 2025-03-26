@@ -1,8 +1,9 @@
 import type { FetchError } from 'ofetch'
 
-import { ErrorMessages } from '@/shared/config/errorCodes'
+import type { ErrorMessages } from '@/shared/config/errorCodes'
 
 export interface ErrorResponse extends FetchError {
+  params: unknown
   data?: {
     message: keyof typeof ErrorMessages
   }
@@ -10,12 +11,11 @@ export interface ErrorResponse extends FetchError {
     stopErrorPropagation: boolean
     stale: boolean
   }
-  params: unknown
 }
 
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF'
-export type InvitationStatus = 'all' | 'accept' | 'wait' | 'expired'
-export type InvitationFilter = 'createdByMe' | 'all'
+export type InvitationStatus = 'accept' | 'all' | 'expired' | 'wait'
+export type InvitationFilter = 'all' | 'createdByMe'
 
 export enum OrganizationType {
   COMPANY = 'COMPANY',
@@ -23,25 +23,25 @@ export enum OrganizationType {
 }
 
 export interface User {
-  id: number
-  firstName: string
-  lastName: string
-  patronymic: string
-  email: string
-  avatarUrl: string | null
   aboutMe: string | null
-  telegramLink: string | null
-  vkLink: string | null
-
-  role: Role
+  avatarUrl: string | null
+  createdAt: string
+  email: string
+  favoredBy?: Organization[]
+  firstName: string
+  id: number
+  lastName: string
   organization: Organization | null
+
   organizationId: number | null
+  patronymic: string
+  role: Role
 
   studentProfile: StudentProfile | null
-  favoredBy?: Organization[]
+  telegramLink: string | null
 
-  createdAt: string
   updatedAt: string
+  vkLink: string | null
 }
 
 export interface AuthDto {
@@ -50,61 +50,61 @@ export interface AuthDto {
 }
 
 export interface Project {
+  description: string
+  githubUrl: string
   id: string
   name: string
-  githubUrl: string
-  description: string
-  websiteUrl: string
   technologies: string[]
+  websiteUrl: string
 }
 
 export interface Organization {
-  id: number
-  name: string
-  email: string
-  logoUrl: string | null
-  websiteUrl: string
   about: string
+  email: string
+  id: number
+  logoUrl: string | null
+  name: string
+  websiteUrl: string
 }
 
 export interface Group {
-  id: number
-  name: string
-
   createdAt: string
+  id: number
+
+  name: string
   updatedAt: string
 }
 
 export interface InvitationCreate {
-  organizationId: number
-  groupId?: number
   email: string
+  groupId?: number
+  organizationId: number
   role: Role
 }
 
 export interface InvitationsStats {
+  color: string
   label: string
   stats: number
-  color: string
   status: InvitationStatus
 }
 
 export interface Invitation {
-  id: number
+  createdAt: string
   email: string
+  expiresAt: string
+
+  id: number
+  organization: Organization
+
   role: Role
 
-  organization: Organization
+  updatedAt: string
+  used: boolean
   createdBy: Pick<
     User,
-    'id' | 'firstName' | 'lastName' | 'email' | 'role'
+    'email' | 'firstName' | 'id' | 'lastName' | 'role'
   > | null
-
-  used: boolean
-
-  expiresAt: string
-  createdAt: string
-  updatedAt: string
 }
 
 export interface InvintationResponse {
@@ -119,47 +119,47 @@ export interface InvintationResponse {
 
 export interface InvitationParams {
   filter: InvitationFilter
-  status: InvitationStatus
-  search?: string
-  page?: number
   limit?: number
+  page?: number
+  search?: string
+  status: InvitationStatus
 }
 
 interface StudentProfile {
-  id: number
-  userId: number
-  resume: string | null
-  githubLink: string | null
-  projects: Project[] | null
-
-  group: Group | null
-  skills: string[]
-
   createdAt: string
+  githubLink: string | null
+  group: Group | null
+  id: number
+  opportunityResponses?: OpportunityResponse[]
+
+  projects: Project[] | null
+  resume: string | null
+
+  skills: string[]
   updatedAt: string
 
-  opportunityResponses?: OpportunityResponse[]
+  userId: number
 }
 
 interface Opportunity {
-  id: number
-  title: string
+  createdAt: string
   description: string | null
-  requiredSkills: string[]
-  organizationId: number
+  id: number
   organization: Organization
+  organizationId: number
+  requiredSkills: string[]
   responses: OpportunityResponse[]
 
-  createdAt: string
   status: 'active' | 'inactive'
+  title: string
 }
 
 interface OpportunityResponse {
-  id: number
-  studentId: number
-  student: StudentProfile
-  opportunityId: number
-  opportunity: Opportunity
-  createdAt: string
   coverLetter: string | null
+  createdAt: string
+  id: number
+  opportunity: Opportunity
+  opportunityId: number
+  student: StudentProfile
+  studentId: number
 }

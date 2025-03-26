@@ -1,24 +1,27 @@
+import type {
+  IconProps} from '@tabler/icons-react';
+import type { RouteInstance } from 'atomic-router'
+
 import {
   IconBriefcase,
   IconHome,
   IconLayoutDashboard,
   IconMail,
-  IconProps,
   IconUser,
   IconUsers,
 } from '@tabler/icons-react'
-import { RouteInstance } from 'atomic-router'
 import { createStore } from 'effector'
 
-import { Role } from '@/shared/api/types'
+import type { Role } from '@/shared/api/types'
+
 import { routes } from '@/shared/routing'
 
 interface Link {
-  route: RouteInstance<any>
-  label: string
-  icon: React.FC<IconProps>
   active: RouteInstance<any>
+  icon: React.FC<IconProps>
+  label: string
   roles: Role[]
+  route: RouteInstance<any>
 }
 
 export const $links = createStore<Link[]>([

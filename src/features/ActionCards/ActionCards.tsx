@@ -1,54 +1,43 @@
-import { Flex } from '@mantine/core'
-import {
-  IconBuildingCommunity,
-  IconSchool,
-  IconUserPlus,
-  IconUsers,
-} from '@tabler/icons-react'
+import { Flex } from '@mantine/core';
+import { IconBuildingCommunity, IconSchool, IconUserPlus, IconUsers } from '@tabler/icons-react';
 
-import { WithRoleCheck } from '@/shared/hoc'
-import { ActionCard } from '@/shared/ui/ActionCard'
+import { WithRoleCheck } from '@/shared/hoc';
+import { ActionCard } from '@/shared/ui/ActionCard';
 
-import { modalOpened as createGroupModalOpened } from './CreateGroup/model'
-import { modalOpened as createOrganizationModalOpened } from './CreateOrganization/model'
-import { modalOpened as inviteUserModalOpened } from './InviteUser/model'
+import { modalOpened as createGroupModalOpened } from './CreateGroup/model';
+import { modalOpened as createOrganizationModalOpened } from './CreateOrganization/model';
+import { modalOpened as inviteUserModalOpened } from './InviteUser/model';
 
 export const AdminActions = () => {
   return (
-    <Flex className="shell_main" w="100%" wrap="wrap" gap="md">
+    <Flex className='shell_main' gap='md' w='100%' wrap='wrap'>
       <WithRoleCheck allowedRoles={['ADMIN', 'STAFF', 'UNIVERSITY_STAFF']}>
         <ActionCard
+          title='Пригласить пользователя'
           icon={<IconUserPlus size={28} />}
-          title="Пригласить пользователя"
           onClick={() => inviteUserModalOpened()}
         />
       </WithRoleCheck>
 
       <WithRoleCheck allowedRoles={['ADMIN', 'STAFF', 'UNIVERSITY_STAFF']}>
         <ActionCard
+          title='Создать учебную группу'
           icon={<IconUsers size={28} />}
-          title="Создать учебную группу"
           onClick={() => createGroupModalOpened()}
         />
       </WithRoleCheck>
 
       <WithRoleCheck allowedRoles={['ADMIN', 'UNIVERSITY_STAFF']}>
         <ActionCard
+          title='Создать организацию'
           icon={<IconBuildingCommunity size={28} />}
-          title="Создать организацию"
           onClick={() => createOrganizationModalOpened()}
         />
       </WithRoleCheck>
 
       <WithRoleCheck allowedRoles={['ADMIN', 'STAFF']}>
-        <ActionCard
-          icon={<IconSchool size={28} />}
-          title="Создать вакансию"
-          onClick={() => {
-            console.log('Создать вакансию')
-          }}
-        />
+        <ActionCard title='Создать вакансию' icon={<IconSchool size={28} />} />
       </WithRoleCheck>
     </Flex>
-  )
-}
+  );
+};

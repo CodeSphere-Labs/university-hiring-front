@@ -9,13 +9,13 @@ export const InvitationsSearch = () => {
 
   return (
     <TextInput
-      leftSectionPointerEvents="none"
-      leftSection={<IconSearch size={16} />}
       label="Поиск"
-      placeholder="Поиск"
-      description="Поиск по email"
       value={search}
+      description="Поиск по email"
+      leftSection={<IconSearch size={16} />}
+      leftSectionPointerEvents="none"
       onChange={(e) => searchChanged(e.target.value)}
+      placeholder="Поиск"
     />
   )
 }

@@ -1,7 +1,9 @@
-import { createEffect } from 'effector'
-import { type FetchOptions, ofetch } from 'ofetch'
+import type {FetchOptions} from 'ofetch';
 
-import { ErrorResponse } from '@/shared/api/types'
+import { createEffect } from 'effector'
+import {  ofetch } from 'ofetch'
+
+import type { ErrorResponse } from '@/shared/api/types'
 
 type CreateRequestParams = FetchOptions & {
   url: string

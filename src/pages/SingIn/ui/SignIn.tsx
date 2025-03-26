@@ -1,3 +1,5 @@
+import type { FormEvent } from 'react'
+
 import {
   Anchor,
   Button,
@@ -10,9 +12,9 @@ import {
 } from '@mantine/core'
 import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
-import { FormEvent } from 'react'
 
 import { $pending, loginForm } from '../model/model'
+
 import classes from './SignIn.module.css'
 
 const SignIn = () => {
@@ -25,52 +27,52 @@ const SignIn = () => {
   }
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" className={classes.title}>
+    <Container my={40} size={420}>
+      <Title className={classes.title} ta="center">
         Приветствуем вас 🤗
       </Title>
 
       <Paper
-        onSubmit={onSubmit}
-        component="form"
-        withBorder
-        shadow="md"
-        p={30}
         mt={30}
+        p={30}
         radius="md"
+        component="form"
+        onSubmit={onSubmit}
+        shadow="md"
+        withBorder
       >
         <TextInput
-          error={fields.email.errorText()}
+          required
+          disabled={pending}
           label="Почта"
           value={fields.email.value}
-          disabled={pending}
+          error={fields.email.errorText()}
           onChange={(e) => fields.email.onChange(e.target.value)}
           placeholder="you@yandex.ru"
-          required
         />
         <PasswordInput
-          error={fields.password.errorText()}
-          label="Пароль"
-          placeholder="Введите пароль"
           required
+          disabled={pending}
+          label="Пароль"
           mt="md"
           value={fields.password.value}
-          disabled={pending}
+          error={fields.password.errorText()}
           onChange={(e) => fields.password.onChange(e.target.value)}
+          placeholder="Введите пароль"
         />
 
         <Button
-          loading={pending}
-          disabled={!eachValid}
-          type="submit"
           fullWidth
+          disabled={!eachValid}
           mt="xl"
+          type="submit"
+          loading={pending}
         >
           Войти
         </Button>
 
         <Group justify="center" mt="lg">
-          <Anchor component="button" size="sm">
+          <Anchor size="sm" component="button">
             Забыли пароль?
           </Anchor>
         </Group>
@@ -79,5 +81,5 @@ const SignIn = () => {
   )
 }
 
-// eslint-disable-next-line import/no-default-export
+ 
 export default SignIn

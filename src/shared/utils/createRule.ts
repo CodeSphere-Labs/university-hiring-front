@@ -1,5 +1,5 @@
-import { Rule } from 'effector-forms'
-import * as yup from 'yup'
+import type { Rule } from 'effector-forms'
+import type * as yup from 'yup'
 
 export function createRule<V, T = any>({
   schema,

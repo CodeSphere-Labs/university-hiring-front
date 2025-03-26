@@ -6,7 +6,7 @@ import { InvitationsTable } from '@/widgets'
 const Invitations = () => {
   return (
     <Stack className="shell_main">
-      <Title order={2} mb="md">
+      <Title mb="md" order={2}>
         Приглашения
       </Title>
 
@@ -17,5 +17,5 @@ const Invitations = () => {
   )
 }
 
-// eslint-disable-next-line import/no-default-export
+ 
 export default Invitations

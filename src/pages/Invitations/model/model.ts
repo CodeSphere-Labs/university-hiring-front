@@ -1,6 +1,13 @@
 import { querySync } from 'atomic-router'
 import { createEvent, createStore, sample } from 'effector'
 
+import type {
+  InvintationResponse,
+  InvitationFilter,
+  InvitationParams,
+  InvitationStatus,
+} from '@/shared/api/types'
+
 import {
   $filter,
   $status,
@@ -13,12 +20,6 @@ import {
   $search,
   debouncedSearchChanged,
 } from '@/features/Invitations/Search/model'
-import {
-  InvintationResponse,
-  InvitationFilter,
-  InvitationParams,
-  InvitationStatus,
-} from '@/shared/api/types'
 import { controls, routes } from '@/shared/routing/index'
 import { $user, chainAuthorized, chainRole } from '@/shared/session/model'
 

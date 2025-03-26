@@ -1,8 +1,8 @@
 {
   "name": "university-hiring",
-  "private": true,
-  "version": "0.1.0",
   "type": "module",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -41,10 +41,9 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
+    "@zeroqs/eslint": "^1.2.6",
+    "@zeroqs/prettier": "^2.0.0",
     "effector-logger": "^0.15.0",
-    "eslint": "^8.41.0",
-    "eslint-kit": "^10.0.0",
-    "eslint-plugin-react-refresh": "^0.4.4",
     "husky": "^8.0.0",
     "postcss": "^8.4.47",
     "postcss-preset-mantine": "^1.17.0",

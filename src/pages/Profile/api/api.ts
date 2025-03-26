@@ -1,7 +1,8 @@
 import { createQuery } from '@farfetched/core'
 
+import type { Project, User } from '@/shared/api/types'
+
 import { createCommonRequestFx } from '@/shared/api/requests'
-import { Project, User } from '@/shared/api/types'
 import { attachAuthHandler } from '@/shared/session/auth-barrier'
 
 export const addProjectQuery = createQuery({

@@ -11,14 +11,14 @@ export const CreateGroup = () => {
   return (
     <Stack>
       <TextInput
-        label="Название группы"
-        placeholder="Введите название группы"
-        description="Название учебной группы"
         required
         disabled={loading}
-        error={fields.name.errorText()}
+        label="Название группы"
         value={fields.name.value}
+        description="Название учебной группы"
+        error={fields.name.errorText()}
         onChange={(e) => fields.name.onChange(e.target.value)}
+        placeholder="Введите название группы"
       />
     </Stack>
   )

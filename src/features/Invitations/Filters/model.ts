@@ -1,6 +1,6 @@
 import { createEvent, createStore } from 'effector'
 
-import { InvitationFilter, InvitationStatus } from '@/shared/api/types'
+import type { InvitationFilter, InvitationStatus } from '@/shared/api/types'
 
 export const DEFAULT_FILTER = 'createdByMe'
 export const DEFAULT_STATUS = 'all'

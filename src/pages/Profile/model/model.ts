@@ -1,76 +1,66 @@
-import { createEvent, createStore, sample } from 'effector'
-import { createForm, ValidationEvent } from 'effector-forms'
+import type { ValidationEvent } from 'effector-forms';
 
-import { validateRules } from '@/shared/config/validateRules'
-import {
-  showError,
-  showSuccessNotificationFx,
-} from '@/shared/notifications/model'
-import { routes } from '@/shared/routing/index'
-import { sessionQuery } from '@/shared/session/api'
-import { $user, chainAuthorized } from '@/shared/session/model'
+import { createEvent, createStore, sample } from 'effector';
+import { createForm } from 'effector-forms';
 
-import {
-  deleteProjectQuery,
-  getAvailableGroupedSkillsQuery,
-  updateUserQuery,
-} from '../api/api'
+import { validateRules } from '@/shared/config/validateRules';
+import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
+import { routes } from '@/shared/routing/index';
+import { sessionQuery } from '@/shared/session/api';
+import { $user, chainAuthorized } from '@/shared/session/model';
 
-export const currentRoute = routes.profile
+import { deleteProjectQuery, getAvailableGroupedSkillsQuery, updateUserQuery } from '../api/api';
+
+export const currentRoute = routes.profile;
 export const authorizedRoute = chainAuthorized(currentRoute, {
-  otherwise: routes.signIn.open,
-})
+  otherwise: routes.signIn.open
+});
 
-export const $availableGroupedSkills = createStore<string[]>([])
-export const $availableGroupedSkillsLoading =
-  getAvailableGroupedSkillsQuery.$pending.map((pending) => pending)
+export const $availableGroupedSkills = createStore<string[]>([]);
+export const $availableGroupedSkillsLoading = getAvailableGroupedSkillsQuery.$pending.map(
+  (pending) => pending
+);
 $availableGroupedSkills.on(
   getAvailableGroupedSkillsQuery.finished.success,
-  (_, { result }) => result,
-)
-export const $updateProfileLoading = updateUserQuery.$pending.map(
-  (pending) => pending,
-)
+  (_, { result }) => result
+);
+export const $updateProfileLoading = updateUserQuery.$pending.map((pending) => pending);
 
-export const profileSaved = createEvent()
-export const projectDeleted = createEvent<string>()
-$user.on(deleteProjectQuery.finished.success, (_, { result }) => result)
+export const profileSaved = createEvent();
+export const projectDeleted = createEvent<string>();
+$user.on(deleteProjectQuery.finished.success, (_, { result }) => result);
 
 export const baseForm = createForm({
   fields: createBaseFields(),
-  validateOn: ['submit'] as ValidationEvent[],
-})
+  validateOn: ['submit'] as ValidationEvent[]
+});
 
 export const studentForm = createForm({
   fields: createStudentFields(),
-  validateOn: ['submit'] as ValidationEvent[],
-})
+  validateOn: ['submit'] as ValidationEvent[]
+});
 
 export const companyForm = createForm({
   fields: createCompanyFields(),
-  validateOn: ['submit'] as ValidationEvent[],
-})
+  validateOn: ['submit'] as ValidationEvent[]
+});
 
 sample({
   clock: authorizedRoute.opened,
-  target: getAvailableGroupedSkillsQuery.start,
-})
+  target: getAvailableGroupedSkillsQuery.start
+});
 
 sample({
-  clock: [
-    baseForm.formValidated,
-    studentForm.formValidated,
-    companyForm.formValidated,
-  ],
+  clock: [baseForm.formValidated, studentForm.formValidated, companyForm.formValidated],
   fn: (values) => {
     if ('group' in values) {
-      const { group, ...rest } = values
-      return rest
+      const { group, ...rest } = values;
+      return rest;
     }
-    return values
+    return values;
   },
-  target: updateUserQuery.start,
-})
+  target: updateUserQuery.start
+});
 
 sample({
   clock: [sessionQuery.finished.success, updateUserQuery.finished.success],
@@ -82,8 +72,8 @@ sample({
       email: result.email,
       aboutMe: result.aboutMe || '',
       telegramLink: result.telegramLink || '',
-      vkLink: result.vkLink || '',
-    }
+      vkLink: result.vkLink || ''
+    };
 
     if (result.role === 'STUDENT') {
       return {
@@ -91,8 +81,8 @@ sample({
         group: result.studentProfile?.group?.name || '',
         githubLink: result.studentProfile?.githubLink || '',
         resume: result.studentProfile?.resume || null,
-        skills: result.studentProfile?.skills || [],
-      }
+        skills: result.studentProfile?.skills || []
+      };
     }
 
     // if (result.role === 'STAFF') {
@@ -102,82 +92,78 @@ sample({
     //     position: result.companyProfile?.position || '',
     //   }
     // }
-    return baseData
+    return baseData;
   },
-  target: [
-    baseForm.setInitialForm,
-    studentForm.setInitialForm,
-    companyForm.setInitialForm,
-  ],
-})
+  target: [baseForm.setInitialForm, studentForm.setInitialForm, companyForm.setInitialForm]
+});
 
 sample({
   clock: updateUserQuery.finished.failure,
-  target: showError('Ошибка при обновлении профиля'),
-})
+  target: showError('Ошибка при обновлении профиля')
+});
 
 sample({
   clock: updateUserQuery.finished.success,
   target: showSuccessNotificationFx.prepend(() => ({
     title: 'Профиль обновлен',
-    message: 'Ваши данные успешно сохранены',
-  })),
-})
+    message: 'Ваши данные успешно сохранены'
+  }))
+});
 
 sample({
   clock: projectDeleted,
-  target: deleteProjectQuery.start,
-})
+  target: deleteProjectQuery.start
+});
 
 sample({
   clock: deleteProjectQuery.finished.success,
   target: showSuccessNotificationFx.prepend(() => ({
     title: 'Проект удален',
-    message: 'Проект успешно удален',
-  })),
-})
+    message: 'Проект успешно удален'
+  }))
+});
 
 sample({
   clock: deleteProjectQuery.finished.failure,
-  target: showError('Ошибка при удалении проекта'),
-})
+  target: showError('Ошибка при удалении проекта')
+});
 
 function createBaseFields() {
   return {
     firstName: {
       init: '',
       rules: [validateRules.required()],
-      validateOn: ['change'] as ValidationEvent[],
+      validateOn: ['change'] as ValidationEvent[]
     },
     lastName: {
       init: '',
       rules: [validateRules.required()],
-      validateOn: ['change'] as ValidationEvent[],
+      validateOn: ['change'] as ValidationEvent[]
     },
     patronymic: {
       init: '',
       rules: [validateRules.required()],
-      validateOn: ['change'] as ValidationEvent[],
+      validateOn: ['change'] as ValidationEvent[]
     },
     email: {
       init: '',
-      rules: [validateRules.required(), validateRules.email()],
+      rules: [validateRules.required(), validateRules.email()]
     },
     aboutMe: {
       init: '',
-      rules: [validateRules.required()],
+      rules: [validateRules.required()]
     },
     telegramLink: {
       init: '',
       rules: [validateRules.telegramLink()],
-      validateOn: ['change'] as ValidationEvent[],
+      validateOn: ['change'] as ValidationEvent[]
     },
     vkLink: {
       init: '',
       rules: [validateRules.vkLink()],
-      validateOn: ['change'] as ValidationEvent[],
-    },
-  }
+      validateOn: ['change'] as ValidationEvent[]
+    }
+  };
 }
 
 function createStudentFields() {
@@ -185,22 +171,22 @@ function createStudentFields() {
     ...createBaseFields(),
     group: {
       init: '',
-      rules: [validateRules.required()],
+      rules: [validateRules.required()]
     },
     githubLink: {
       init: '',
       rules: [validateRules.required(), validateRules.gitHubUserLink()],
-      validateOn: ['change'] as ValidationEvent[],
+      validateOn: ['change'] as ValidationEvent[]
     },
     resume: {
       init: '',
-      rules: [validateRules.required()],
+      rules: [validateRules.required()]
     },
     skills: {
       init: [] as string[],
-      rules: [validateRules.requiredArray()],
-    },
-  }
+      rules: [validateRules.requiredArray()]
+    }
+  };
 }
 
 function createCompanyFields() {
@@ -208,22 +194,22 @@ function createCompanyFields() {
     ...createBaseFields(),
     companyName: {
       init: '',
-      rules: [validateRules.required()],
+      rules: [validateRules.required()]
     },
     position: {
       init: '',
-      rules: [validateRules.required()],
-    },
-  }
+      rules: [validateRules.required()]
+    }
+  };
 }
 
 export function getFormByRole(role: string) {
   switch (role) {
     case 'STUDENT':
-      return studentForm
+      return studentForm;
     case 'COMPANY':
-      return companyForm
+      return companyForm;
     default:
-      return baseForm
+      return baseForm;
   }
 }

@@ -1,49 +1,48 @@
-import { modals } from '@mantine/modals'
-import { createEffect, createEvent, sample } from 'effector'
-import { createForm } from 'effector-forms'
+import { modals } from '@mantine/modals';
+import { createEffect, createEvent, sample } from 'effector';
+import { createForm } from 'effector-forms';
 
-import { validateRules } from '@/shared/config/validateRules'
-import { showSuccessNotificationFx } from '@/shared/notifications/model'
-import { $user } from '@/shared/session/model'
+import { validateRules } from '@/shared/config/validateRules';
+import { showSuccessNotificationFx } from '@/shared/notifications/model';
+import { $user } from '@/shared/session/model';
 
-import { addProjectQuery } from '../api/api'
-import { AddProjectModal } from '../ui/AddProjectModal/AddProjectModal'
-import classes from '../ui/AddProjectModal/AddProjectModal.module.css'
+import { addProjectQuery } from '../api/api';
+import { AddProjectModal } from '../ui/AddProjectModal/AddProjectModal';
 
-export const projectModalOpened = createEvent()
+import classes from '../ui/AddProjectModal/AddProjectModal.module.css';
 
-export const $addProjectLoading = addProjectQuery.$pending.map(
-  (pending) => pending,
-)
+export const projectModalOpened = createEvent();
+
+export const $addProjectLoading = addProjectQuery.$pending.map((pending) => pending);
 
 export const projectForm = createForm({
   fields: {
     name: {
       init: '',
-      rules: [validateRules.required()],
+      rules: [validateRules.required()]
     },
     githubUrl: {
       init: '',
-      rules: [validateRules.required(), validateRules.gitHubRepoLink()],
+      rules: [validateRules.required(), validateRules.gitHubRepoLink()]
     },
     description: {
       init: '',
-      rules: [validateRules.required()],
+      rules: [validateRules.required()]
     },
     websiteUrl: {
-      init: '',
+      init: ''
     },
     technologies: {
       init: [] as string[],
-      rules: [validateRules.requiredArray()],
-    },
+      rules: [validateRules.requiredArray()]
+    }
   },
-  validateOn: ['submit'],
-})
+  validateOn: ['submit']
+});
 
 const projectModalConfirmFx = createEffect(() => {
-  projectForm.submit()
-})
+  projectForm.submit();
+});
 
 const openModalFx = createEffect(() =>
   modals.openConfirmModal({
@@ -55,24 +54,24 @@ const openModalFx = createEffect(() =>
     size: 'lg',
     zIndex: 1002,
     classNames: {
-      inner: classes.modalInner,
-    },
-  }),
-)
+      inner: classes.modalInner
+    }
+  })
+);
 
 const projectModalCloseFx = createEffect<string, void, Error>((id) => {
-  modals.close(id)
-})
+  modals.close(id);
+});
 
 sample({
   clock: projectModalOpened,
-  target: [projectForm.reset, openModalFx],
-})
+  target: [projectForm.reset, openModalFx]
+});
 
 sample({
   clock: projectForm.formValidated,
-  target: addProjectQuery.start,
-})
+  target: addProjectQuery.start
+});
 
 sample({
   clock: addProjectQuery.finished.success,
@@ -81,9 +80,9 @@ sample({
     projectModalCloseFx,
     showSuccessNotificationFx.prepend(() => ({
       title: 'Проект добавлен',
-      message: 'Проект успешно добавлен',
-    })),
-  ],
-})
+      message: 'Проект успешно добавлен'
+    }))
+  ]
+});
 
-$user.on(addProjectQuery.finished.success, (_, { result }) => result)
+$user.on(addProjectQuery.finished.success, (_, { result }) => result);

@@ -1,7 +1,8 @@
 import { createQuery } from '@farfetched/core'
 
+import type { Group, InvitationCreate, Organization } from '@/shared/api/types'
+
 import { createCommonRequestFx } from '@/shared/api/requests'
-import { Group, InvitationCreate, Organization } from '@/shared/api/types'
 import { attachAuthHandler } from '@/shared/session/auth-barrier'
 
 export const createGroupQuery = createQuery({

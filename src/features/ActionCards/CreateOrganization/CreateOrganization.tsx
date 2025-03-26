@@ -11,45 +11,45 @@ export const CreateOrganization = () => {
   return (
     <Stack>
       <TextInput
-        label="Название организации"
-        description="Введите название организации"
-        value={fields.name.value}
-        onChange={(e) => fields.name.onChange(e.target.value)}
-        error={fields.name.errorText()}
         required
         disabled={loading}
+        label="Название организации"
+        value={fields.name.value}
+        description="Введите название организации"
+        error={fields.name.errorText()}
+        onChange={(e) => fields.name.onChange(e.target.value)}
       />
       <Flex gap="md" wrap={{ base: 'wrap', sm: 'nowrap' }}>
         <TextInput
-          label="Ссылка на сайт"
-          description="Введите ссылку на сайт"
-          w={{ base: '100%', sm: '50%' }}
-          value={fields.websiteUrl.value}
-          onChange={(e) => fields.websiteUrl.onChange(e.target.value)}
-          error={fields.websiteUrl.errorText()}
           required
           disabled={loading}
+          label="Ссылка на сайт"
+          value={fields.websiteUrl.value}
+          w={{ base: '100%', sm: '50%' }}
+          description="Введите ссылку на сайт"
+          error={fields.websiteUrl.errorText()}
+          onChange={(e) => fields.websiteUrl.onChange(e.target.value)}
         />
         <TextInput
-          label="Почта организации"
-          description="Введите почту организации"
-          placeholder="example@mail.ru"
-          w={{ base: '100%', sm: '50%' }}
-          value={fields.email.value}
-          onChange={(e) => fields.email.onChange(e.target.value)}
-          error={fields.email.errorText()}
           required
           disabled={loading}
+          label="Почта организации"
+          value={fields.email.value}
+          w={{ base: '100%', sm: '50%' }}
+          description="Введите почту организации"
+          error={fields.email.errorText()}
+          onChange={(e) => fields.email.onChange(e.target.value)}
+          placeholder="example@mail.ru"
         />
       </Flex>
       <Textarea
-        label="Описание организации"
-        description="Введите описание организации"
-        value={fields.about.value}
-        onChange={(e) => fields.about.onChange(e.target.value)}
-        error={fields.about.errorText()}
         required
         disabled={loading}
+        label="Описание организации"
+        value={fields.about.value}
+        description="Введите описание организации"
+        error={fields.about.errorText()}
+        onChange={(e) => fields.about.onChange(e.target.value)}
       />
     </Stack>
   )

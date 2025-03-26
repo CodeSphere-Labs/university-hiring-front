@@ -51,52 +51,52 @@ export const InviteUser = () => {
   return (
     <Stack>
       <TextInput
-        label="Email"
-        description="Email пользователя"
-        placeholder="user@mail.ru"
-        value={fields.email.value}
-        onChange={(e) => fields.email.onChange(e.target.value)}
-        error={fields.email.errorText()}
         required
+        label="Email"
+        value={fields.email.value}
+        description="Email пользователя"
+        error={fields.email.errorText()}
+        onChange={(e) => fields.email.onChange(e.target.value)}
+        placeholder="user@mail.ru"
       />
 
       <Flex
-        direction={{ base: 'column', xs: 'row' }}
         align={{ base: 'stretch', xs: 'end' }}
         gap="md"
+        direction={{ base: 'column', xs: 'row' }}
       >
         <Select
+          clearable
+          required
+          searchable
+          data={organizationsData}
+          disabled={organizationsLoading}
+          label="Организация"
           value={fields.organization.value?.id.toString() ?? null}
+          w={{ base: '100%', xs: '75%' }}
+          comboboxProps={{
+            position: 'bottom',
+            middlewares: { flip: false, shift: true },
+            withinPortal: false,
+          }}
+          description="Выберите организацию к которой будет привязан пользователь"
+          error={fields.organization.errorText()}
           onChange={(value) => {
             const selectedOrg = organizations.find(
               (org) => org.id.toString() === value,
             )
             fields.organization.onChange(selectedOrg ?? null)
           }}
-          error={fields.organization.errorText()}
-          data={organizationsData}
-          comboboxProps={{
-            position: 'bottom',
-            middlewares: { flip: false, shift: true },
-            withinPortal: false,
-          }}
-          label="Организация"
-          description="Выберите организацию к которой будет привязан пользователь"
           placeholder="Выберите организацию"
-          w={{ base: '100%', xs: '75%' }}
-          required
-          searchable
           rightSection={organizationsLoading && <Loader size={16} />}
-          disabled={organizationsLoading}
-          clearable
         />
         <Group w={{ base: '100%', xs: '25%' }}>
           <Input.Wrapper label="Нет подходящей организации?">
             <Button
-              onClick={() => modalOpened()}
+              fullWidth
               mt={10}
               variant="outline"
-              fullWidth
+              onClick={() => modalOpened()}
             >
               Создать
             </Button>
@@ -104,57 +104,57 @@ export const InviteUser = () => {
         </Group>
       </Flex>
       <Select
-        label="Выберите роль будущего пользователя"
         required
-        placeholder="Выберите роль"
-        defaultValue={fields.role.value}
-        onChange={(value) => fields.role.onChange(value ?? 'STAFF')}
         data={availableRoles}
+        defaultValue={fields.role.value}
+        label="Выберите роль будущего пользователя"
         comboboxProps={{
           position: 'bottom',
           middlewares: { flip: false, shift: true },
           withinPortal: false,
         }}
         error={fields.role.errorText()}
+        onChange={(value) => fields.role.onChange(value ?? 'STAFF')}
+        placeholder="Выберите роль"
       />
       {fields.role.value === 'STUDENT' && (
         <Flex
-          direction={{ base: 'column', xs: 'row' }}
           align={{ base: 'stretch', xs: 'end' }}
           gap="md"
+          direction={{ base: 'column', xs: 'row' }}
         >
           <Select
+            clearable
+            required
+            searchable
+            data={groupsData}
+            disabled={groupsLoading}
+            label="Группа"
             value={fields.group.value?.id.toString() ?? null}
+            w={{ base: '100%', xs: '75%' }}
+            comboboxProps={{
+              position: 'bottom',
+              middlewares: { flip: false, shift: true },
+              withinPortal: false,
+            }}
+            description="Выберите группу к которой будет прикреплен студент"
+            error={fields.group.errorText()}
             onChange={(value) => {
               const selectedGroup = groups.find(
                 (group) => group.id.toString() === value,
               )
               fields.group.onChange(selectedGroup ?? null)
             }}
-            error={fields.group.errorText()}
-            data={groupsData}
-            comboboxProps={{
-              position: 'bottom',
-              middlewares: { flip: false, shift: true },
-              withinPortal: false,
-            }}
-            label="Группа"
-            description="Выберите группу к которой будет прикреплен студент"
             placeholder="Выберите группу"
-            w={{ base: '100%', xs: '75%' }}
-            required
-            searchable
             rightSection={groupsLoading && <Loader size={16} />}
-            disabled={groupsLoading}
-            clearable
           />
           <Group w={{ base: '100%', xs: '25%' }}>
             <Input.Wrapper label="Нет подходящей группы?">
               <Button
-                onClick={() => createGroupModalOpened()}
+                fullWidth
                 mt={10}
                 variant="outline"
-                fullWidth
+                onClick={() => createGroupModalOpened()}
               >
                 Создать
               </Button>

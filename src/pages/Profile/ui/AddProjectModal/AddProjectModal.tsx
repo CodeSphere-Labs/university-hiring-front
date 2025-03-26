@@ -29,62 +29,62 @@ export const AddProjectModal = () => {
   return (
     <Stack>
       <TextInput
-        label="Название проекта"
-        description="Введите название проекта"
-        value={fields.name.value}
-        onChange={(e) => fields.name.onChange(e.target.value)}
-        error={fields.name.errorText()}
         required
         disabled={loading}
+        label="Название проекта"
+        value={fields.name.value}
+        description="Введите название проекта"
+        error={fields.name.errorText()}
+        onChange={(e) => fields.name.onChange(e.target.value)}
       />
       <Flex gap="md" wrap={{ base: 'wrap', sm: 'nowrap' }}>
         <TextInput
-          label="Ссылка на github"
-          description="Введите ссылку на github"
-          w={{ base: '100%', sm: '50%' }}
-          value={fields.githubUrl.value}
-          onChange={(e) => fields.githubUrl.onChange(e.target.value)}
-          error={fields.githubUrl.errorText()}
           required
           disabled={loading}
+          label="Ссылка на github"
+          value={fields.githubUrl.value}
+          w={{ base: '100%', sm: '50%' }}
+          description="Введите ссылку на github"
+          error={fields.githubUrl.errorText()}
+          onChange={(e) => fields.githubUrl.onChange(e.target.value)}
         />
         <TextInput
           label="Ссылка на сайт"
-          description="Введите ссылку на сайт (если есть)"
-          w={{ base: '100%', sm: '50%' }}
           value={fields.websiteUrl.value}
-          onChange={(e) => fields.websiteUrl.onChange(e.target.value)}
+          w={{ base: '100%', sm: '50%' }}
+          description="Введите ссылку на сайт (если есть)"
           error={fields.websiteUrl.errorText()}
+          onChange={(e) => fields.websiteUrl.onChange(e.target.value)}
         />
       </Flex>
       <Textarea
-        label="Описание проекта"
-        description="Введите описание проекта"
-        value={fields.description.value}
-        onChange={(e) => fields.description.onChange(e.target.value)}
-        error={fields.description.errorText()}
         required
         disabled={loading}
+        label="Описание проекта"
+        value={fields.description.value}
+        description="Введите описание проекта"
+        error={fields.description.errorText()}
+        onChange={(e) => fields.description.onChange(e.target.value)}
       />
       <MultiSelect
-        label="Технологии используемые в проекте"
-        description="Выберите технологии используемые в проекте"
-        nothingFoundMessage="Ничего не найдено"
-        searchable
-        hidePickedOptions
         clearable
         required
-        rightSection={availableGroupedSkillsLoading && <Loader size={16} />}
-        disabled={availableGroupedSkillsLoading || loading}
+        searchable
         data={availableGroupedSkills}
+        disabled={availableGroupedSkillsLoading || loading}
+        label="Технологии используемые в проекте"
         value={fields.technologies.value}
-        onChange={(e) => fields.technologies.onChange(e)}
-        error={fields.technologies.errorText()}
         comboboxProps={{
           position: 'bottom',
           middlewares: { flip: false, shift: true },
           withinPortal: false,
         }}
+        description="Выберите технологии используемые в проекте"
+        error={fields.technologies.errorText()}
+        hidePickedOptions
+        nothingFoundMessage="Ничего не найдено"
+        onChange={(e) => fields.technologies.onChange(e)}
+        rightSection={availableGroupedSkillsLoading && <Loader size={16} />}
       />
     </Stack>
   )

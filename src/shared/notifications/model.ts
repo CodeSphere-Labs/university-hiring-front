@@ -1,12 +1,13 @@
 import { notifications } from '@mantine/notifications'
 import { createEffect } from 'effector'
 
-import { ErrorResponse } from '@/shared/api/types'
+import type { ErrorResponse } from '@/shared/api/types'
+
 import { ErrorMessages } from '@/shared/config/errorCodes'
 
 interface NotificationParams {
-  title: string
   message: string
+  title: string
 }
 
 export const showSuccessNotificationFx = createEffect(
@@ -35,8 +36,8 @@ interface ApiErrorParams {
 }
 
 interface ApiSuccessParams {
-  title: string
   message: string
+  title: string
 }
 
 const apiErrorFx = createEffect(({ error, message }: ApiErrorParams) => {

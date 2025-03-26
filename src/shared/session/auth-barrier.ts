@@ -1,4 +1,5 @@
-import { Query } from '@farfetched/core'
+import type { Query } from '@farfetched/core'
+
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { refreshQuery } from '@/shared/session/refresh'

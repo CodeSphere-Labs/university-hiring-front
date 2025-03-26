@@ -1,7 +1,8 @@
 import { Group, Paper, SegmentedControl, Stack, Text } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { InvitationFilter, InvitationStatus } from '@/shared/api/types'
+import type { InvitationFilter, InvitationStatus } from '@/shared/api/types'
+
 import { WithRoleCheck } from '@/shared/hoc'
 
 import { $filter, $status, filterChanged, statusChanged } from './model'
@@ -11,11 +12,11 @@ export const InvitationsFilters = () => {
 
   return (
     <Paper
-      radius="md"
-      p="md"
-      withBorder
-      mb="md"
       bg="var(--mantine-color-blue-filled)"
+      mb="md"
+      p="md"
+      radius="md"
+      withBorder
     >
       <Stack>
         <Group justify="space-between">
@@ -26,35 +27,35 @@ export const InvitationsFilters = () => {
 
         <WithRoleCheck allowedRoles={['ADMIN']}>
           <Group>
-            <Text size="sm" fw={500} c="white">
+            <Text c="white" fw={500} size="sm">
               Источник:
             </Text>
             <SegmentedControl
-              color="dark"
-              value={filter}
-              onChange={(value) => filterChanged(value as InvitationFilter)}
               data={[
                 { label: 'Мои приглашения', value: 'createdByMe' },
                 { label: 'Все приглашения', value: 'all' },
               ]}
+              value={filter}
+              color="dark"
+              onChange={(value) => filterChanged(value as InvitationFilter)}
             />
           </Group>
         </WithRoleCheck>
 
         <Group>
-          <Text size="sm" fw={500} c="white">
+          <Text c="white" fw={500} size="sm">
             Статус:
           </Text>
           <SegmentedControl
-            value={status}
-            color="dark"
-            onChange={(value) => statusChanged(value as InvitationStatus)}
             data={[
               { label: 'Все', value: 'all' },
               { label: 'Ожидающие', value: 'wait' },
               { label: 'Принятые', value: 'accept' },
               { label: 'Истекшие', value: 'expired' },
             ]}
+            value={status}
+            color="dark"
+            onChange={(value) => statusChanged(value as InvitationStatus)}
           />
         </Group>
       </Stack>

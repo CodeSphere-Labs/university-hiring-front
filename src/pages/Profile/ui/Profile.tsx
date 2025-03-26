@@ -7,194 +7,194 @@ import {
   Text,
   Textarea,
   TextInput,
-  Title,
-} from '@mantine/core'
-import { IconAt } from '@tabler/icons-react'
-import { useForm } from 'effector-forms'
-import { useUnit } from 'effector-react'
+  Title
+} from '@mantine/core';
+import { IconAt } from '@tabler/icons-react';
+import { useForm } from 'effector-forms';
+import { useUnit } from 'effector-react';
 
-import { $user } from '@/shared/session/model'
-import { getRole } from '@/shared/utils'
+import { $user } from '@/shared/session/model';
+import { getRole } from '@/shared/utils';
 
-import { $updateProfileLoading, baseForm, getFormByRole } from '../model/model'
-import { ConditionalStudentProfile } from './StudentProfileForm/StudentProfileForm'
-import classes from './UserInfoIcons.module.css'
+import type { baseForm } from '../model/model';
 
-const Profile = () => {
-  const user = useUnit($user)
-  if (!user) return null
-  return <ProfileContent />
-}
+import { $updateProfileLoading, getFormByRole } from '../model/model';
+import { ConditionalStudentProfile } from './StudentProfileForm/StudentProfileForm';
 
-// eslint-disable-next-line import/no-default-export
-export default Profile
+import classes from './UserInfoIcons.module.css';
 
-const ProfileContent = () => {
-  const [user, loading] = useUnit([$user, $updateProfileLoading])
-  if (!user) return null
+const UserTopInfo = () => {
+  const user = useUnit($user);
+  if (!user) return null;
 
-  const form = getFormByRole(user.role)
-  const { isDirty, eachValid, submit } = useForm(form as typeof baseForm)
-
-  const onHandleSubmit = () => submit()
-
-  return (
-    <Stack className="shell_main">
-      <Group justify="space-between" wrap="wrap" gap="md">
-        <UserTopInfo />
-        <Button
-          onClick={onHandleSubmit}
-          loading={loading}
-          disabled={!isDirty || !eachValid}
-        >
-          Сохранить изменения
-        </Button>
-      </Group>
-      <BaseUserForm />
-      <ConditionalStudentProfile isStudent={user.role === 'STUDENT'} />
-    </Stack>
-  )
-}
-
-function BaseUserForm() {
-  const user = useUnit($user)
-  if (!user) return null
-
-  const loading = useUnit($updateProfileLoading)
-  const form = getFormByRole(user.role)
-  const { fields } = useForm(form as typeof baseForm)
-
-  return (
-    <Group>
-      <Title order={3}>Основная информация</Title>
-      <Grid
-        type="media"
-        breakpoints={{
-          xs: '300px',
-          sm: '400px',
-          md: '600px',
-          lg: '1100px',
-          xl: '1200px',
-        }}
-      >
-        <Grid.Col span={{ sm: 12, md: 6, lg: 4 }}>
-          <TextInput
-            label="Имя"
-            description="Ваше имя"
-            placeholder="Введите имя"
-            value={fields.firstName.value}
-            onChange={(e) => fields.firstName.onChange(e.target.value)}
-            error={fields.firstName.errorText()}
-            disabled={loading}
-            required
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-          <TextInput
-            label="Фамилия"
-            description="Ваша фамилия"
-            placeholder="Введите фамилию"
-            value={fields.lastName.value}
-            onChange={(e) => fields.lastName.onChange(e.target.value)}
-            error={fields.lastName.errorText()}
-            disabled={loading}
-            required
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-          <TextInput
-            label="Отчество"
-            description="Ваше отчество"
-            placeholder="Введите отчество"
-            value={fields.patronymic.value}
-            onChange={(e) => fields.patronymic.onChange(e.target.value)}
-            error={fields.patronymic.errorText()}
-            disabled={loading}
-            required
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-          <TextInput
-            label="Email"
-            description="Ваш email адрес"
-            placeholder="Введите email"
-            value={fields.email.value}
-            onChange={(e) => fields.email.onChange(e.target.value)}
-            disabled={loading}
-            required
-          />
-        </Grid.Col>
-
-        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-          <TextInput
-            label="Telegram"
-            description="Ссылка на ваш Telegram"
-            placeholder="https://t.me/username"
-            value={fields.telegramLink.value}
-            onChange={(e) => fields.telegramLink.onChange(e.target.value)}
-            error={fields.telegramLink.errorText()}
-            disabled={loading}
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-          <TextInput
-            label="ВКонтакте"
-            description="Ссылка на ваш профиль ВК"
-            placeholder="https://vk.com/username"
-            value={fields.vkLink.value}
-            onChange={(e) => fields.vkLink.onChange(e.target.value)}
-            error={fields.vkLink.errorText()}
-            disabled={loading}
-          />
-        </Grid.Col>
-        <Grid.Col span={{ base: 12 }}>
-          <Textarea
-            label="О себе"
-            description="Расскажите о себе"
-            placeholder="Введите информацию о себе"
-            value={fields.aboutMe.value}
-            onChange={(e) => fields.aboutMe.onChange(e.target.value)}
-            minRows={3}
-            error={fields.aboutMe.errorText()}
-            disabled={loading}
-          />
-        </Grid.Col>
-      </Grid>
-    </Group>
-  )
-}
-
-function UserTopInfo() {
-  const user = useUnit($user)
-  if (!user) return null
-
-  const userRole = getRole(user.role)
+  const userRole = getRole(user.role);
 
   return (
     <div>
-      <Group wrap="nowrap">
+      <Group wrap='nowrap'>
         <Avatar
-          src={user.avatarUrl}
           alt={`${user.firstName} ${user.lastName}`}
+          radius='md'
           size={134}
-          radius="md"
+          src={user.avatarUrl}
         />
         <div>
-          <Text fz="xs" tt="uppercase" fw={700} c={userRole.color}>
+          <Text c={userRole.color} fw={700} fz='xs' tt='uppercase'>
             {userRole.label}
           </Text>
 
-          <Text fz="lg" fw={500} className={classes.name}>
+          <Text className={classes.name} fw={500} fz='lg'>
             {user.firstName} {user.lastName}
           </Text>
-          <Group wrap="nowrap" gap={10} mt={3}>
-            <IconAt stroke={1.5} size={16} className={classes.icon} />
-            <Text fz="xs" c="dimmed">
+          <Group gap={10} mt={3} wrap='nowrap'>
+            <IconAt className={classes.icon} size={16} stroke={1.5} />
+            <Text c='dimmed' fz='xs'>
               {user.email}
             </Text>
           </Group>
         </div>
       </Group>
     </div>
-  )
-}
+  );
+};
+
+const BaseUserForm = () => {
+  const user = useUnit($user);
+
+  const loading = useUnit($updateProfileLoading);
+  const form = getFormByRole(user?.role || '');
+  const { fields } = useForm(form as typeof baseForm);
+
+  if (!user) return null;
+
+  return (
+    <Group>
+      <Title order={3}>Основная информация</Title>
+      <Grid
+        type='media'
+        breakpoints={{
+          xs: '300px',
+          sm: '400px',
+          md: '600px',
+          lg: '1100px',
+          xl: '1200px'
+        }}
+      >
+        <Grid.Col span={{ sm: 12, md: 6, lg: 4 }}>
+          <TextInput
+            required
+            disabled={loading}
+            label='Имя'
+            value={fields.firstName.value}
+            description='Ваше имя'
+            error={fields.firstName.errorText()}
+            onChange={(e) => fields.firstName.onChange(e.target.value)}
+            placeholder='Введите имя'
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            required
+            disabled={loading}
+            label='Фамилия'
+            value={fields.lastName.value}
+            description='Ваша фамилия'
+            error={fields.lastName.errorText()}
+            onChange={(e) => fields.lastName.onChange(e.target.value)}
+            placeholder='Введите фамилию'
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            required
+            disabled={loading}
+            label='Отчество'
+            value={fields.patronymic.value}
+            description='Ваше отчество'
+            error={fields.patronymic.errorText()}
+            onChange={(e) => fields.patronymic.onChange(e.target.value)}
+            placeholder='Введите отчество'
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            required
+            disabled={loading}
+            label='Email'
+            value={fields.email.value}
+            description='Ваш email адрес'
+            onChange={(e) => fields.email.onChange(e.target.value)}
+            placeholder='Введите email'
+          />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            disabled={loading}
+            label='Telegram'
+            value={fields.telegramLink.value}
+            description='Ссылка на ваш Telegram'
+            error={fields.telegramLink.errorText()}
+            onChange={(e) => fields.telegramLink.onChange(e.target.value)}
+            placeholder='https://t.me/username'
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+          <TextInput
+            disabled={loading}
+            label='ВКонтакте'
+            value={fields.vkLink.value}
+            description='Ссылка на ваш профиль ВК'
+            error={fields.vkLink.errorText()}
+            onChange={(e) => fields.vkLink.onChange(e.target.value)}
+            placeholder='https://vk.com/username'
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12 }}>
+          <Textarea
+            disabled={loading}
+            label='О себе'
+            value={fields.aboutMe.value}
+            description='Расскажите о себе'
+            error={fields.aboutMe.errorText()}
+            minRows={3}
+            onChange={(e) => fields.aboutMe.onChange(e.target.value)}
+            placeholder='Введите информацию о себе'
+          />
+        </Grid.Col>
+      </Grid>
+    </Group>
+  );
+};
+
+const ProfileContent = () => {
+  const [user, loading] = useUnit([$user, $updateProfileLoading]);
+
+  const form = getFormByRole(user?.role || '');
+  const { isDirty, eachValid, submit } = useForm(form as typeof baseForm);
+
+  const onHandleSubmit = () => submit();
+
+  if (!user) return null;
+
+  return (
+    <Stack className='shell_main'>
+      <Group gap='md' justify='space-between' wrap='wrap'>
+        <UserTopInfo />
+        <Button disabled={!isDirty || !eachValid} loading={loading} onClick={onHandleSubmit}>
+          Сохранить изменения
+        </Button>
+      </Group>
+      <BaseUserForm />
+      <ConditionalStudentProfile isStudent={user.role === 'STUDENT'} />
+    </Stack>
+  );
+};
+
+const Profile = () => {
+  const user = useUnit($user);
+  if (!user) return null;
+  return <ProfileContent />;
+};
+
+export default Profile;

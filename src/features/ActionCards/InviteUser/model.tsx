@@ -2,8 +2,9 @@ import { modals } from '@mantine/modals'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { createForm } from 'effector-forms'
 
+import type { Group, Organization, Role } from '@/shared/api/types'
+
 import { RenewInvite } from '@/features/ActionCards/InviteUser/RenewInvite'
-import { Group, Organization, Role } from '@/shared/api/types'
 import { validateRules } from '@/shared/config/validateRules'
 import {
   showError,
@@ -19,6 +20,7 @@ import {
   refreshInvitation,
 } from '../api/api'
 import { InviteUser } from './InviteUser'
+
 import classes from './styles.module.css'
 
 export const modalOpened = createEvent()

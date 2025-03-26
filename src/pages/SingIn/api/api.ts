@@ -1,7 +1,8 @@
 import { createMutation } from '@farfetched/core'
 
+import type { AuthDto } from '@/shared/api/types'
+
 import { createCommonRequestFx } from '@/shared/api/requests'
-import { AuthDto } from '@/shared/api/types'
 
 export const signInMutation = createMutation({
   effect: createCommonRequestFx<AuthDto, void>((body) => ({

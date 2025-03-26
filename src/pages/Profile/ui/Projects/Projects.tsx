@@ -28,20 +28,20 @@ export const Projects = () => {
       <Grid>
         {user.studentProfile.projects?.map((project) => (
           <Grid.Col key={project.name} span={{ base: 12, sm: 6, lg: 4 }}>
-            <Card withBorder radius="md" p="md" className={classes.card}>
+            <Card className={classes.card} p="md" radius="md" withBorder>
               <Card.Section className={classes.section} mt="sm">
                 <Group justify="space-between">
                   <Stack gap={0}>
                     <Badge variant="dot">Название проекта</Badge>
-                    <Text fz="lg" fw={500}>
+                    <Text fw={500} fz="lg">
                       {project.name}
                     </Text>
                   </Stack>
                   <ActionIcon
-                    onClick={() => projectDeleted(project.id)}
-                    variant="subtle"
                     size="lg"
+                    variant="subtle"
                     color="red"
+                    onClick={() => projectDeleted(project.id)}
                   >
                     <IconTrash />
                   </ActionIcon>
@@ -53,7 +53,7 @@ export const Projects = () => {
               </Card.Section>
 
               <Card.Section className={classes.section}>
-                <Text mt="md" className={classes.label} c="dimmed">
+                <Text c="dimmed" className={classes.label} mt="md">
                   Технологии
                 </Text>
                 <Group gap={7} mt={5}>
@@ -67,11 +67,11 @@ export const Projects = () => {
 
               <Group mt="xs">
                 <Button
-                  component="a"
                   href={project.githubUrl}
-                  target="_blank"
                   radius="md"
                   style={{ flex: 1 }}
+                  target="_blank"
+                  component="a"
                 >
                   Перейти на github
                 </Button>

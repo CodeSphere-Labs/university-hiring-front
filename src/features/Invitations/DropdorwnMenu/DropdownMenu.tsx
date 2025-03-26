@@ -2,8 +2,9 @@ import { Menu } from '@mantine/core'
 import { IconRefresh, IconTrash } from '@tabler/icons-react'
 import { useUnit } from 'effector-react'
 
+import type { Invitation } from '@/shared/api/types'
+
 import { $status } from '@/features/Invitations/Filters/model'
-import { Invitation } from '@/shared/api/types'
 
 import { deletedInvitation, refreshedInvitation } from './model'
 
@@ -28,8 +29,8 @@ export const DropdownMenu = ({
     ),
     <Menu.Item
       key="delete"
-      leftSection={<IconTrash size={14} />}
       color="red"
+      leftSection={<IconTrash size={14} />}
       onClick={() => deletedInvitation(record.id)}
     >
       Удалить приглашение

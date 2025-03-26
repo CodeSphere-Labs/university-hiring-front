@@ -12,19 +12,22 @@ import {
 import { useForm } from 'effector-forms'
 import { useUnit } from 'effector-react'
 
+import type {
+  studentForm} from '@/pages/Profile/model/model';
+
 import { projectModalOpened } from '@/pages/Profile/model/addProject.model'
 import {
   $availableGroupedSkills,
   $availableGroupedSkillsLoading,
   $updateProfileLoading,
-  getFormByRole,
-  studentForm,
+  getFormByRole
 } from '@/pages/Profile/model/model'
 import { withConditionalRender } from '@/shared/hoc'
 import { AddPetProjectIcon } from '@/shared/icons/AddPetProjectIcon'
 import { $user } from '@/shared/session/model'
 
 import { Projects } from '../Projects/Projects'
+
 import classes from './StudentProfileForm.module.css'
 
 export const StudentProfileForm = () => {
@@ -41,17 +44,17 @@ export const StudentProfileForm = () => {
   return (
     <Stack>
       <Title order={3}>Профиль студента</Title>
-      <Grid grow gutter="md">
+      <Grid gutter="md" grow>
         <Grid.Col span={{ base: 12, sm: 4, lg: 4 }}>
-          <Flex direction="column" gap="xs">
+          <Flex gap="xs" direction="column">
             <TextInput
-              label="Github"
-              description="Ссылка на github"
-              placeholder="https://github.com/zeroqs"
-              value={fields.githubLink.value}
-              onChange={(e) => fields.githubLink.onChange(e.target.value)}
-              error={fields.githubLink.errorText()}
               disabled={loading}
+              label="Github"
+              value={fields.githubLink.value}
+              description="Ссылка на github"
+              error={fields.githubLink.errorText()}
+              onChange={(e) => fields.githubLink.onChange(e.target.value)}
+              placeholder="https://github.com/zeroqs"
             />
             {/* <FileInput
               label="Резюме"
@@ -62,45 +65,45 @@ export const StudentProfileForm = () => {
               disabled={loading}
             /> */}
             <TextInput
-              label="Ваша группа"
-              value={fields.group.value}
               readOnly
               disabled={loading}
+              label="Ваша группа"
+              value={fields.group.value}
             />
             <MultiSelect
+              clearable
+              searchable
+              data={availableGroupedSkills}
+              disabled={availableGroupedSkillsLoading || loading}
               label="Ваши навыки"
               value={fields.skills.value}
+              error={fields.skills.errorText()}
+              hidePickedOptions
+              nothingFoundMessage="Ничего не найдено"
               onChange={(e) => fields.skills.onChange(e)}
-              data={availableGroupedSkills}
               rightSection={
                 availableGroupedSkillsLoading && <Loader size={16} />
               }
-              disabled={availableGroupedSkillsLoading || loading}
-              nothingFoundMessage="Ничего не найдено"
-              searchable
-              hidePickedOptions
-              clearable
-              error={fields.skills.errorText()}
             />
           </Flex>
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 8, lg: 8 }}>
-          <Stack align="center" justify="center" gap="md">
+          <Stack align="center" gap="md" justify="center">
             <Button
-              disabled={loading}
-              h="auto"
-              variant="gradient"
-              gradient={{ from: '#f0f9ff', to: '#e6f2ff' }}
-              radius="md"
-              p="md"
               className={classes.addPetProjectButton}
+              disabled={loading}
+              gradient={{ from: '#f0f9ff', to: '#e6f2ff' }}
+              h="auto"
+              p="md"
+              radius="md"
+              variant="gradient"
               w={{ base: '100%', sm: '80%' }}
               onClick={() => projectModalOpened()}
             >
-              <Stack gap={5} align="center">
-                <AddPetProjectIcon width={280} height={180} />
-                <Text fw={500} size="lg" c="dark.9">
+              <Stack align="center" gap={5}>
+                <AddPetProjectIcon height={180} width={280} />
+                <Text c="dark.9" fw={500} size="lg">
                   Добавить учебный проект
                 </Text>
               </Stack>

@@ -1,10 +1,11 @@
 import { combine, createEvent, createStore, sample } from 'effector'
 
-import {
+import type {
   InvitationFilter,
   InvitationsStats,
   InvitationStatus,
 } from '@/shared/api/types'
+
 import { routes } from '@/shared/routing/index'
 import { chainAuthorized } from '@/shared/session/model'
 
