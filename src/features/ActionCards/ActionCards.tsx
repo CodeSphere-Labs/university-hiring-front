@@ -8,7 +8,7 @@ import { modalOpened as createGroupModalOpened } from './CreateGroup/model';
 import { modalOpened as createOrganizationModalOpened } from './CreateOrganization/model';
 import { modalOpened as inviteUserModalOpened } from './InviteUser/model';
 
-export const AdminActions = () => {
+export const ActionCards = () => {
   return (
     <Flex className='shell_main' gap='md' w='100%' wrap='wrap'>
       <WithRoleCheck allowedRoles={['ADMIN', 'STAFF', 'UNIVERSITY_STAFF']}>
