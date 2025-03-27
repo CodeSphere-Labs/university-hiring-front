@@ -123,6 +123,11 @@ export interface InvitationParams {
   status: InvitationStatus;
 }
 
+export interface GroupParams {
+  search?: string;
+  withStudents?: boolean;
+}
+
 interface StudentProfile {
   createdAt: string;
   githubLink: string | null;

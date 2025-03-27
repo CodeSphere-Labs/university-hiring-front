@@ -10,13 +10,15 @@ import {
   Title
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
-import { useList } from 'effector-react';
+import { useList, useUnit } from 'effector-react';
 
-import { $groups } from './model';
+import { $groups, $search, searchChanged } from './model';
 
 import classes from './styles.module.css';
 
 const Groups = () => {
+  const search = useUnit($search);
+
   const groups = useList($groups, {
     getKey: (group) => group.id,
     fn: (group) => {
@@ -49,6 +51,8 @@ const Groups = () => {
         Группы
       </Title>
       <TextInput
+        value={search}
+        onChange={(e) => searchChanged(e.target.value)}
         label='Поиск'
         description='Поиск по названию группы'
         placeholder='Поиск'
