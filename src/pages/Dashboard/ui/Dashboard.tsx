@@ -133,6 +133,9 @@ const InvitationStats = () => {
 const Dashboard = () => {
   return (
     <Stack className='shell_main'>
+      <Title mb={16} order={2}>
+        Панель управления
+      </Title>
       <ActionCards />
       <InvitationStats />
     </Stack>
