@@ -1,7 +1,6 @@
 import type { DataTableColumn } from 'mantine-datatable';
 
 import { Badge, Flex, Text, Tooltip } from '@mantine/core';
-import { IconCheck, IconX } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useUnit } from 'effector-react';
 import { DataTable } from 'mantine-datatable';
@@ -59,9 +58,13 @@ export const InvitationsTable = () => {
       render: (invitation) => (
         <Flex align='center' justify='center'>
           {invitation.used ? (
-            <IconCheck size={18} color='green' />
+            <Badge fullWidth variant='light' color='green'>
+              Использовано
+            </Badge>
           ) : (
-            <IconX size={18} color='red' />
+            <Badge fullWidth variant='light' color='gray'>
+              Не использовано
+            </Badge>
           )}
         </Flex>
       )
@@ -90,9 +93,9 @@ export const InvitationsTable = () => {
     accessor: 'createdBy',
     title: 'Создатель',
     render: (invitation) => (
-      <Tooltip label={invitation.createdBy?.email || ''}>
+      <Tooltip label={invitation.createdBy?.email || 'Я'}>
         <Text>
-          {invitation.createdBy?.firstName || ''} {invitation.createdBy?.lastName || ''}
+          {invitation.createdBy?.firstName || 'Я'} {invitation.createdBy?.lastName || ''}
         </Text>
       </Tooltip>
     )

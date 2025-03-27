@@ -1,165 +1,163 @@
-import type { FetchError } from 'ofetch'
+import type { FetchError } from 'ofetch';
 
-import type { ErrorMessages } from '@/shared/config/errorCodes'
+import type { ErrorMessages } from '@/shared/config/errorCodes';
 
 export interface ErrorResponse extends FetchError {
-  params: unknown
+  params: unknown;
   data?: {
-    message: keyof typeof ErrorMessages
-  }
+    message: keyof typeof ErrorMessages;
+  };
   meta: {
-    stopErrorPropagation: boolean
-    stale: boolean
-  }
+    stopErrorPropagation: boolean;
+    stale: boolean;
+  };
 }
 
-export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF'
-export type InvitationStatus = 'accept' | 'all' | 'expired' | 'wait'
-export type InvitationFilter = 'all' | 'createdByMe'
+export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF';
+export type InvitationStatus = 'accept' | 'all' | 'expired' | 'wait';
+export type InvitationFilter = 'all' | 'createdByMe';
 
 export enum OrganizationType {
   COMPANY = 'COMPANY',
-  UNIVERSITY = 'UNIVERSITY',
+  UNIVERSITY = 'UNIVERSITY'
 }
 
 export interface User {
-  aboutMe: string | null
-  avatarUrl: string | null
-  createdAt: string
-  email: string
-  favoredBy?: Organization[]
-  firstName: string
-  id: number
-  lastName: string
-  organization: Organization | null
+  aboutMe: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+  email: string;
+  firstName: string;
+  id: number;
+  lastName: string;
+  organization: Organization | null;
 
-  organizationId: number | null
-  patronymic: string
-  role: Role
+  patronymic: string;
+  role: Role;
 
-  studentProfile: StudentProfile | null
-  telegramLink: string | null
+  studentProfile: StudentProfile | null;
+  telegramLink: string | null;
 
-  updatedAt: string
-  vkLink: string | null
+  updatedAt: string;
+  vkLink: string | null;
 }
 
 export interface AuthDto {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface Project {
-  description: string
-  githubUrl: string
-  id: string
-  name: string
-  technologies: string[]
-  websiteUrl: string
+  description: string;
+  githubUrl: string;
+  id: string;
+  name: string;
+  technologies: string[];
+  websiteUrl: string;
 }
 
 export interface Organization {
-  about: string
-  email: string
-  id: number
-  logoUrl: string | null
-  name: string
-  websiteUrl: string
+  about: string;
+  email: string;
+  id: number;
+  logoUrl: string | null;
+  name: string;
+  websiteUrl: string;
 }
 
 export interface Group {
-  createdAt: string
-  id: number
-
-  name: string
-  updatedAt: string
+  createdAt: string;
+  id: number;
+  name: string;
+  organization: Organization;
+  updatedAt: string;
+  students: (Omit<User, 'studentProfile'> & {
+    studentProfile: NonNullable<User['studentProfile']>;
+  })[];
 }
 
 export interface InvitationCreate {
-  email: string
-  groupId?: number
-  organizationId: number
-  role: Role
+  email: string;
+  groupId?: number;
+  organizationId: number;
+  role: Role;
 }
 
 export interface InvitationsStats {
-  color: string
-  label: string
-  stats: number
-  status: InvitationStatus
+  color: string;
+  label: string;
+  stats: number;
+  status: InvitationStatus;
 }
 
 export interface Invitation {
-  createdAt: string
-  email: string
-  expiresAt: string
+  createdAt: string;
+  createdBy: Pick<User, 'email' | 'firstName' | 'id' | 'lastName' | 'role'> | null;
+  email: string;
 
-  id: number
-  organization: Organization
+  expiresAt: string;
+  id: number;
 
-  role: Role
+  organization: Organization;
 
-  updatedAt: string
-  used: boolean
-  createdBy: Pick<
-    User,
-    'email' | 'firstName' | 'id' | 'lastName' | 'role'
-  > | null
+  role: Role;
+  updatedAt: string;
+  used: boolean;
 }
 
 export interface InvintationResponse {
-  data: Invitation[]
+  data: Invitation[];
   meta: {
-    page: number
-    limit: number
-    totalItems: number
-    totalPages: number
-  }
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+  };
 }
 
 export interface InvitationParams {
-  filter: InvitationFilter
-  limit?: number
-  page?: number
-  search?: string
-  status: InvitationStatus
+  filter: InvitationFilter;
+  limit?: number;
+  page?: number;
+  search?: string;
+  status: InvitationStatus;
 }
 
 interface StudentProfile {
-  createdAt: string
-  githubLink: string | null
-  group: Group | null
-  id: number
-  opportunityResponses?: OpportunityResponse[]
+  createdAt: string;
+  githubLink: string | null;
+  group: Group | null;
+  id: number;
+  opportunityResponses?: OpportunityResponse[];
 
-  projects: Project[] | null
-  resume: string | null
+  projects: Project[] | null;
+  resume: string | null;
 
-  skills: string[]
-  updatedAt: string
+  skills: string[];
+  updatedAt: string;
 
-  userId: number
+  userId: number;
 }
 
 interface Opportunity {
-  createdAt: string
-  description: string | null
-  id: number
-  organization: Organization
-  organizationId: number
-  requiredSkills: string[]
-  responses: OpportunityResponse[]
+  createdAt: string;
+  description: string | null;
+  id: number;
+  organization: Organization;
+  organizationId: number;
+  requiredSkills: string[];
+  responses: OpportunityResponse[];
 
-  status: 'active' | 'inactive'
-  title: string
+  status: 'active' | 'inactive';
+  title: string;
 }
 
 interface OpportunityResponse {
-  coverLetter: string | null
-  createdAt: string
-  id: number
-  opportunity: Opportunity
-  opportunityId: number
-  student: StudentProfile
-  studentId: number
+  coverLetter: string | null;
+  createdAt: string;
+  id: number;
+  opportunity: Opportunity;
+  opportunityId: number;
+  student: StudentProfile;
+  studentId: number;
 }
