@@ -27,7 +27,7 @@ $groups.on(getGroupsQuery.finished.success, (_, { result }) => result);
 
 export const $search = createStore<string>('');
 $search.on(searchChanged, (_, search) => search);
-export const $groupsPending = getGroupsQuery.$pending.map((pending) => pending);
+export const $loading = getGroupsQuery.$pending.map((pending) => pending);
 
 export const debouncedSearchChanged = debounce({
   source: searchChanged,

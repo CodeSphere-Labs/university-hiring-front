@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Group,
+  Skeleton,
   SimpleGrid,
   Stack,
   Text,
@@ -12,39 +13,61 @@ import {
 import { IconSearch } from '@tabler/icons-react';
 import { useList, useUnit } from 'effector-react';
 
-import { $groups, $search, searchChanged } from './model';
+import { $groups, $loading, $search, searchChanged } from './model';
+import type { Group as GroupType } from '@/shared/api/types';
 
 import classes from './styles.module.css';
 
+const SKELETON_COUNT = 10;
+
+const SkeletonCard = () => (
+  <Card className={classes.card} p='sm' radius='md' withBorder>
+    <Card.Section className={classes.section} mt='sm'>
+      <Skeleton height={24} width='80%' radius='sm' />
+    </Card.Section>
+
+    <Card.Section className={classes.section}>
+      <Skeleton height={20} width='40%' radius='sm' mt='md' />
+    </Card.Section>
+
+    <Group mt='xs'>
+      <Skeleton height={36} width='100%' radius='md' />
+    </Group>
+  </Card>
+);
+
+const GroupCard = ({ group }: { group: GroupType }) => (
+  <Card className={classes.card} p='sm' radius='md' withBorder>
+    <Card.Section className={classes.section} mt='sm'>
+      <Text fw={500} fz='lg'>
+        {group.name}
+      </Text>
+    </Card.Section>
+
+    <Card.Section className={classes.section}>
+      <Badge className={classes.label} mt='md' variant='dot' color='blue'>
+        {group.students.length} {getStudentWord(group.students.length)}
+      </Badge>
+    </Card.Section>
+
+    <Group mt='xs'>
+      <Button radius='md' style={{ flex: 1 }}>
+        Перейти к группе
+      </Button>
+    </Group>
+  </Card>
+);
+
 const Groups = () => {
-  const search = useUnit($search);
+  const [search, loading] = useUnit([$search, $loading]);
 
   const groups = useList($groups, {
     getKey: (group) => group.id,
-    fn: (group) => {
-      return (
-        <Card className={classes.card} p='sm' radius='md' withBorder>
-          <Card.Section className={classes.section} mt='sm'>
-            <Text fw={500} fz='lg'>
-              {group.name}
-            </Text>
-          </Card.Section>
-
-          <Card.Section className={classes.section}>
-            <Badge className={classes.label} mt='md' variant='dot' color='blue'>
-              {group.students.length} {getStudentWord(group.students.length)}
-            </Badge>
-          </Card.Section>
-
-          <Group mt='xs'>
-            <Button radius='md' style={{ flex: 1 }}>
-              Перейти к группе
-            </Button>
-          </Group>
-        </Card>
-      );
-    }
+    fn: (group) => <GroupCard group={group} />
   });
+
+  const skeletons = Array.from({ length: SKELETON_COUNT }, (_, i) => <SkeletonCard key={i} />);
+
   return (
     <Stack className='shell_main'>
       <Title mb={16} order={2}>
@@ -59,7 +82,7 @@ const Groups = () => {
         rightSection={<IconSearch size={16} />}
       />
       <SimpleGrid spacing='md' verticalSpacing='md' cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}>
-        {groups}
+        {loading ? skeletons : groups}
       </SimpleGrid>
     </Stack>
   );
