@@ -73,7 +73,7 @@ sample({
 sample({
   clock: redirectedToInvitations,
   fn: ({ status, filter }) => ({ params: {}, query: { status, filter } }),
-  target: routes.invitations.navigate
+  target: routes.invitations.open
 });
 
 sample({
