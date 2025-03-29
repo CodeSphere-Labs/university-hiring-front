@@ -1,40 +1,40 @@
-import { createQuery } from '@farfetched/core'
+import { createQuery } from '@farfetched/core';
 
-import type { Project, User } from '@/shared/api/types'
+import type { GroupedSkill, Project, User } from '@/shared/api/types';
 
-import { createCommonRequestFx } from '@/shared/api/requests'
-import { attachAuthHandler } from '@/shared/session/auth-barrier'
+import { createCommonRequestFx } from '@/shared/api/requests';
+import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const addProjectQuery = createQuery({
   effect: createCommonRequestFx<Omit<Project, 'id'>, User>((body) => ({
     url: '/students/projects',
     method: 'POST',
-    body,
-  })),
-})
+    body
+  }))
+});
 
 export const deleteProjectQuery = createQuery({
   effect: createCommonRequestFx<string, User>((id) => ({
     url: `/students/projects/${id}`,
-    method: 'DELETE',
-  })),
-})
+    method: 'DELETE'
+  }))
+});
 
 export const getAvailableGroupedSkillsQuery = createQuery({
-  effect: createCommonRequestFx<void, string[]>({
-    url: '/skills/grouped',
-  }),
-})
+  effect: createCommonRequestFx<void, GroupedSkill[]>({
+    url: '/skills/grouped'
+  })
+});
 
 export const updateUserQuery = createQuery({
   effect: createCommonRequestFx<Partial<User>, User>((user) => ({
     url: '/users/profile',
     method: 'PATCH',
-    body: user,
-  })),
-})
+    body: user
+  }))
+});
 
-attachAuthHandler(addProjectQuery)
-attachAuthHandler(deleteProjectQuery)
-attachAuthHandler(getAvailableGroupedSkillsQuery)
-attachAuthHandler(updateUserQuery)
+attachAuthHandler(addProjectQuery);
+attachAuthHandler(deleteProjectQuery);
+attachAuthHandler(getAvailableGroupedSkillsQuery);
+attachAuthHandler(updateUserQuery);

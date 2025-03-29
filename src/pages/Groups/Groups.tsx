@@ -3,8 +3,8 @@ import {
   Button,
   Card,
   Group,
-  Skeleton,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   TextInput,
@@ -13,8 +13,9 @@ import {
 import { IconSearch } from '@tabler/icons-react';
 import { useList, useUnit } from 'effector-react';
 
-import { $groups, $loading, $search, searchChanged } from './model';
 import type { Group as GroupType } from '@/shared/api/types';
+
+import { $groups, $loading, $search, searchChanged } from './model';
 
 import classes from './styles.module.css';
 
@@ -23,15 +24,15 @@ const SKELETON_COUNT = 10;
 const SkeletonCard = () => (
   <Card className={classes.card} p='sm' radius='md' withBorder>
     <Card.Section className={classes.section} mt='sm'>
-      <Skeleton height={24} width='80%' radius='sm' />
+      <Skeleton height={24} radius='sm' width='80%' />
     </Card.Section>
 
     <Card.Section className={classes.section}>
-      <Skeleton height={20} width='40%' radius='sm' mt='md' />
+      <Skeleton height={20} mt='md' radius='sm' width='40%' />
     </Card.Section>
 
     <Group mt='xs'>
-      <Skeleton height={36} width='100%' radius='md' />
+      <Skeleton height={36} radius='md' width='100%' />
     </Group>
   </Card>
 );
@@ -74,10 +75,10 @@ const Groups = () => {
         Группы
       </Title>
       <TextInput
-        value={search}
-        onChange={(e) => searchChanged(e.target.value)}
         label='Поиск'
+        value={search}
         description='Поиск по названию группы'
+        onChange={(e) => searchChanged(e.target.value)}
         placeholder='Поиск'
         rightSection={<IconSearch size={16} />}
       />

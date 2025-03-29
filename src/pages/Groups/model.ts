@@ -1,4 +1,6 @@
+import { querySync } from 'atomic-router';
 import { createEvent, createStore, sample } from 'effector';
+import { debounce } from 'patronum';
 
 import type { Group } from '@/shared/api/types';
 
@@ -6,8 +8,6 @@ import { controls, routes } from '@/shared/routing/index';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
 import { getGroupsQuery } from './api';
-import { querySync } from 'atomic-router';
-import { debounce } from 'patronum';
 
 const DEBOUNCE_TIMEOUT = 400;
 

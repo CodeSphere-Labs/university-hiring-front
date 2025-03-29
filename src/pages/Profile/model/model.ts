@@ -3,6 +3,8 @@ import type { ValidationEvent } from 'effector-forms';
 import { createEvent, createStore, sample } from 'effector';
 import { createForm } from 'effector-forms';
 
+import type { GroupedSkill } from '@/shared/api/types';
+
 import { validateRules } from '@/shared/config/validateRules';
 import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
 import { routes } from '@/shared/routing/index';
@@ -16,7 +18,7 @@ export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open
 });
 
-export const $availableGroupedSkills = createStore<string[]>([]);
+export const $availableGroupedSkills = createStore<GroupedSkill[]>([]);
 export const $availableGroupedSkillsLoading = getAvailableGroupedSkillsQuery.$pending.map(
   (pending) => pending
 );
@@ -151,7 +153,7 @@ function createBaseFields() {
     },
     aboutMe: {
       init: '',
-      rules: [validateRules.required()]
+      rules: []
     },
     telegramLink: {
       init: '',

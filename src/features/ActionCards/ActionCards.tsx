@@ -6,6 +6,7 @@ import { ActionCard } from '@/shared/ui/ActionCard';
 
 import { modalOpened as createGroupModalOpened } from './CreateGroup/model';
 import { modalOpened as createOrganizationModalOpened } from './CreateOrganization/model';
+import { modalOpened as createVacancyModalOpened } from './CreateVacancy/model';
 import { modalOpened as inviteUserModalOpened } from './InviteUser/model';
 
 export const ActionCards = () => {
@@ -36,7 +37,11 @@ export const ActionCards = () => {
       </WithRoleCheck>
 
       <WithRoleCheck allowedRoles={['ADMIN', 'STAFF']}>
-        <ActionCard title='Создать вакансию' icon={<IconSchool size={28} />} />
+        <ActionCard
+          title='Создать вакансию'
+          icon={<IconSchool size={28} />}
+          onClick={() => createVacancyModalOpened()}
+        />
       </WithRoleCheck>
     </Flex>
   );

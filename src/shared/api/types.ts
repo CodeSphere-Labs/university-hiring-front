@@ -83,6 +83,12 @@ export interface InvitationCreate {
   role: Role;
 }
 
+export interface VacancyCreate {
+  description: string;
+  skills: string[];
+  title: string;
+}
+
 export interface InvitationsStats {
   color: string;
   label: string;
@@ -113,6 +119,11 @@ export interface InvintationResponse {
     totalItems: number;
     totalPages: number;
   };
+}
+
+export interface GroupedSkill {
+  group: string;
+  items: string[];
 }
 
 export interface InvitationParams {

@@ -1,0 +1,7 @@
+.modalInner > section {
+  overflow-y: visible !important;
+}
+
+.modalInner {
+  overflow: visible !important;
+}

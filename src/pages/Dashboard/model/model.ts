@@ -2,7 +2,7 @@ import { combine, createEvent, createStore, sample } from 'effector';
 
 import type { InvitationFilter, InvitationsStats, InvitationStatus } from '@/shared/api/types';
 
-import { createInvitation } from '@/features/ActionCards/api/api';
+import { createInvitationQuery } from '@/features/ActionCards/api/api';
 import { routes } from '@/shared/routing/index';
 import { chainAuthorized } from '@/shared/session/model';
 
@@ -23,12 +23,12 @@ export const $invitationsStatsFilter = createStore<InvitationFilter>('createdByM
 $invitationsStatsFilter.on(statsFilterChanged, (_, filter) => filter);
 
 export const $invitationsStatsByMe = createStore<InvitationsStats[]>([]);
-$invitationsStatsByMe.on(createInvitation.finished.success, (store) =>
+$invitationsStatsByMe.on(createInvitationQuery.finished.success, (store) =>
   store.map(updateStatsForWaitingOrAll)
 );
 
 export const $invitationsStatsByAll = createStore<InvitationsStats[]>([]);
-$invitationsStatsByAll.on(createInvitation.finished.success, (store) =>
+$invitationsStatsByAll.on(createInvitationQuery.finished.success, (store) =>
   store.map(updateStatsForWaitingOrAll)
 );
 

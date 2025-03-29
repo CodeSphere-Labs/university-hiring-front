@@ -1,60 +1,67 @@
-import { createQuery } from '@farfetched/core'
+import { createQuery } from '@farfetched/core';
 
-import type { Group, InvitationCreate, Organization } from '@/shared/api/types'
+import type { Group, InvitationCreate, Organization, VacancyCreate } from '@/shared/api/types';
 
-import { createCommonRequestFx } from '@/shared/api/requests'
-import { attachAuthHandler } from '@/shared/session/auth-barrier'
+import { createCommonRequestFx } from '@/shared/api/requests';
+import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const createGroupQuery = createQuery({
   effect: createCommonRequestFx<Pick<Group, 'name'>, Group>((body) => ({
     url: '/groups',
     method: 'POST',
-    body,
-  })),
-})
+    body
+  }))
+});
 
-export const createInvitation = createQuery({
+export const createInvitationQuery = createQuery({
   effect: createCommonRequestFx<InvitationCreate, void>((body) => ({
     url: '/invitations/create-invitation',
     method: 'POST',
-    body,
-  })),
-})
+    body
+  }))
+});
 
 export const createOrganizationQuery = createQuery({
-  effect: createCommonRequestFx<
-    Omit<Organization, 'id' | 'logoUrl'>,
-    Organization
-  >((body) => ({
+  effect: createCommonRequestFx<Omit<Organization, 'id' | 'logoUrl'>, Organization>((body) => ({
     url: '/organizations',
     method: 'POST',
-    body,
-  })),
-})
+    body
+  }))
+});
 
 export const getGroupsQuery = createQuery({
   effect: createCommonRequestFx<void, Group[]>({
-    url: '/groups',
-  }),
-})
+    url: '/groups'
+  })
+});
 
 export const getOrganizationsQuery = createQuery({
   effect: createCommonRequestFx<void, Organization[]>({
-    url: '/organizations',
-  }),
-})
+    url: '/organizations'
+  })
+});
 
-export const refreshInvitation = createQuery({
+export const refreshInvitationQuery = createQuery({
   effect: createCommonRequestFx<InvitationCreate, void>((body) => ({
     url: '/invitations/refresh-invitation',
     method: 'PATCH',
-    body,
-  })),
-})
+    body
+  }))
+});
 
-attachAuthHandler(createGroupQuery)
-attachAuthHandler(createInvitation)
-attachAuthHandler(createOrganizationQuery)
-attachAuthHandler(getGroupsQuery)
-attachAuthHandler(getOrganizationsQuery)
-attachAuthHandler(refreshInvitation)
+export const createVacancyQuery = createQuery({
+  effect: createCommonRequestFx<VacancyCreate, void>((body) => ({
+    url: '/opportunities',
+    method: 'POST',
+    body
+  }))
+});
+
+attachAuthHandler(createGroupQuery);
+attachAuthHandler(createInvitationQuery);
+attachAuthHandler(createOrganizationQuery);
+attachAuthHandler(getGroupsQuery);
+attachAuthHandler(getOrganizationsQuery);
+attachAuthHandler(refreshInvitationQuery);
+attachAuthHandler(createVacancyQuery);
+attachAuthHandler(createVacancyQuery);
