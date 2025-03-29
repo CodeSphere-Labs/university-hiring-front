@@ -82,7 +82,6 @@ export const Navbar = ({ children }: Props) => {
   const links = useList($links, {
     getKey: (link) => link.label,
     fn(link) {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const isActive = useUnit(link.active.$isOpened);
 
       return (

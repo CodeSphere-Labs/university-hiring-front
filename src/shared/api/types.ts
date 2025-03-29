@@ -64,6 +64,9 @@ export interface Organization {
   name: string;
   websiteUrl: string;
 }
+export interface Student extends Omit<User, 'studentProfile'> {
+  studentProfile: NonNullable<User['studentProfile']>;
+}
 
 export interface Group {
   createdAt: string;
@@ -71,9 +74,7 @@ export interface Group {
   name: string;
   organization: Organization;
   updatedAt: string;
-  students: (Omit<User, 'studentProfile'> & {
-    studentProfile: NonNullable<User['studentProfile']>;
-  })[];
+  students: Student[];
 }
 
 export interface InvitationCreate {
@@ -134,7 +135,7 @@ export interface InvitationParams {
   status: InvitationStatus;
 }
 
-export interface GroupParams {
+export interface GroupsParams {
   search?: string;
   withStudents?: boolean;
 }

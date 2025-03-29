@@ -1,3 +1,4 @@
-export * from './createRule'
-export * from './formatDate'
-export * from './role'
+export * from './createRule';
+export * from './formatDate';
+export * from './getStudentWord';
+export * from './role';

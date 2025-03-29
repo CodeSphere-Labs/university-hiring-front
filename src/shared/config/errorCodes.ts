@@ -19,8 +19,7 @@ export const ErrorMessages = {
   user_already_exists: 'Пользователь с таким email уже существует',
   user_not_student: 'Пользователь не является студентом',
   user_not_staff: 'Пользователь не является сотрудником организации',
-  user_not_university_staff:
-    'Пользователь не является сотрудником университета',
+  user_not_university_staff: 'Пользователь не является сотрудником университета',
   student_profile_not_found: 'Профиль студента не найден',
 
   // Invitation related
@@ -32,6 +31,7 @@ export const ErrorMessages = {
 
   // Organization related
   organization_not_found: 'Организация не найдена',
+  your_organization_not_found: 'Ваша организация не найдена',
   organization_already_exists: 'Организация с таким названием уже существует',
   organization_disabled: 'Организация отключена',
 
@@ -50,5 +50,5 @@ export const ErrorMessages = {
 
   // Project related
   project_not_found: 'Проект не найден',
-  project_already_exists: 'Проект с таким названием уже существует',
-} as const
+  project_already_exists: 'Проект с таким названием уже существует'
+} as const;

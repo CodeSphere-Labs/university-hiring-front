@@ -1,61 +1,62 @@
-import {
-  createHistoryRouter,
-  createRoute,
-  createRouterControls,
-} from 'atomic-router'
-import { sample } from 'effector'
-import { createBrowserHistory } from 'history'
+import { createHistoryRouter, createRoute, createRouterControls } from 'atomic-router';
+import { sample } from 'effector';
+import { createBrowserHistory } from 'history';
 
-import { appStarted } from '@/shared/config/init'
+import { appStarted } from '@/shared/config/init';
 
 export const routes = {
   home: createRoute(),
   signIn: createRoute(),
   dashboard: createRoute(),
   groups: createRoute(),
+  group: createRoute<{ id: string }>(),
   internship: createRoute(),
   profile: createRoute(),
-  invitations: createRoute(),
-}
+  invitations: createRoute()
+};
 
-export const controls = createRouterControls()
+export const controls = createRouterControls();
 
 export const router = createHistoryRouter({
   routes: [
     {
       path: '/',
-      route: routes.home,
+      route: routes.home
     },
     {
       path: '/sign-in',
-      route: routes.signIn,
+      route: routes.signIn
     },
     {
       path: '/dashboard',
-      route: routes.dashboard,
+      route: routes.dashboard
     },
     {
       path: '/groups',
-      route: routes.groups,
+      route: routes.groups
+    },
+    {
+      path: '/group/:id',
+      route: routes.group
     },
     {
       path: '/internship',
-      route: routes.internship,
+      route: routes.internship
     },
     {
       path: '/profile',
-      route: routes.profile,
+      route: routes.profile
     },
     {
       path: '/invitations',
-      route: routes.invitations,
-    },
+      route: routes.invitations
+    }
   ],
-  controls,
-})
+  controls
+});
 
 sample({
   clock: appStarted,
   fn: () => createBrowserHistory(),
-  target: router.setHistory,
-})
+  target: router.setHistory
+});

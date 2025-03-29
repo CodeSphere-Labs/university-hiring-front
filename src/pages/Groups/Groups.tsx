@@ -11,9 +11,13 @@ import {
   Title
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
+import { Link } from 'atomic-router-react';
 import { useList, useUnit } from 'effector-react';
 
 import type { Group as GroupType } from '@/shared/api/types';
+
+import { routes } from '@/shared/routing';
+import { getStudentWord } from '@/shared/utils';
 
 import { $groups, $loading, $search, searchChanged } from './model';
 
@@ -38,7 +42,17 @@ const SkeletonCard = () => (
 );
 
 const GroupCard = ({ group }: { group: GroupType }) => (
-  <Card className={classes.card} p='sm' radius='md' withBorder>
+  <Card
+    p='sm'
+    params={{ id: String(group.id) }}
+    radius='md'
+    component={Link}
+    // atomic-router types are not correct for mantine Link component
+    // eslint-disable-next-line ts/ban-ts-comment
+    // @ts-expect-error
+    to={routes.group}
+    withBorder
+  >
     <Card.Section className={classes.section} mt='sm'>
       <Text fw={500} fz='lg'>
         {group.name}
@@ -90,22 +104,3 @@ const Groups = () => {
 };
 
 export default Groups;
-
-function getStudentWord(count: number): string {
-  const lastDigit = count % 10;
-  const lastTwoDigits = count % 100;
-
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-    return 'студентов';
-  }
-
-  if (lastDigit === 1) {
-    return 'студент';
-  }
-
-  if (lastDigit >= 2 && lastDigit <= 4) {
-    return 'студента';
-  }
-
-  return 'студентов';
-}
