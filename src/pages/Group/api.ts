@@ -1,14 +1,15 @@
 import { createQuery } from '@farfetched/core';
 
-import type { Group } from '@/shared/api/types';
+import type { GroupResponse, GroupsParams } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
 import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const getGroupQuery = createQuery({
-  effect: createCommonRequestFx<string, Group>((id) => ({
-    url: `/groups/${id}`,
+  effect: createCommonRequestFx<GroupsParams, GroupResponse>((params) => ({
+    url: `/groups/${params.id}`,
     params: {
+      ...params,
       withStudents: true
     }
   }))

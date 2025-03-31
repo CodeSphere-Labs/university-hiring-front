@@ -77,6 +77,16 @@ export interface Group {
   students: Student[];
 }
 
+export interface GroupResponse {
+  data: Group;
+  meta: {
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+  };
+}
+
 export interface InvitationCreate {
   email: string;
   groupId?: number;
@@ -136,8 +146,10 @@ export interface InvitationParams {
 }
 
 export interface GroupsParams {
+  id?: number;
+  page?: number;
+  limit?: number;
   search?: string;
-  withStudents?: boolean;
 }
 
 interface StudentProfile {
