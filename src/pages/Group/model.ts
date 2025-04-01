@@ -1,11 +1,16 @@
-import { createStore, sample, createEvent } from 'effector';
+import { createStore, sample, createEvent, combine } from 'effector';
 
 import type { GroupResponse, GroupsParams } from '@/shared/api/types';
 
-import { routes } from '@/shared/routing';
+import { controls, routes } from '@/shared/routing';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
-import { getGroupQuery } from './api';
+import { getGroupQuery, getInitialGroupQuery } from './api';
+import { debouncedSearchChanged, $search } from './search';
+import { querySync } from 'atomic-router';
+
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 10;
 
 export const currentRoute = routes.group;
 export const authorizedRoute = chainAuthorized(currentRoute, {
@@ -17,11 +22,19 @@ export const authorizedRouteRole = chainRole(authorizedRoute, ['ADMIN', 'UNIVERS
 });
 
 export const $group = createStore<GroupResponse | null>(null);
-export const $loading = getGroupQuery.$pending.map((pending) => pending);
+export const $initialGroupLoading = getInitialGroupQuery.$pending.map((pending) => pending);
+export const $groupLoading = combine(
+  $initialGroupLoading,
+  getGroupQuery.$pending.map((pending) => pending),
+  (initialLoading, pending) => initialLoading || pending
+);
+
+$group.on(getInitialGroupQuery.finished.success, (_, { result }) => result);
 $group.on(getGroupQuery.finished.success, (_, { result }) => result);
 
-export const $page = createStore(1);
-export const $recordsPerPage = createStore(10);
+export const $page = createStore(DEFAULT_PAGE);
+$page.on(getGroupQuery.finished.success, (_, { result }) => result.meta.page);
+export const $recordsPerPage = createStore(DEFAULT_LIMIT);
 
 export const pageChanged = createEvent<number>();
 export const recordsPerPageChanged = createEvent<number>();
@@ -29,26 +42,56 @@ export const recordsPerPageChanged = createEvent<number>();
 $page.on(pageChanged, (_, page) => page);
 $recordsPerPage.on(recordsPerPageChanged, (_, recordsPerPage) => recordsPerPage);
 
-sample({
-  clock: authorizedRouteRole.opened,
-  source: authorizedRouteRole.$params,
-  fn: (params): GroupsParams => ({
-    id: Number(params.id)
-  }),
-  target: getGroupQuery.start
+querySync({
+  source: {
+    page: $page,
+    limit: $recordsPerPage,
+    search: $search
+  },
+  route: authorizedRouteRole,
+  controls
 });
 
 sample({
-  clock: [pageChanged, recordsPerPageChanged],
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => query.search,
+  target: $search
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => Number(query.page) || DEFAULT_PAGE,
+  target: $page
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: {
+    params: authorizedRouteRole.$params,
+    search: $search
+  },
+  fn: ({ params, search }): GroupsParams => ({
+    id: Number(params.id),
+    search
+  }),
+  target: getInitialGroupQuery.start
+});
+
+sample({
+  clock: [pageChanged, recordsPerPageChanged, debouncedSearchChanged],
   source: {
     page: $page,
     recordsPerPage: $recordsPerPage,
-    params: authorizedRouteRole.$params
+    params: authorizedRouteRole.$params,
+    search: $search
   },
-  fn: ({ page, recordsPerPage, params }): GroupsParams => ({
+  fn: ({ page, recordsPerPage, params, search }): GroupsParams => ({
     id: Number(params.id),
     page,
-    limit: recordsPerPage
+    limit: recordsPerPage,
+    search
   }),
   target: getGroupQuery.start
 });

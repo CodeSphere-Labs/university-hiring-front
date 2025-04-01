@@ -10,7 +10,7 @@ import { getRole } from '@/shared/utils';
 
 import {
   $group,
-  $loading,
+  $groupLoading,
   $page,
   $recordsPerPage,
   pageChanged,
@@ -22,12 +22,10 @@ import classes from './styles.module.css';
 export const StudentsTable = () => {
   const [group, loading, page, recordsPerPage] = useUnit([
     $group,
-    $loading,
+    $groupLoading,
     $page,
     $recordsPerPage
   ]);
-
-  if (!group) return null;
 
   const columns: DataTableColumn<Student>[] = [
     {
@@ -65,6 +63,7 @@ export const StudentsTable = () => {
     },
     {
       accessor: 'studentProfile.skills',
+      width: 350,
       title: 'Навыки',
       render: (student) => (
         <Group gap={4}>
@@ -92,7 +91,7 @@ export const StudentsTable = () => {
       columns={columns}
       highlightOnHover
       noRecordsText='В группе нет студентов'
-      records={group.data.students}
+      records={group?.data.students || []}
       withTableBorder
       fetching={loading}
       page={page}
@@ -104,7 +103,7 @@ export const StudentsTable = () => {
       loadingText='Загрузка данных...'
       recordsPerPageLabel='Количество'
       recordsPerPageOptions={[10, 20, 50]}
-      totalRecords={group.meta.totalItems}
+      totalRecords={group?.meta.totalItems || 0}
     />
   );
 };

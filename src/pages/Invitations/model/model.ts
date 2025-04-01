@@ -63,6 +63,7 @@ $invitations.on(refreshInvitationQuery.finished.success, (state, { result }) => 
 export const $loading = getInvitationsQuery.$pending.map((pending) => pending);
 
 export const $page = createStore(DEFAULT_PAGE);
+$page.on(getInvitationsQuery.finished.success, (_, { result }) => result.meta.page);
 $page.on(pageChanged, (_, page) => page);
 
 export const $recordsPerPage = createStore(DEFAULT_LIMIT);
@@ -72,6 +73,41 @@ sample({
   clock: [statusChanged, filterChanged],
   fn: () => DEFAULT_PAGE,
   target: $page
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => query.search,
+  target: $search
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => Number(query.page) || DEFAULT_PAGE,
+  target: $page
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => Number(query.limit) || DEFAULT_LIMIT,
+  target: $recordsPerPage
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => (query.status as InvitationStatus) || DEFAULT_STATUS,
+  target: $status
+});
+
+sample({
+  clock: authorizedRouteRole.opened,
+  source: authorizedRouteRole.$query,
+  fn: (query) => (query.filter as InvitationFilter) || DEFAULT_FILTER,
+  target: $filter
 });
 
 sample({
@@ -105,34 +141,6 @@ querySync({
   },
   route: authorizedRouteRole,
   controls
-});
-
-sample({
-  clock: authorizedRouteRole.opened,
-  source: authorizedRouteRole.$query,
-  fn: (query) => Number(query.page) || DEFAULT_PAGE,
-  target: $page
-});
-
-sample({
-  clock: authorizedRouteRole.opened,
-  source: authorizedRouteRole.$query,
-  fn: (query) => Number(query.limit) || DEFAULT_LIMIT,
-  target: $recordsPerPage
-});
-
-sample({
-  clock: authorizedRouteRole.opened,
-  source: authorizedRouteRole.$query,
-  fn: (query) => (query.status as InvitationStatus) || DEFAULT_STATUS,
-  target: $status
-});
-
-sample({
-  clock: authorizedRouteRole.opened,
-  source: authorizedRouteRole.$query,
-  fn: (query) => (query.filter as InvitationFilter) || DEFAULT_FILTER,
-  target: $filter
 });
 
 sample({
