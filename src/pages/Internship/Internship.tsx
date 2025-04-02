@@ -1,12 +1,12 @@
 import {
   Badge,
-  Box,
   Button,
   Card,
   Center,
   Group,
   Loader,
   Paper,
+  Skeleton,
   Stack,
   Text,
   TextInput,
@@ -19,7 +19,12 @@ import { useEffect, useRef } from 'react';
 
 import { formatDate } from '@/shared/utils';
 
-import { $opportunities, $opportunitiesLoading, endOfOpportunitiesReached } from './model';
+import {
+  $opportunities,
+  $opportunitiesLoading,
+  $opportunitiesMoreLoading,
+  endOfOpportunitiesReached
+} from './model';
 import { $search, searchChanged } from './search';
 
 const Search = () => {
@@ -36,8 +41,33 @@ const Search = () => {
   );
 };
 
+const SkeletonLoader = () => {
+  return Array.from({ length: 10 }, (_, index) => (
+    <Card key={index} withBorder>
+      <Group justify='space-between' mb='xs' mt='md'>
+        <Skeleton height={20} width={200} />
+        <Skeleton height={30} width={150} />
+      </Group>
+
+      <Group justify='space-between' mb='md'>
+        <Skeleton height={60} width='100%' />
+      </Group>
+
+      <Group gap='xs' wrap='wrap' mb='md'>
+        <Skeleton height={25} width={80} />
+        <Skeleton height={25} width={80} />
+        <Skeleton height={25} width={80} />
+      </Group>
+
+      <Group mb='md'>
+        <Skeleton height={36} width={120} />
+      </Group>
+    </Card>
+  ));
+};
+
 const ResultsLoader = () => {
-  const loading = useUnit($opportunitiesLoading);
+  const loading = useUnit($opportunitiesMoreLoading);
   if (loading) {
     return (
       <Center>
@@ -56,6 +86,7 @@ const List = () => {
     rootMargin: '100px'
   });
 
+  const loading = useUnit($opportunitiesLoading);
   const opportunities = useList($opportunities, (opportunity) => {
     return (
       <Card withBorder>
@@ -100,7 +131,7 @@ const List = () => {
   return (
     <>
       <Stack ref={containerRef}>
-        {opportunities}
+        {loading ? <SkeletonLoader /> : opportunities}
 
         <ResultsLoader />
 

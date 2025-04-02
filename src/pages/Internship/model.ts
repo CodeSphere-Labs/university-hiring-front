@@ -25,9 +25,12 @@ $page.on(getOpportunitiesMoreQuery.finished.success, (_, { result }) => result.m
 export const $opportunities = createStore<Opportunity[]>([]);
 export const $opportunitiesResponse = createStore<OpportunityResponse | null>(null);
 
-export const $opportunitiesLoading = combine(
-  getOpportunitiesQuery.$pending,
-  getOpportunitiesMoreQuery.$pending,
+export const $opportunitiesLoading = getOpportunitiesQuery.$pending.map(Boolean);
+export const $opportunitiesMoreLoading = getOpportunitiesMoreQuery.$pending.map(Boolean);
+
+export const $loading = combine(
+  $opportunitiesLoading,
+  $opportunitiesMoreLoading,
   (initLoading, moreLoading) => initLoading || moreLoading
 );
 
