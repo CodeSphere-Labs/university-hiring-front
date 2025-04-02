@@ -1,5 +1,7 @@
+import { Stack } from '@mantine/core';
+
 const Home = () => {
-  return <>home</>;
+  return <Stack className='shell_main'>home</Stack>;
 };
 
 export default Home;

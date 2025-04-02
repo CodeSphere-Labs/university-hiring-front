@@ -47,7 +47,7 @@ const Search = () => {
 
 const Group = () => {
   return (
-    <Stack>
+    <Stack className='shell_main'>
       <GroupHeader />
       <Search />
       <StudentsTable />

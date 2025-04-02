@@ -79,12 +79,7 @@ export interface Group {
 
 export interface GroupResponse {
   data: Group;
-  meta: {
-    page: number;
-    limit: number;
-    totalItems: number;
-    totalPages: number;
-  };
+  meta: Meta;
 }
 
 export interface InvitationCreate {
@@ -124,12 +119,7 @@ export interface Invitation {
 
 export interface InvintationResponse {
   data: Invitation[];
-  meta: {
-    page: number;
-    limit: number;
-    totalItems: number;
-    totalPages: number;
-  };
+  meta: Meta;
 }
 
 export interface GroupedSkill {
@@ -168,25 +158,38 @@ interface StudentProfile {
   userId: number;
 }
 
-interface Opportunity {
+export interface Opportunity {
   createdAt: string;
-  description: string | null;
+  description: string;
   id: number;
   organization: Organization;
-  organizationId: number;
-  requiredSkills: string[];
-  responses: OpportunityResponse[];
-
+  requiredSkills: Skill[];
   status: 'active' | 'inactive';
   title: string;
 }
 
-interface OpportunityResponse {
-  coverLetter: string | null;
-  createdAt: string;
+export interface OpportunityResponse {
+  data: Opportunity[];
+  meta: Meta;
+}
+
+export interface OpportunityParams {
+  page?: number;
+  limit?: number;
+  withResponses?: boolean;
+  search?: string;
+}
+
+interface Skill {
+  category: string;
+  description: string;
   id: number;
-  opportunity: Opportunity;
-  opportunityId: number;
-  student: StudentProfile;
-  studentId: number;
+  name: string;
+}
+
+interface Meta {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
 }
