@@ -4,7 +4,7 @@ import type { InvitationFilter, InvitationsStats, InvitationStatus } from '@/sha
 
 import { createInvitationQuery } from '@/features/ActionCards/api/api';
 import { routes } from '@/shared/routing/index';
-import { chainAuthorized } from '@/shared/session/model';
+import { chainAuthorized, chainRole } from '@/shared/session/model';
 
 import { getInvitationsStatsQuery } from '../api/api';
 
@@ -12,6 +12,12 @@ export const currentRoute = routes.dashboard;
 export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open
 });
+
+export const authorizedRouteRole = chainRole(authorizedRoute, [
+  'ADMIN',
+  'STAFF',
+  'UNIVERSITY_STAFF'
+]);
 
 export const redirectedToInvitations = createEvent<{
   status: InvitationStatus;
@@ -52,7 +58,7 @@ export const $invitationsStatsLoading = combine(
 );
 
 sample({
-  clock: authorizedRoute.opened,
+  clock: authorizedRouteRole.opened,
   source: $invitationsStatsFilter,
   fn: (filter) => filter,
   target: getInvitationsStatsQuery.start

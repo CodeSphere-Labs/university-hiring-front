@@ -12,6 +12,7 @@ export const routes = {
   group: createRoute<{ id: string }>(),
   internship: createRoute(),
   profile: createRoute(),
+  profileInfo: createRoute<{ id: string }>(),
   invitations: createRoute()
 };
 
@@ -46,6 +47,10 @@ export const router = createHistoryRouter({
     {
       path: '/profile',
       route: routes.profile
+    },
+    {
+      path: '/profile/:id',
+      route: routes.profileInfo
     },
     {
       path: '/invitations',

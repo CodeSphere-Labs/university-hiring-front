@@ -73,8 +73,8 @@ export interface Group {
   id: number;
   name: string;
   organization: Organization;
-  updatedAt: string;
   students: Student[];
+  updatedAt: string;
 }
 
 export interface GroupResponse {
@@ -147,8 +147,8 @@ export interface InvitationParams {
 
 export interface GroupsParams {
   id?: number;
-  page?: number;
   limit?: number;
+  page?: number;
   search?: string;
 }
 

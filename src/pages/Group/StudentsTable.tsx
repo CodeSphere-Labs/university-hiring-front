@@ -1,11 +1,11 @@
 import type { DataTableColumn } from 'mantine-datatable';
 
 import { Avatar, Badge, Group, Text } from '@mantine/core';
-
 import { useUnit } from 'effector-react';
 import { DataTable } from 'mantine-datatable';
 
 import type { Student } from '@/shared/api/types';
+
 import { getRole } from '@/shared/utils';
 
 import {
@@ -13,6 +13,7 @@ import {
   $groupLoading,
   $page,
   $recordsPerPage,
+  goProfilePressed,
   pageChanged,
   recordsPerPageChanged
 } from './model';
@@ -86,24 +87,27 @@ export const StudentsTable = () => {
     <DataTable
       striped
       className={classes.table}
-      borderRadius='sm'
+      fetching={loading}
       minHeight={180}
+      page={page}
+      borderRadius='sm'
       columns={columns}
       highlightOnHover
+      loadingText='Загрузка данных...'
       noRecordsText='В группе нет студентов'
-      records={group?.data.students || []}
-      withTableBorder
-      fetching={loading}
-      page={page}
       onPageChange={pageChanged}
       onRecordsPerPageChange={recordsPerPageChanged}
       paginationActiveBackgroundColor='grape'
       paginationText={({ from, to, totalRecords }) => `${from}-${to} из ${totalRecords}`}
+      records={group?.data.students || []}
       recordsPerPage={recordsPerPage}
-      loadingText='Загрузка данных...'
       recordsPerPageLabel='Количество'
       recordsPerPageOptions={[10, 20, 50]}
+      rowFactory={({ record, children }) => (
+        <tr onClick={() => goProfilePressed(String(record.id))}>{children}</tr>
+      )}
       totalRecords={group?.meta.totalItems || 0}
+      withTableBorder
     />
   );
 };

@@ -1,15 +1,15 @@
 import { createRoutesView } from 'atomic-router-react';
 
-import { DashboardRoute } from '@/pages/Dashboard';
-import { GroupRoute } from '@/pages/Group';
-import { GroupsRoute } from '@/pages/Groups';
-import { InternshipRoute } from '@/pages/Internship';
-import { InvitationsRoute } from '@/pages/Invitations';
-import { NotFoundPage } from '@/pages/NotFound/NotFound';
-import { ProfileRoute } from '@/pages/Profile';
-import { SignInRoute } from '@/pages/SingIn';
-
+import { DashboardRoute } from './Dashboard';
+import { GroupRoute } from './Group';
+import { GroupsRoute } from './Groups';
 import { HomeRoute } from './Home';
+import { InternshipRoute } from './Internship';
+import { InvitationsRoute } from './Invitations';
+import { NotFoundPage } from './NotFound/NotFound';
+import { ProfileRoute } from './Profile';
+import { ProfileInfoRoute } from './ProfileInfo';
+import { SignInRoute } from './SingIn';
 
 export const Pages = createRoutesView({
   routes: [
@@ -20,7 +20,8 @@ export const Pages = createRoutesView({
     InternshipRoute,
     ProfileRoute,
     InvitationsRoute,
-    GroupRoute
+    GroupRoute,
+    ProfileInfoRoute
   ],
   otherwise: NotFoundPage
 });

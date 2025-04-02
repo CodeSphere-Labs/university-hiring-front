@@ -24,13 +24,13 @@ import {
 import { withConditionalRender } from '@/shared/hoc';
 import { AddPetProjectIcon } from '@/shared/icons/AddPetProjectIcon';
 import { $user } from '@/shared/session/model';
-
-import { Projects } from '../Projects/Projects';
+import { Projects } from '@/shared/ui/Projects/Projects';
 
 import classes from './StudentProfileForm.module.css';
 
 export const StudentProfileForm = () => {
   const user = useUnit($user);
+
   const [availableGroupedSkills, availableGroupedSkillsLoading, loading] = useUnit([
     $availableGroupedSkills,
     $availableGroupedSkillsLoading,
@@ -103,7 +103,7 @@ export const StudentProfileForm = () => {
         </Grid.Col>
       </Grid>
 
-      <Projects />
+      <Projects isReadOnly={false} projects={user?.studentProfile?.projects || []} />
     </Stack>
   );
 };

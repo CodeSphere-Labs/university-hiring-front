@@ -1,0 +1,21 @@
+.icon {
+  color: var(--mantine-color-dimmed);
+}
+
+.name {
+  margin-top: 7px;
+}
+
+.input {
+  & input:disabled {
+    background-color: transparent;
+    color: var(--mantine-color-text);
+    opacity: 1;
+  }
+
+  & textarea:disabled {
+    background-color: transparent;
+    color: var(--mantine-color-text);
+    opacity: 1;
+  }
+}

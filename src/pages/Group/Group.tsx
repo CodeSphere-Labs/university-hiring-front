@@ -4,8 +4,9 @@ import { useUnit } from 'effector-react';
 
 import { $group, $initialGroupLoading } from '@/pages/Group/model';
 import { formatDate, getStudentWord } from '@/shared/utils';
-import { StudentsTable } from './StudentsTable';
+
 import { $search, searchChanged } from './search';
+import { StudentsTable } from './StudentsTable';
 
 const GroupHeader = () => {
   const [group, loading] = useUnit([$group, $initialGroupLoading]);
@@ -34,12 +35,12 @@ const Search = () => {
 
   return (
     <TextInput
-      placeholder='Алексей Петров Иванович'
       label='Поиск по имени или email'
-      rightSection={<IconSearch size={14} />}
-      rightSectionWidth={32}
       value={search}
       onChange={(e) => searchChanged(e.target.value)}
+      placeholder='Алексей Петров Иванович'
+      rightSection={<IconSearch size={14} />}
+      rightSectionWidth={32}
     />
   );
 };

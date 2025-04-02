@@ -1,4 +1,5 @@
-import { createStore, sample, createEvent, combine } from 'effector';
+import { querySync, redirect } from 'atomic-router';
+import { combine, createEvent, createStore, sample } from 'effector';
 
 import type { GroupResponse, GroupsParams } from '@/shared/api/types';
 
@@ -6,8 +7,7 @@ import { controls, routes } from '@/shared/routing';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
 import { getGroupQuery, getInitialGroupQuery } from './api';
-import { debouncedSearchChanged, $search } from './search';
-import { querySync } from 'atomic-router';
+import { $search, debouncedSearchChanged } from './search';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
@@ -19,6 +19,13 @@ export const authorizedRoute = chainAuthorized(currentRoute, {
 
 export const authorizedRouteRole = chainRole(authorizedRoute, ['ADMIN', 'UNIVERSITY_STAFF'], {
   otherwise: routes.home.open
+});
+
+export const goProfilePressed = createEvent<string>();
+redirect({
+  clock: goProfilePressed,
+  route: routes.profileInfo,
+  params: (id) => ({ id })
 });
 
 export const $group = createStore<GroupResponse | null>(null);
