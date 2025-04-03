@@ -5,8 +5,9 @@ import type { Opportunity, OpportunityResponse } from '@/shared/api/types';
 import { routes } from '@/shared/routing/index';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
-import { getOpportunitiesMoreQuery, getOpportunitiesQuery } from './api';
+import { getOpportunitiesMoreQuery, getOpportunitiesQuery, respondToOpportunityQuery } from './api';
 import { $search, debouncedSearchChanged } from './search';
+import { showError, showSuccess } from '@/shared/notifications/model';
 
 export const currentRoute = routes.internship;
 export const authorizedRoute = chainAuthorized(currentRoute, {
@@ -18,6 +19,7 @@ export const authorizedRouteRole = chainRole(authorizedRoute, ['ADMIN', 'STAFF',
 });
 
 export const endOfOpportunitiesReached = createEvent();
+export const respondToOpportunityClicked = createEvent<number>();
 
 const $page = createStore(1);
 $page.on(getOpportunitiesMoreQuery.finished.success, (_, { result }) => result.meta.page);
@@ -39,6 +41,13 @@ $opportunities.on(getOpportunitiesMoreQuery.finished.success, (store, { result }
   ...store,
   ...result.data
 ]);
+$opportunities.on(respondToOpportunityQuery.finished.success, (store, { result }) =>
+  store.map((opportunity) =>
+    opportunity.id === result.opportunityId
+      ? { ...opportunity, respondedUserIds: [...opportunity.respondedUserIds, result.userId] }
+      : opportunity
+  )
+);
 
 $opportunitiesResponse.on(getOpportunitiesQuery.finished.success, (_, { result }) => result);
 $opportunitiesResponse.on(getOpportunitiesMoreQuery.finished.success, (_, { result }) => result);
@@ -69,4 +78,22 @@ sample({
   },
   fn: ({ search }) => ({ withResponses: false, search }),
   target: getOpportunitiesQuery.start
+});
+
+sample({
+  clock: respondToOpportunityClicked,
+  target: respondToOpportunityQuery.start
+});
+
+sample({
+  clock: respondToOpportunityQuery.finished.success,
+  target: showSuccess({
+    title: 'Отклик отправлен',
+    message: 'Вы успешно откликнулись на вакансию'
+  })
+});
+
+sample({
+  clock: respondToOpportunityQuery.finished.failure,
+  target: showError('Ошибка при отправке отклика')
 });

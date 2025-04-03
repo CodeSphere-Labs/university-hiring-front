@@ -19,5 +19,13 @@ export const getOpportunitiesMoreQuery = createQuery({
   }))
 });
 
+export const respondToOpportunityQuery = createQuery({
+  effect: createCommonRequestFx<number, { opportunityId: number; userId: number }>((id) => ({
+    url: `/opportunities/response/${id}`,
+    method: 'PATCH'
+  }))
+});
+
 attachAuthHandler(getOpportunitiesQuery);
 attachAuthHandler(getOpportunitiesMoreQuery);
+attachAuthHandler(respondToOpportunityQuery);

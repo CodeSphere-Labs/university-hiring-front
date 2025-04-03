@@ -23,9 +23,11 @@ import {
   $opportunities,
   $opportunitiesLoading,
   $opportunitiesMoreLoading,
-  endOfOpportunitiesReached
+  endOfOpportunitiesReached,
+  respondToOpportunityClicked
 } from './model';
 import { $search, searchChanged } from './search';
+import { $user } from '@/shared/session/model';
 
 const Search = () => {
   const search = useUnit($search);
@@ -79,6 +81,8 @@ const ResultsLoader = () => {
 };
 
 const List = () => {
+  const user = useUnit($user);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, entry } = useIntersection({
     root: null,
@@ -87,7 +91,10 @@ const List = () => {
   });
 
   const loading = useUnit($opportunitiesLoading);
+
   const opportunities = useList($opportunities, (opportunity) => {
+    const alreadyResponded = opportunity.respondedUserIds.includes(user?.id ?? 0);
+
     return (
       <Card withBorder>
         <Card.Section component={Title} order={3}>
@@ -114,8 +121,14 @@ const List = () => {
         </Group>
 
         <Group mb='md'>
-          <Button mt='md' radius='md' color='blue'>
-            Откликнуться
+          <Button
+            onClick={() => respondToOpportunityClicked(opportunity.id)}
+            disabled={alreadyResponded}
+            mt='md'
+            radius='md'
+            color='blue'
+          >
+            {alreadyResponded ? 'Вы уже откликнулись' : 'Откликнуться'}
           </Button>
         </Group>
       </Card>

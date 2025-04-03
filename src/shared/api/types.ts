@@ -166,6 +166,7 @@ export interface Opportunity {
   requiredSkills: Skill[];
   status: 'active' | 'inactive';
   title: string;
+  respondedUserIds: number[];
 }
 
 export interface OpportunityResponse {
