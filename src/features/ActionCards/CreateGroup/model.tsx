@@ -1,32 +1,29 @@
-import { modals } from '@mantine/modals'
-import { createEffect, createEvent, sample } from 'effector'
-import { createForm } from 'effector-forms'
+import { modals } from '@mantine/modals';
+import { createEffect, createEvent, sample } from 'effector';
+import { createForm } from 'effector-forms';
 
-import { validateRules } from '@/shared/config/validateRules'
-import {
-  showError,
-  showSuccessNotificationFx,
-} from '@/shared/notifications/model'
+import { validateRules } from '@/shared/config/validateRules';
+import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
 
-import { createGroupQuery } from '../api/api'
-import { CreateGroup } from './CreateGroup'
+import { createGroupQuery } from '../api/api';
+import { CreateGroup } from './CreateGroup';
 
-export const modalOpened = createEvent()
-export const $loading = createGroupQuery.$pending.map((pending) => pending)
+export const modalOpened = createEvent();
+export const $loading = createGroupQuery.$pending.map((pending) => pending);
 
 export const form = createForm({
   fields: {
     name: {
       init: '',
-      rules: [validateRules.required()],
-    },
+      rules: [validateRules.required()]
+    }
   },
-  validateOn: ['submit'],
-})
+  validateOn: ['submit']
+});
 
 export const modalConfirmFx = createEffect(() => {
-  form.submit()
-})
+  form.submit();
+});
 
 const openModalFx = createEffect(() =>
   modals.openConfirmModal({
@@ -36,23 +33,23 @@ const openModalFx = createEffect(() =>
     onConfirm: () => modalConfirmFx(),
     closeOnConfirm: false,
     size: 'lg',
-    zIndex: 1002,
-  }),
-)
+    zIndex: 1002
+  })
+);
 
 const modalCloseFx = createEffect<string, void, Error>((id) => {
-  modals.close(id)
-})
+  modals.close(id);
+});
 
 sample({
   clock: modalOpened,
-  target: [form.reset, openModalFx],
-})
+  target: [form.reset, openModalFx]
+});
 
 sample({
   clock: form.formValidated,
-  target: createGroupQuery.start,
-})
+  target: createGroupQuery.start
+});
 
 sample({
   clock: createGroupQuery.finished.success,
@@ -61,13 +58,13 @@ sample({
     modalCloseFx,
     showSuccessNotificationFx.prepend(() => ({
       title: 'Группа создана',
-      message: 'Группа успешно создана',
-    })),
-  ],
-})
+      message: 'Группа успешно создана'
+    }))
+  ]
+});
 
 sample({
   clock: createGroupQuery.finished.failure,
   filter: ({ error }) => error.statusCode !== 403,
-  target: showError('Ошибка при создании группы'),
-})
+  target: showError('Ошибка при создании группы')
+});

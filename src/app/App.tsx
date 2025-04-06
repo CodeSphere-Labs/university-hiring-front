@@ -1,17 +1,17 @@
-import { MantineProvider } from '@mantine/core'
-import { ModalsProvider } from '@mantine/modals'
-import { Notifications } from '@mantine/notifications'
-import { RouterProvider } from 'atomic-router-react'
-import { Suspense } from 'react'
+import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
+import { Notifications } from '@mantine/notifications';
+import { RouterProvider } from 'atomic-router-react';
+import { Suspense } from 'react';
 
-import { Pages } from '@/pages'
-import { router } from '@/shared/routing/index'
-import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
+import { Pages } from '@/pages';
+import { router } from '@/shared/routing/index';
+import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 
-import '@mantine/core/styles.css'
-import '@mantine/notifications/styles.css'
-import 'mantine-datatable/styles.layer.css'
-import './styles/index.css'
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
+import 'mantine-datatable/styles.layer.css';
+import './styles/index.css';
 
 export const App = () => {
   return (
@@ -25,5 +25,5 @@ export const App = () => {
         </ModalsProvider>
       </MantineProvider>
     </RouterProvider>
-  )
-}
+  );
+};

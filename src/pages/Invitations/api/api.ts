@@ -1,37 +1,31 @@
-import { createQuery } from '@farfetched/core'
+import { createQuery } from '@farfetched/core';
 
-import type {
-  InvintationResponse,
-  Invitation,
-  InvitationParams,
-} from '@/shared/api/types'
+import type { InvintationResponse, Invitation, InvitationParams } from '@/shared/api/types';
 
-import { createCommonRequestFx } from '@/shared/api/requests'
-import { attachAuthHandler } from '@/shared/session/auth-barrier'
+import { createCommonRequestFx } from '@/shared/api/requests';
+import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const getInvitationsQuery = createQuery({
-  effect: createCommonRequestFx<InvitationParams, InvintationResponse>(
-    (params) => ({
-      url: '/invitations',
-      query: params,
-    }),
-  ),
-})
+  effect: createCommonRequestFx<InvitationParams, InvintationResponse>((params) => ({
+    url: '/invitations',
+    query: params
+  }))
+});
 
 export const deleteInvitationQuery = createQuery({
   effect: createCommonRequestFx<number, Invitation>((id) => ({
     url: `/invitations/${id}`,
-    method: 'DELETE',
-  })),
-})
+    method: 'DELETE'
+  }))
+});
 
 export const refreshInvitationQuery = createQuery({
   effect: createCommonRequestFx<number, Invitation>((id) => ({
     url: `/invitations/refresh-invitation/${id}`,
-    method: 'PATCH',
-  })),
-})
+    method: 'PATCH'
+  }))
+});
 
-attachAuthHandler(getInvitationsQuery)
-attachAuthHandler(deleteInvitationQuery)
-attachAuthHandler(refreshInvitationQuery)
+attachAuthHandler(getInvitationsQuery);
+attachAuthHandler(deleteInvitationQuery);
+attachAuthHandler(refreshInvitationQuery);

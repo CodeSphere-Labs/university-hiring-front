@@ -1,18 +1,18 @@
-import { createRouteView } from 'atomic-router-react'
-import { lazy, Suspense } from 'react'
+import { createRouteView } from 'atomic-router-react';
+import { lazy, Suspense } from 'react';
 
-import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
-import { Navbar } from '@/widgets'
+import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
+import { Navbar } from '@/widgets';
 
-import { authorizedRoute, currentRoute } from './model'
+import { authorizedRoute, currentRoute } from './model';
 
-export const HomePage = lazy(() => import('./Home'))
+export const HomePage = lazy(() => import('./Home'));
 
 const AuthorizedView = createRouteView({
   route: authorizedRoute,
   view: HomePage,
-  otherwise: LoadingPage,
-})
+  otherwise: LoadingPage
+});
 
 export const HomeRoute = {
   view: () => (
@@ -21,5 +21,5 @@ export const HomeRoute = {
     </Suspense>
   ),
   route: currentRoute,
-  layout: Navbar,
-}
+  layout: Navbar
+};

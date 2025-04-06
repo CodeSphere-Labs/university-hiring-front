@@ -1,2 +1,2 @@
-export * from './InvitationsTable/InvitationsTable'
-export * from './Navbar/Navbar'
+export * from './InvitationsTable/InvitationsTable';
+export * from './Navbar/Navbar';

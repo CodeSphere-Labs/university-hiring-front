@@ -1,12 +1,12 @@
-import { Stack, Title } from '@mantine/core'
+import { Stack, Title } from '@mantine/core';
 
-import { InvitationsFilters, InvitationsSearch } from '@/features/Invitations'
-import { InvitationsTable } from '@/widgets'
+import { InvitationsFilters, InvitationsSearch } from '@/features/Invitations';
+import { InvitationsTable } from '@/widgets';
 
 const Invitations = () => {
   return (
-    <Stack className="shell_main">
-      <Title mb="md" order={2}>
+    <Stack className='shell_main'>
+      <Title mb='md' order={2}>
         Приглашения
       </Title>
 
@@ -14,8 +14,7 @@ const Invitations = () => {
       <InvitationsSearch />
       <InvitationsTable />
     </Stack>
-  )
-}
+  );
+};
 
- 
-export default Invitations
+export default Invitations;

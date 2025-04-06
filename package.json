@@ -9,6 +9,7 @@
     "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\"",
     "preview": "vite preview",
     "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\" ",
     "prepare": "husky install"
   },
   "dependencies": {

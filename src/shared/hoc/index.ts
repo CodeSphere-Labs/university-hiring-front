@@ -1,2 +1,2 @@
-export * from './withConditionalRender'
-export * from './withRoleCheck'
+export * from './withConditionalRender';
+export * from './withRoleCheck';

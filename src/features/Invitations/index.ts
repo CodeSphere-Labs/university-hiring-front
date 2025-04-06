@@ -1,2 +1,2 @@
-export * from './Filters/Filters'
-export * from './Search/Search'
+export * from './Filters/Filters';
+export * from './Search/Search';

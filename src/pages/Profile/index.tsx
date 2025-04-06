@@ -1,18 +1,18 @@
-import { createRouteView } from 'atomic-router-react'
-import { lazy, Suspense } from 'react'
+import { createRouteView } from 'atomic-router-react';
+import { lazy, Suspense } from 'react';
 
-import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage'
-import { Navbar } from '@/widgets'
+import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
+import { Navbar } from '@/widgets';
 
-import { authorizedRoute, currentRoute } from './model/model'
+import { authorizedRoute, currentRoute } from './model/model';
 
-export const ProfilePage = lazy(() => import('./ui/Profile'))
+export const ProfilePage = lazy(() => import('./ui/Profile'));
 
 const AuthorizedView = createRouteView({
   route: authorizedRoute,
   view: ProfilePage,
-  otherwise: LoadingPage,
-})
+  otherwise: LoadingPage
+});
 
 export const ProfileRoute = {
   view: () => (
@@ -21,5 +21,5 @@ export const ProfileRoute = {
     </Suspense>
   ),
   route: currentRoute,
-  layout: Navbar,
-}
+  layout: Navbar
+};
