@@ -164,9 +164,9 @@ export interface Opportunity {
   id: number;
   organization: Organization;
   requiredSkills: Skill[];
+  respondedUserIds: number[];
   status: 'active' | 'inactive';
   title: string;
-  respondedUserIds: number[];
 }
 
 export interface OpportunityResponse {
@@ -175,10 +175,10 @@ export interface OpportunityResponse {
 }
 
 export interface OpportunityParams {
-  page?: number;
   limit?: number;
-  withResponses?: boolean;
+  page?: number;
   search?: string;
+  withResponses?: boolean;
 }
 
 interface Skill {
@@ -189,8 +189,8 @@ interface Skill {
 }
 
 interface Meta {
-  page: number;
   limit: number;
+  page: number;
   totalItems: number;
   totalPages: number;
 }

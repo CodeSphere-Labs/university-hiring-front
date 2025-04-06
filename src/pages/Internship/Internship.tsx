@@ -17,6 +17,7 @@ import { IconCalendar, IconSearch } from '@tabler/icons-react';
 import { useList, useUnit } from 'effector-react';
 import { useEffect, useRef } from 'react';
 
+import { $user } from '@/shared/session/model';
 import { formatDate } from '@/shared/utils';
 
 import {
@@ -27,16 +28,15 @@ import {
   respondToOpportunityClicked
 } from './model';
 import { $search, searchChanged } from './search';
-import { $user } from '@/shared/session/model';
 
 const Search = () => {
   const search = useUnit($search);
 
   return (
     <TextInput
+      label='Поиск'
       value={search}
       onChange={(e) => searchChanged(e.target.value)}
-      label='Поиск'
       placeholder='Java разработчик'
       rightSection={<IconSearch size={16} />}
     />
@@ -55,7 +55,7 @@ const SkeletonLoader = () => {
         <Skeleton height={60} width='100%' />
       </Group>
 
-      <Group gap='xs' wrap='wrap' mb='md'>
+      <Group gap='xs' mb='md' wrap='wrap'>
         <Skeleton height={25} width={80} />
         <Skeleton height={25} width={80} />
         <Skeleton height={25} width={80} />
@@ -109,7 +109,9 @@ const List = () => {
         </Group>
 
         <Group justify='space-between' mb='md'>
-          <Text fw={500}>{opportunity.description}</Text>
+          <Text fw={500} lineClamp={4}>
+            {opportunity.description}
+          </Text>
         </Group>
 
         <Group gap='xs' wrap='wrap'>
@@ -122,11 +124,11 @@ const List = () => {
 
         <Group mb='md'>
           <Button
-            onClick={() => respondToOpportunityClicked(opportunity.id)}
             disabled={alreadyResponded}
             mt='md'
             radius='md'
             color='blue'
+            onClick={() => respondToOpportunityClicked(opportunity.id)}
           >
             {alreadyResponded ? 'Вы уже откликнулись' : 'Откликнуться'}
           </Button>

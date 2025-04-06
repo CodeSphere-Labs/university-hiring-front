@@ -5,12 +5,12 @@ import { GroupRoute } from './Group';
 import { GroupsRoute } from './Groups';
 import { HomeRoute } from './Home';
 import { InternshipRoute } from './Internship';
+import { InvitationAcceptRoute } from './InvitationAccept';
 import { InvitationsRoute } from './Invitations';
 import { NotFoundPage } from './NotFound/NotFound';
 import { ProfileRoute } from './Profile';
 import { ProfileInfoRoute } from './ProfileInfo';
 import { SignInRoute } from './SingIn';
-
 export const Pages = createRoutesView({
   routes: [
     HomeRoute,
@@ -21,7 +21,8 @@ export const Pages = createRoutesView({
     ProfileRoute,
     InvitationsRoute,
     GroupRoute,
-    ProfileInfoRoute
+    ProfileInfoRoute,
+    InvitationAcceptRoute
   ],
   otherwise: NotFoundPage
 });

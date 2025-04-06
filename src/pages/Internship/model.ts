@@ -2,12 +2,12 @@ import { combine, createEvent, createStore, sample } from 'effector';
 
 import type { Opportunity, OpportunityResponse } from '@/shared/api/types';
 
+import { showError, showSuccess } from '@/shared/notifications/model';
 import { routes } from '@/shared/routing/index';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
 import { getOpportunitiesMoreQuery, getOpportunitiesQuery, respondToOpportunityQuery } from './api';
 import { $search, debouncedSearchChanged } from './search';
-import { showError, showSuccess } from '@/shared/notifications/model';
 
 export const currentRoute = routes.internship;
 export const authorizedRoute = chainAuthorized(currentRoute, {
