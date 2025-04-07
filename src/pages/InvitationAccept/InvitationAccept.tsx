@@ -88,17 +88,6 @@ const InvitationAccept = () => {
           placeholder='Отчество'
         />
 
-        <TextInput
-          required
-          disabled={loadingAccept}
-          label='Email'
-          mb={15}
-          value={fields.email.value}
-          error={fields.email.errorText()}
-          onChange={(e) => fields.email.onChange(e.target.value)}
-          placeholder='petrov@yandex.ru'
-        />
-
         <PasswordInput
           required
           disabled={loadingAccept}

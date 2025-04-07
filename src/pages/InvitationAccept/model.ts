@@ -36,10 +36,6 @@ export const form = createForm({
       init: '',
       rules: [validateRules.required()]
     },
-    email: {
-      init: '',
-      rules: [validateRules.required(), validateRules.email()]
-    },
     password: {
       init: '',
       rules: [validateRules.password()]
@@ -60,7 +56,6 @@ sample({
   source: anonymousRouteRoute.$params,
   fn: (params, fields) => ({
     body: {
-      email: fields.email,
       firstName: fields.firstName,
       lastName: fields.lastName,
       patronymic: fields.patronymic,

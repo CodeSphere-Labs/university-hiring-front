@@ -24,7 +24,6 @@ export enum OrganizationType {
 export interface InvitationAcceptParams {
   token: string;
   body: {
-    email: string;
     firstName: string;
     lastName: string;
     password: string;
