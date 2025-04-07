@@ -13,11 +13,13 @@ export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open
 });
 
-export const authorizedRouteRole = chainRole(authorizedRoute, [
-  'ADMIN',
-  'STAFF',
-  'UNIVERSITY_STAFF'
-]);
+export const authorizedRouteRole = chainRole(
+  authorizedRoute,
+  ['ADMIN', 'STAFF', 'UNIVERSITY_STAFF'],
+  {
+    otherwise: routes.home.open
+  }
+);
 
 export const redirectedToInvitations = createEvent<{
   status: InvitationStatus;

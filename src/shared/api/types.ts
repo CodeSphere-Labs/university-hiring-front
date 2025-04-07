@@ -184,6 +184,7 @@ export interface OpportunityResponse {
 }
 
 export interface OpportunityParams {
+  createdByMe?: boolean;
   limit?: number;
   page?: number;
   search?: string;
