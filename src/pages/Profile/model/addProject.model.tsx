@@ -3,7 +3,7 @@ import { createEffect, createEvent, sample } from 'effector';
 import { createForm } from 'effector-forms';
 
 import { validateRules } from '@/shared/config/validateRules';
-import { showSuccessNotificationFx } from '@/shared/notifications/model';
+import { showSuccess } from '@/shared/notifications/model';
 import { $user } from '@/shared/session/model';
 
 import { addProjectQuery } from '../api/api';
@@ -78,10 +78,10 @@ sample({
   source: openModalFx.doneData,
   target: [
     projectModalCloseFx,
-    showSuccessNotificationFx.prepend(() => ({
+    showSuccess({
       title: 'Проект добавлен',
       message: 'Проект успешно добавлен'
-    }))
+    })
   ]
 });
 

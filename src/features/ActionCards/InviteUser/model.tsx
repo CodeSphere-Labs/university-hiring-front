@@ -6,7 +6,7 @@ import type { Group, Organization, Role } from '@/shared/api/types';
 
 import { RenewInvite } from '@/features/ActionCards/InviteUser/RenewInvite';
 import { validateRules } from '@/shared/config/validateRules';
-import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
+import { showError, showSuccess } from '@/shared/notifications/model';
 
 import {
   createGroupQuery,
@@ -156,10 +156,10 @@ sample({
   source: openModalFx.doneData,
   target: [
     modalCloseFx,
-    showSuccessNotificationFx.prepend(() => ({
+    showSuccess({
       title: 'Приглашение создано',
       message: 'Приглашение успешно создано и отправлено'
-    }))
+    })
   ]
 });
 
@@ -207,10 +207,10 @@ sample({
 
 sample({
   clock: refreshInvitationQuery.finished.success,
-  target: showSuccessNotificationFx.prepend(() => ({
+  target: showSuccess({
     title: 'Приглашение обновлено',
     message: 'Приглашение успешно обновлено и отправлено'
-  }))
+  })
 });
 
 sample({

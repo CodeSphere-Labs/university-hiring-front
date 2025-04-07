@@ -6,7 +6,7 @@ import { createForm } from 'effector-forms';
 import type { GroupedSkill } from '@/shared/api/types';
 
 import { validateRules } from '@/shared/config/validateRules';
-import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
+import { showError, showSuccess } from '@/shared/notifications/model';
 import { routes } from '@/shared/routing/index';
 import { sessionQuery } from '@/shared/session/api';
 import { $user, chainAuthorized } from '@/shared/session/model';
@@ -106,10 +106,10 @@ sample({
 
 sample({
   clock: updateUserQuery.finished.success,
-  target: showSuccessNotificationFx.prepend(() => ({
+  target: showSuccess({
     title: 'Профиль обновлен',
     message: 'Ваши данные успешно сохранены'
-  }))
+  })
 });
 
 sample({
@@ -119,10 +119,10 @@ sample({
 
 sample({
   clock: deleteProjectQuery.finished.success,
-  target: showSuccessNotificationFx.prepend(() => ({
+  target: showSuccess({
     title: 'Проект удален',
     message: 'Проект успешно удален'
-  }))
+  })
 });
 
 sample({

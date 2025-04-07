@@ -1,7 +1,7 @@
 import { createEvent, sample } from 'effector';
 
 import { deleteInvitationQuery, refreshInvitationQuery } from '@/pages/Invitations/api/api';
-import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
+import { showError, showSuccess } from '@/shared/notifications/model';
 
 export const deletedInvitation = createEvent<number>();
 export const refreshedInvitation = createEvent<number>();
@@ -18,18 +18,18 @@ sample({
 
 sample({
   clock: deleteInvitationQuery.finished.success,
-  target: showSuccessNotificationFx.prepend(() => ({
+  target: showSuccess({
     title: 'Приглашение удалено',
     message: 'Приглашение успешно удалено'
-  }))
+  })
 });
 
 sample({
   clock: refreshInvitationQuery.finished.success,
-  target: showSuccessNotificationFx.prepend(() => ({
+  target: showSuccess({
     title: 'Приглашение обновлено',
     message: 'Приглашение успешно обновлено'
-  }))
+  })
 });
 sample({
   clock: deleteInvitationQuery.finished.failure,

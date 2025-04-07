@@ -3,7 +3,7 @@ import { createEffect, createEvent, sample } from 'effector';
 import { createForm } from 'effector-forms';
 
 import { validateRules } from '@/shared/config/validateRules';
-import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
+import { showError, showSuccess } from '@/shared/notifications/model';
 
 import { createGroupQuery } from '../api/api';
 import { CreateGroup } from './CreateGroup';
@@ -56,10 +56,10 @@ sample({
   source: openModalFx.doneData,
   target: [
     modalCloseFx,
-    showSuccessNotificationFx.prepend(() => ({
+    showSuccess({
       title: 'Группа создана',
       message: 'Группа успешно создана'
-    }))
+    })
   ]
 });
 

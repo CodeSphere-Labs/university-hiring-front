@@ -7,7 +7,7 @@ import type { GroupedSkill } from '@/shared/api/types';
 import { createVacancyQuery } from '@/features/ActionCards/api/api';
 import { getAvailableGroupedSkillsQuery } from '@/pages/Profile/api/api';
 import { validateRules } from '@/shared/config/validateRules';
-import { showError, showSuccessNotificationFx } from '@/shared/notifications/model';
+import { showError, showSuccess } from '@/shared/notifications/model';
 
 import { CreateVacancy } from './CreateVacancy';
 
@@ -81,10 +81,10 @@ sample({
   source: openModalFx.doneData,
   target: [
     modalCloseFx,
-    showSuccessNotificationFx.prepend(() => ({
+    showSuccess({
       title: 'Вакансия создана',
       message: 'Вакансия успешно создана'
-    }))
+    })
   ]
 });
 
