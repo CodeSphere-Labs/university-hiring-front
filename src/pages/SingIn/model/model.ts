@@ -4,7 +4,7 @@ import { createForm } from 'effector-forms';
 import { signInMutation } from '@/pages/SingIn/api/api';
 import { validateRules } from '@/shared/config/validateRules';
 import { showError } from '@/shared/notifications/model';
-import { routes } from '@/shared/routing/index';
+import { routes } from '@/shared/routing';
 import { sessionQuery } from '@/shared/session/api';
 import { chainAnonymous } from '@/shared/session/model';
 

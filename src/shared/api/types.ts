@@ -1,11 +1,11 @@
 import type { FetchError } from 'ofetch';
 
-import type { ErrorMessages } from '@/shared/config/errorCodes';
+import type { ErrorMessageKey } from '@/shared/config/errorCodes';
 
-export interface ErrorResponse extends FetchError {
+export interface ErrorResponse<T extends ErrorMessageKey = ErrorMessageKey> extends FetchError {
   params: unknown;
-  data?: {
-    message: keyof typeof ErrorMessages;
+  data: {
+    message?: T;
   };
   meta: {
     stopErrorPropagation: boolean;
@@ -20,6 +20,16 @@ export type InvitationFilter = 'all' | 'createdByMe';
 export enum OrganizationType {
   COMPANY = 'COMPANY',
   UNIVERSITY = 'UNIVERSITY'
+}
+export interface InvitationAcceptParams {
+  token: string;
+  body: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    patronymic: string;
+  };
 }
 
 export interface User {

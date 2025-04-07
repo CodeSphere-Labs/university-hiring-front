@@ -24,7 +24,7 @@ export const ErrorMessages = {
 
   // Invitation related
   user_already_invited: 'Пользователь уже приглашен',
-  invalid_invitation: 'Недействительное приглашение',
+  invalid_invitation: 'Приглашение не найдено',
   invintation_used: 'Приглашение уже использовано',
   invintation_expired: 'Срок действия приглашения истек',
   invitation_not_found: 'Приглашение не найдено',
@@ -52,3 +52,12 @@ export const ErrorMessages = {
   project_not_found: 'Проект не найден',
   project_already_exists: 'Проект с таким названием уже существует'
 } as const;
+
+export type ErrorMessageKey = keyof typeof ErrorMessages;
+
+export type InvitationErrorKey =
+  | 'invalid_invitation'
+  | 'invintation_expired'
+  | 'invintation_used'
+  | 'invitation_not_found'
+  | 'user_already_invited';
