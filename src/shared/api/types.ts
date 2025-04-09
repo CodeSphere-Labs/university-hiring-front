@@ -151,22 +151,6 @@ export interface GroupsParams {
   search?: string;
 }
 
-interface StudentProfile {
-  createdAt: string;
-  githubLink: string | null;
-  group: Group | null;
-  id: number;
-  opportunityResponses?: OpportunityResponse[];
-
-  projects: Project[] | null;
-  resume: string | null;
-
-  skills: string[];
-  updatedAt: string;
-
-  userId: number;
-}
-
 export interface Opportunity {
   createdAt: string;
   description: string;
@@ -178,7 +162,7 @@ export interface Opportunity {
   title: string;
 }
 
-export interface OpportunityResponse {
+export interface OpportunitiesResponse {
   data: Opportunity[];
   meta: Meta;
 }
@@ -189,6 +173,30 @@ export interface OpportunityParams {
   page?: number;
   search?: string;
   withResponses?: boolean;
+}
+
+export interface OpportunityResponse extends Opportunity {
+  responses: {
+    id: number;
+    coverLetter: string;
+    student: Student;
+  }[];
+}
+
+interface StudentProfile {
+  createdAt: string;
+  githubLink: string | null;
+  group: Group | null;
+  id: number;
+  opportunityResponses?: OpportunitiesResponse[];
+
+  projects: Project[] | null;
+  resume: string | null;
+
+  skills: string[];
+  updatedAt: string;
+
+  userId: number;
 }
 
 interface Skill {

@@ -14,9 +14,11 @@ import {
 } from '@mantine/core';
 import { useIntersection } from '@mantine/hooks';
 import { IconCalendar, IconSearch } from '@tabler/icons-react';
+import { Link } from 'atomic-router-react';
 import { useList, useUnit } from 'effector-react';
 import { useEffect, useRef } from 'react';
 
+import { routes } from '@/shared/routing';
 import { formatDate } from '@/shared/utils';
 
 import {
@@ -46,7 +48,7 @@ const Search = () => {
 const SkeletonLoader = () => {
   return Array.from({ length: 10 }, (_, index) => (
     <Grid.Col key={index} span={6}>
-      <Card h={400} withBorder>
+      <Card h={270} withBorder>
         <Stack h='100%' justify='space-between'>
           <Stack>
             <Skeleton height={30} width='80%' />
@@ -94,7 +96,17 @@ const List = () => {
 
   const opportunities = useList($opportunities, (opportunity) => (
     <Grid.Col span={6}>
-      <Card className={styles.card} h={240} withBorder>
+      <Card
+        className={styles.card}
+        h={240}
+        params={{ id: opportunity.id }}
+        component={Link}
+        // atomic-router types are not correct for mantine Link component
+        // eslint-disable-next-line ts/ban-ts-comment
+        // @ts-expect-error
+        to={routes.internshipDashboardCard}
+        withBorder
+      >
         <Stack h='100%' justify='space-between'>
           <Stack>
             <Card.Section component={Title} order={3}>
