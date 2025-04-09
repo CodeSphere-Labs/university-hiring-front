@@ -1,6 +1,6 @@
 import { combine, createEvent, createStore, sample } from 'effector';
 
-import type { Opportunity, OpportunitiesResponse } from '@/shared/api/types';
+import type { OpportunitiesResponse, Opportunity } from '@/shared/api/types';
 
 import { routes } from '@/shared/routing/index';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
