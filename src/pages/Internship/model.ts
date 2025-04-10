@@ -14,7 +14,7 @@ export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open
 });
 
-export const authorizedRouteRole = chainRole(authorizedRoute, ['ADMIN', 'STAFF', 'STUDENT'], {
+export const authorizedRouteRole = chainRole(authorizedRoute, ['ADMIN', 'STUDENT'], {
   otherwise: routes.home.open
 });
 

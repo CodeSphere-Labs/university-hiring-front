@@ -58,7 +58,7 @@ export const $links = createStore<Link[]>([
     label: 'Стажировки',
     icon: IconBriefcase,
     active: routes.internship,
-    roles: ['ADMIN', 'STAFF', 'STUDENT']
+    roles: ['ADMIN', 'STUDENT']
   },
   {
     route: routes.internshipDashboard,

@@ -1,17 +1,46 @@
 import { createQuery } from '@farfetched/core';
 
-import type { OpportunityResponse } from '@/shared/api/types';
+import type {
+  OpportunityResponse,
+  OpportunityResponsesFilter,
+  OpportunityResponsesParams,
+  OpportunityResponsesResponse
+} from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
 import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const getInternshipDashboardCardQuery = createQuery({
-  effect: createCommonRequestFx<string, OpportunityResponse>((id) => ({
-    url: `/opportunities/${id}`,
+  effect: createCommonRequestFx<{ id: string }, OpportunityResponse>((params) => ({
+    url: `/opportunities/${params.id}`,
     params: {
       withResponses: true
     }
   }))
 });
 
+export const getInternshipDashboardCardResponsesQuery = createQuery({
+  effect: createCommonRequestFx<OpportunityResponsesParams, OpportunityResponsesResponse>(
+    ({ id, ...params }) => ({
+      url: `/opportunities/${id}/responses`,
+      params
+    })
+  )
+});
+
+export const changeInternshipDashboardCardResponseStatusQuery = createQuery({
+  effect: createCommonRequestFx<
+    { id: string; responseId: string; status: OpportunityResponsesFilter },
+    OpportunityResponse
+  >(({ id, responseId, status }) => ({
+    url: `/opportunities/${id}/responses/${responseId}/status`,
+    method: 'PATCH',
+    body: {
+      status
+    }
+  }))
+});
+
 attachAuthHandler(getInternshipDashboardCardQuery);
+attachAuthHandler(getInternshipDashboardCardResponsesQuery);
+attachAuthHandler(changeInternshipDashboardCardResponseStatusQuery);

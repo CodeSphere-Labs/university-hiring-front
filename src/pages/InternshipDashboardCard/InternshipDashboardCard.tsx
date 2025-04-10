@@ -1,4 +1,19 @@
-import { Avatar, Badge, Card, Divider, Group, Stack, Tabs, Text, Title } from '@mantine/core';
+import type { GroupProps } from '@mantine/core';
+
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Group,
+  Loader,
+  Pagination as MantinePagination,
+  Stack,
+  Tabs,
+  Text,
+  Title
+} from '@mantine/core';
 import {
   IconCalendar,
   IconRosetteDiscountCheck,
@@ -8,52 +23,87 @@ import {
 import { Link } from 'atomic-router-react';
 import { useUnit } from 'effector-react';
 
+import type { OpportunityResponsesFilter } from '@/shared/api/types';
+
 import { routes } from '@/shared/routing';
 import { formatDate } from '@/shared/utils';
 
-import { $loading, $opportinity } from './model';
-
-import styles from './InternshipDashboardCard.module.css';
+import { SkeletonList } from './InternshipDashboardCardSkeleton';
+import {
+  $opportinity,
+  $opportinityLoading,
+  $responses,
+  $responsesLoading,
+  $responseStatusChangeLoading,
+  $responseStatusChanging,
+  $status,
+  filterChanged,
+  pageChanged,
+  responseStatusChanged
+} from './model';
 
 const FilterTabs = () => {
+  const [status] = useUnit([$status]);
+
   return (
-    <Tabs defaultValue='all' variant='pills'>
+    <Tabs
+      value={status}
+      variant='pills'
+      onChange={(value) => filterChanged(value as OpportunityResponsesFilter)}
+    >
       <Tabs.List>
-        <Tabs.Tab value='all' leftSection={<IconUsers size={24} />}>
-          Все
+        <Tabs.Tab value='WAITING' leftSection={<IconUsers size={24} />}>
+          В ожидании
         </Tabs.Tab>
-        <Tabs.Tab value='accepted' leftSection={<IconRosetteDiscountCheck size={24} />}>
+        <Tabs.Tab value='ACCEPTED' leftSection={<IconRosetteDiscountCheck size={24} />}>
           Одобренные
         </Tabs.Tab>
-        <Tabs.Tab value='rejected' leftSection={<IconRosetteDiscountCheckOff size={24} />}>
+        <Tabs.Tab value='REJECTED' leftSection={<IconRosetteDiscountCheckOff size={24} />}>
           Отклоненные
         </Tabs.Tab>
       </Tabs.List>
-
-      <Tabs.Panel value='all'>
-        <Text>Все отклики</Text>
-      </Tabs.Panel>
-
-      <Tabs.Panel value='accepted'>
-        <Text>Одобренные отклики</Text>
-      </Tabs.Panel>
-
-      <Tabs.Panel value='rejected'>
-        <Text>Отклоненные отклики</Text>
-      </Tabs.Panel>
     </Tabs>
   );
 };
 
+const Pagination = ({ ...props }: GroupProps) => {
+  const [responses] = useUnit([$responses]);
+
+  return (
+    <Group {...props}>
+      <MantinePagination
+        size='lg'
+        value={responses.meta.page}
+        onChange={pageChanged}
+        total={responses.meta.totalPages}
+      />
+    </Group>
+  );
+};
+
 const InternshipDashboardCard = () => {
-  const [opportinity, loading] = useUnit([$opportinity, $loading]);
+  const [
+    opportinity,
+    loading,
+    responses,
+    responsesLoading,
+    responseStatusChanging,
+    responseStatusChangeLoading
+  ] = useUnit([
+    $opportinity,
+    $opportinityLoading,
+    $responses,
+    $responsesLoading,
+    $responseStatusChanging,
+    $responseStatusChangeLoading
+  ]);
 
   if (loading || !opportinity) {
     return null;
   }
 
   return (
-    <Stack gap='xl'>
+    <Stack className='shell_main' gap='xl'>
       <Stack gap='md'>
         <Group align='flex-start' justify='space-between'>
           <Stack gap='xs'>
@@ -88,67 +138,128 @@ const InternshipDashboardCard = () => {
           <IconUsers size={20} />
           <Title order={3}>Отклики студентов</Title>
           <Badge size='lg' variant='light'>
-            {opportinity.responses.length}
+            {responses.meta.totalItems}
           </Badge>
         </Group>
 
-        <FilterTabs />
+        <Group justify='space-between'>
+          <FilterTabs />
+          <Pagination />
+        </Group>
 
         <Stack gap='md'>
-          {opportinity.responses.map((response) => (
-            <Card
-              key={response.id}
-              className={styles.card}
-              params={{ id: response.student.id }}
-              component={Link}
-              // atomic-router types are not correct for mantine Link component
-              // eslint-disable-next-line ts/ban-ts-comment
-              // @ts-expect-error
-              to={routes.profileInfo}
-              withBorder
-            >
-              <Stack gap='md'>
-                <Group>
-                  <Avatar radius='xl' size='lg'>
-                    {response.student.firstName[0]}
-                    {response.student.lastName[0]}
-                  </Avatar>
-                  <Stack gap={0}>
-                    <Text fw={500} size='lg'>
-                      {response.student.firstName} {response.student.lastName}
-                    </Text>
-                    <Text c='dimmed' size='sm'>
-                      {response.student.email}
-                    </Text>
-                  </Stack>
-                </Group>
+          {responsesLoading && <SkeletonList />}
 
-                {response.student.aboutMe && (
-                  <Stack gap='xs'>
-                    <Text fw={500}>О себе</Text>
-                    <Text>{response.student.aboutMe}</Text>
-                  </Stack>
-                )}
+          {!responsesLoading &&
+            responses.data.map((response) => (
+              <Card key={response.id} withBorder>
+                <Stack gap='md'>
+                  <Group justify='space-between'>
+                    <Group>
+                      <Avatar radius='xl' size='lg'>
+                        {response.student.firstName[0]}
+                        {response.student.lastName[0]}
+                      </Avatar>
+                      <Stack gap={0}>
+                        <Text fw={500} size='lg'>
+                          {response.student.firstName} {response.student.lastName}
+                        </Text>
+                        <Text c='dimmed' size='sm'>
+                          {response.student.email}
+                        </Text>
+                      </Stack>
+                    </Group>
 
-                {response.coverLetter && (
-                  <Stack gap='xs'>
-                    <Text fw={500}>Сопроводительное письмо</Text>
-                    <Text lineClamp={2}>{response.coverLetter}</Text>
-                  </Stack>
-                )}
+                    <Tabs
+                      value={response.status}
+                      variant='pills'
+                      onChange={(value) =>
+                        responseStatusChanged({
+                          id: response.id,
+                          status: value as OpportunityResponsesFilter
+                        })
+                      }
+                    >
+                      <Tabs.List>
+                        {responseStatusChanging === response.id.toString() &&
+                        responseStatusChangeLoading ? (
+                          <Group gap='xs' style={{ padding: '8px 12px' }}>
+                            <Loader size={16} />
+                            <Text c='dimmed' size='sm'>
+                              Изменение статуса...
+                            </Text>
+                          </Group>
+                        ) : (
+                          <>
+                            <Tabs.Tab
+                              disabled={responseStatusChanging === response.id.toString()}
+                              value='WAITING'
+                              leftSection={<IconUsers size={18} />}
+                            >
+                              В ожидании
+                            </Tabs.Tab>
+                            <Tabs.Tab
+                              disabled={responseStatusChanging === response.id.toString()}
+                              value='ACCEPTED'
+                              leftSection={<IconRosetteDiscountCheck size={18} />}
+                            >
+                              Одобрить
+                            </Tabs.Tab>
+                            <Tabs.Tab
+                              disabled={responseStatusChanging === response.id.toString()}
+                              value='REJECTED'
+                              leftSection={<IconRosetteDiscountCheckOff size={18} />}
+                            >
+                              Отклонить
+                            </Tabs.Tab>
+                          </>
+                        )}
+                      </Tabs.List>
+                    </Tabs>
+                  </Group>
 
-                <Group gap='xs'>
-                  {response.student.studentProfile.skills.map((skill) => (
-                    <Badge key={skill} size='lg' variant='light'>
-                      {skill}
-                    </Badge>
-                  ))}
-                </Group>
-              </Stack>
-            </Card>
-          ))}
+                  {response.student.aboutMe && (
+                    <Stack gap='xs'>
+                      <Text fw={500}>О себе</Text>
+                      <Text>{response.student.aboutMe}</Text>
+                    </Stack>
+                  )}
+
+                  {response.coverLetter && (
+                    <Stack gap='xs'>
+                      <Text fw={500}>Сопроводительное письмо</Text>
+                      <Text lineClamp={2}>{response.coverLetter}</Text>
+                    </Stack>
+                  )}
+
+                  <Group gap='xs'>
+                    {response.student.studentProfile.skills.map((skill) => (
+                      <Badge key={skill} size='lg' variant='light'>
+                        {skill}
+                      </Badge>
+                    ))}
+                  </Group>
+
+                  <Group>
+                    <Button
+                      params={{ id: response.student.id }}
+                      target='_blank'
+                      component={Link}
+                      // atomic-router types are not correct for mantine Link component
+                      // eslint-disable-next-line ts/ban-ts-comment
+                      // @ts-expect-error
+                      to={routes.profileInfo}
+                    >
+                      Открыть профиль
+                    </Button>
+                    <Button>Написать в чат</Button>
+                  </Group>
+                </Stack>
+              </Card>
+            ))}
         </Stack>
       </Stack>
+      <Pagination justify='center' pb='md' />
     </Stack>
   );
 };

@@ -175,13 +175,29 @@ export interface OpportunityParams {
   withResponses?: boolean;
 }
 
-export interface OpportunityResponse extends Opportunity {
-  responses: {
+export interface OpportunityResponse extends Omit<Opportunity, 'status'> {
+  status: 'ACCEPTED' | 'REJECTED' | 'WAITING';
+}
+
+export interface OpportunityResponsesResponse {
+  meta: Meta;
+  data: {
     id: number;
     coverLetter: string;
+    status: OpportunityResponsesFilter;
     student: Student;
   }[];
 }
+
+export interface OpportunityResponsesParams {
+  filter?: OpportunityResponsesFilter;
+  id: number | string;
+  limit?: number;
+  page?: number;
+  search?: string;
+}
+
+export type OpportunityResponsesFilter = 'ACCEPTED' | 'REJECTED' | 'WAITING';
 
 interface StudentProfile {
   createdAt: string;
