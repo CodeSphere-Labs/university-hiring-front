@@ -1,5 +1,21 @@
-import { Avatar, Badge, Card, Divider, Group, Stack, Text, Title } from '@mantine/core';
-import { IconCalendar, IconUsers } from '@tabler/icons-react';
+import {
+  Avatar,
+  Badge,
+  Card,
+  Divider,
+  Group,
+  Paper,
+  Stack,
+  Tabs,
+  Text,
+  Title
+} from '@mantine/core';
+import {
+  IconCalendar,
+  IconRosetteDiscountCheck,
+  IconRosetteDiscountCheckOff,
+  IconUsers
+} from '@tabler/icons-react';
 import { Link } from 'atomic-router-react';
 import { useUnit } from 'effector-react';
 
@@ -9,6 +25,36 @@ import { formatDate } from '@/shared/utils';
 import { $loading, $opportinity } from './model';
 
 import styles from './InternshipDashboardCard.module.css';
+
+const FilterTabs = () => {
+  return (
+    <Tabs defaultValue='all' variant='pills'>
+      <Tabs.List>
+        <Tabs.Tab value='all' leftSection={<IconUsers size={24} />}>
+          Все
+        </Tabs.Tab>
+        <Tabs.Tab value='accepted' leftSection={<IconRosetteDiscountCheck size={24} />}>
+          Одобренные
+        </Tabs.Tab>
+        <Tabs.Tab value='rejected' leftSection={<IconRosetteDiscountCheckOff size={24} />}>
+          Отклоненные
+        </Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Panel value='all'>
+        <Text>Все отклики</Text>
+      </Tabs.Panel>
+
+      <Tabs.Panel value='accepted'>
+        <Text>Одобренные отклики</Text>
+      </Tabs.Panel>
+
+      <Tabs.Panel value='rejected'>
+        <Text>Отклоненные отклики</Text>
+      </Tabs.Panel>
+    </Tabs>
+  );
+};
 
 const InternshipDashboardCard = () => {
   const [opportinity, loading] = useUnit([$opportinity, $loading]);
@@ -23,9 +69,6 @@ const InternshipDashboardCard = () => {
         <Group align='flex-start' justify='space-between'>
           <Stack gap='xs'>
             <Title order={2}>{opportinity.title}</Title>
-            <Text fw={500} size='lg'>
-              {opportinity.organization.name}
-            </Text>
           </Stack>
           <Badge size='lg' variant='light' color='gray' leftSection={<IconCalendar size={14} />}>
             {formatDate(opportinity.createdAt)}
@@ -60,6 +103,8 @@ const InternshipDashboardCard = () => {
           </Badge>
         </Group>
 
+        <FilterTabs />
+
         <Stack gap='md'>
           {opportinity.responses.map((response) => (
             <Card
@@ -89,10 +134,17 @@ const InternshipDashboardCard = () => {
                   </Stack>
                 </Group>
 
+                {response.student.aboutMe && (
+                  <Stack gap='xs'>
+                    <Text fw={500}>О себе</Text>
+                    <Text>{response.student.aboutMe}</Text>
+                  </Stack>
+                )}
+
                 {response.coverLetter && (
                   <Stack gap='xs'>
                     <Text fw={500}>Сопроводительное письмо</Text>
-                    <Text>{response.coverLetter}</Text>
+                    <Text lineClamp={2}>{response.coverLetter}</Text>
                   </Stack>
                 )}
 
