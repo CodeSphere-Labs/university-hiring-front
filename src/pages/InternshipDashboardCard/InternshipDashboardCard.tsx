@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Badge,
-  Card,
-  Divider,
-  Group,
-  Stack,
-  Tabs,
-  Text,
-  Title
-} from '@mantine/core';
+import { Avatar, Badge, Card, Divider, Group, Stack, Tabs, Text, Title } from '@mantine/core';
 import {
   IconCalendar,
   IconRosetteDiscountCheck,
