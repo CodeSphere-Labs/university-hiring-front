@@ -4,7 +4,6 @@ import {
   Card,
   Divider,
   Group,
-  Paper,
   Stack,
   Tabs,
   Text,
