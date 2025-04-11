@@ -16,7 +16,7 @@ const VALIDATE_MESSAGES = {
 export const validateRules = {
   required: () => ({
     name: 'required',
-    validator: (value: string) => Boolean(value),
+    validator: (value: any) => Boolean(value),
     errorText: VALIDATE_MESSAGES.required
   }),
   requiredArray: createRule({

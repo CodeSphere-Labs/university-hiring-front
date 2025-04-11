@@ -1,6 +1,14 @@
 import { createQuery } from '@farfetched/core';
 
-import type { Group, InvitationCreate, Organization, VacancyCreate } from '@/shared/api/types';
+import type {
+  Group,
+  InvitationCreate,
+  Organization,
+  OrganizationParams,
+  PracticeCreate,
+  Student,
+  VacancyCreate
+} from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
 import { attachAuthHandler } from '@/shared/session/auth-barrier';
@@ -35,10 +43,17 @@ export const getGroupsQuery = createQuery({
   })
 });
 
+export const getGroupStudentsQuery = createQuery({
+  effect: createCommonRequestFx<string, Student[]>((id) => ({
+    url: `/groups/${id}/students`
+  }))
+});
+
 export const getOrganizationsQuery = createQuery({
-  effect: createCommonRequestFx<void, Organization[]>({
-    url: '/organizations'
-  })
+  effect: createCommonRequestFx<OrganizationParams, Organization[]>((params) => ({
+    url: '/organizations',
+    params
+  }))
 });
 
 export const refreshInvitationQuery = createQuery({
@@ -52,6 +67,14 @@ export const refreshInvitationQuery = createQuery({
 export const createVacancyQuery = createQuery({
   effect: createCommonRequestFx<VacancyCreate, void>((body) => ({
     url: '/opportunities',
+    method: 'POST',
+    body
+  }))
+});
+
+export const createPracticeQuery = createQuery({
+  effect: createCommonRequestFx<PracticeCreate, void>((body) => ({
+    url: '/practices',
     method: 'POST',
     body
   }))

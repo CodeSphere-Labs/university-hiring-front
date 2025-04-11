@@ -9,6 +9,7 @@ import { router } from '@/shared/routing/index';
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 import 'mantine-datatable/styles.layer.css';
 import './styles/index.css';

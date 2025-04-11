@@ -16,11 +16,8 @@ export interface ErrorResponse<T extends ErrorMessageKey = ErrorMessageKey> exte
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF';
 export type InvitationStatus = 'accept' | 'all' | 'expired' | 'wait';
 export type InvitationFilter = 'all' | 'createdByMe';
+export type OrganizationType = 'company' | 'university';
 
-export enum OrganizationType {
-  COMPANY = 'COMPANY',
-  UNIVERSITY = 'UNIVERSITY'
-}
 export interface InvitationAcceptParams {
   token: string;
   body: {
@@ -73,6 +70,12 @@ export interface Organization {
   name: string;
   websiteUrl: string;
 }
+
+export interface OrganizationParams {
+  type?: OrganizationType;
+  withFavorites?: boolean;
+}
+
 export interface Student extends Omit<User, 'studentProfile'> {
   studentProfile: NonNullable<User['studentProfile']>;
 }
@@ -102,6 +105,17 @@ export interface VacancyCreate {
   description: string;
   skills: string[];
   title: string;
+}
+
+export interface PracticeCreate {
+  address: string;
+  endDate: Date;
+  groupId: number;
+  name: string;
+  notes?: string;
+  organizationId: number;
+  startDate: Date;
+  studentIds: number[];
 }
 
 export interface InvitationsStats {

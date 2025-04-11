@@ -101,13 +101,7 @@ const openRenewInviteModalFx = createEffect(() =>
 );
 sample({
   clock: modalOpened,
-  target: [form.reset, openModalFx]
-});
-
-sample({
-  clock: modalOpened,
-  filter: $organizations.map((organizations) => organizations.length === 0),
-  target: [getOrganizationsQuery.start, getGroupsQuery.start]
+  target: [form.reset, openModalFx, getOrganizationsQuery.start, getGroupsQuery.start]
 });
 
 sample({

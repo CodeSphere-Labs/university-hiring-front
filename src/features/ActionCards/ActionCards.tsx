@@ -1,11 +1,18 @@
 import { Flex } from '@mantine/core';
-import { IconBuildingCommunity, IconSchool, IconUserPlus, IconUsers } from '@tabler/icons-react';
+import {
+  IconBriefcase2,
+  IconBuildingCommunity,
+  IconSchool,
+  IconUserPlus,
+  IconUsers
+} from '@tabler/icons-react';
 
 import { WithRoleCheck } from '@/shared/hoc';
 import { ActionCard } from '@/shared/ui/ActionCard';
 
 import { modalOpened as createGroupModalOpened } from './CreateGroup/model';
 import { modalOpened as createOrganizationModalOpened } from './CreateOrganization/model';
+import { modalOpened as createPracticeModalOpened } from './CreatePractice/model';
 import { modalOpened as createVacancyModalOpened } from './CreateVacancy/model';
 import { modalOpened as inviteUserModalOpened } from './InviteUser/model';
 
@@ -41,6 +48,14 @@ export const ActionCards = () => {
           title='Создать вакансию'
           icon={<IconSchool size={28} />}
           onClick={() => createVacancyModalOpened()}
+        />
+      </WithRoleCheck>
+
+      <WithRoleCheck allowedRoles={['ADMIN', 'UNIVERSITY_STAFF']}>
+        <ActionCard
+          title='Создать практику'
+          icon={<IconBriefcase2 size={28} />}
+          onClick={() => createPracticeModalOpened()}
         />
       </WithRoleCheck>
     </Flex>
