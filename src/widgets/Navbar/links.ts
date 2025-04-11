@@ -37,7 +37,7 @@ export const $links = createStore<Link[]>([
     label: 'Панель управления',
     icon: IconLayoutDashboard,
     active: routes.dashboard,
-    roles: ['ADMIN', 'UNIVERSITY_STAFF', 'STAFF', 'STUDENT']
+    roles: ['ADMIN', 'UNIVERSITY_STAFF', 'STAFF']
   },
   {
     route: routes.invitations,
