@@ -36,7 +36,7 @@ export const StudentProfileForm = () => {
     $availableGroupedSkillsLoading,
     $updateProfileLoading
   ]);
-  const form = getFormByRole(user?.role || '');
+  const form = getFormByRole('STUDENT');
   const { fields } = useForm(form as typeof studentForm);
 
   return (
@@ -65,6 +65,7 @@ export const StudentProfileForm = () => {
             <TextInput readOnly disabled={loading} label='Ваша группа' value={fields.group.value} />
             <MultiSelect
               clearable
+              required
               searchable
               data={availableGroupedSkills}
               disabled={availableGroupedSkillsLoading || loading}

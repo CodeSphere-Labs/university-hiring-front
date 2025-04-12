@@ -10,6 +10,7 @@ import { showError, showSuccess } from '@/shared/notifications/model';
 import { routes } from '@/shared/routing/index';
 import { sessionQuery } from '@/shared/session/api';
 import { $user, chainAuthorized } from '@/shared/session/model';
+import { removeEmptyValues } from '@/shared/utils';
 
 import { deleteProjectQuery, getAvailableGroupedSkillsQuery, updateUserQuery } from '../api/api';
 
@@ -57,9 +58,9 @@ sample({
   fn: (values) => {
     if ('group' in values) {
       const { group, ...rest } = values;
-      return rest;
+      return removeEmptyValues(rest);
     }
-    return values;
+    return removeEmptyValues(values);
   },
   target: updateUserQuery.start
 });
@@ -177,13 +178,13 @@ function createStudentFields() {
     },
     githubLink: {
       init: '',
-      rules: [validateRules.required(), validateRules.gitHubUserLink()],
+      rules: [validateRules.gitHubUserLink()],
       validateOn: ['change'] as ValidationEvent[]
     },
-    resume: {
-      init: '',
-      rules: [validateRules.required()]
-    },
+    // resume: {
+    //   init: '',
+    //   rules: [validateRules.required()]
+    // },
     skills: {
       init: [] as string[],
       rules: [validateRules.requiredArray()]
@@ -196,11 +197,11 @@ function createCompanyFields() {
     ...createBaseFields(),
     companyName: {
       init: '',
-      rules: [validateRules.required()]
+      rules: []
     },
     position: {
       init: '',
-      rules: [validateRules.required()]
+      rules: []
     }
   };
 }

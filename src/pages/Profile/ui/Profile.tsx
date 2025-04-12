@@ -13,6 +13,8 @@ import { IconAt } from '@tabler/icons-react';
 import { useForm } from 'effector-forms';
 import { useUnit } from 'effector-react';
 
+import type { User } from '@/shared/api/types';
+
 import { $user } from '@/shared/session/model';
 import { getRole } from '@/shared/utils';
 
@@ -23,10 +25,7 @@ import { ConditionalStudentProfile } from './StudentProfileForm/StudentProfileFo
 
 import classes from './UserInfoIcons.module.css';
 
-const UserTopInfo = () => {
-  const user = useUnit($user);
-  if (!user) return null;
-
+const UserTopInfo = ({ user }: { user: User }) => {
   const userRole = getRole(user.role);
 
   return (
@@ -58,14 +57,10 @@ const UserTopInfo = () => {
   );
 };
 
-const BaseUserForm = () => {
-  const user = useUnit($user);
-
+const BaseUserForm = ({ user }: { user: User }) => {
   const loading = useUnit($updateProfileLoading);
-  const form = getFormByRole(user?.role || '');
+  const form = getFormByRole(user.role);
   const { fields } = useForm(form as typeof baseForm);
-
-  if (!user) return null;
 
   return (
     <Group>
@@ -167,25 +162,23 @@ const BaseUserForm = () => {
   );
 };
 
-const ProfileContent = () => {
-  const [user, loading] = useUnit([$user, $updateProfileLoading]);
+const ProfileContent = ({ user }: { user: User }) => {
+  const [loading] = useUnit([$updateProfileLoading]);
 
-  const form = getFormByRole(user?.role || '');
+  const form = getFormByRole(user.role);
   const { isDirty, eachValid, submit } = useForm(form as typeof baseForm);
 
   const onHandleSubmit = () => submit();
 
-  if (!user) return null;
-
   return (
     <Stack className='shell_main'>
       <Group gap='md' justify='space-between' wrap='wrap'>
-        <UserTopInfo />
+        <UserTopInfo user={user} />
         <Button disabled={!isDirty || !eachValid} loading={loading} onClick={onHandleSubmit}>
           Сохранить изменения
         </Button>
       </Group>
-      <BaseUserForm />
+      <BaseUserForm user={user} />
       <ConditionalStudentProfile isStudent={user.role === 'STUDENT'} />
     </Stack>
   );
@@ -193,8 +186,10 @@ const ProfileContent = () => {
 
 const Profile = () => {
   const user = useUnit($user);
+
   if (!user) return null;
-  return <ProfileContent />;
+
+  return <ProfileContent user={user} />;
 };
 
 export default Profile;
