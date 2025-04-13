@@ -8,7 +8,6 @@ import type {
 } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
-import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const getInternshipDashboardCardQuery = createQuery({
   effect: createCommonRequestFx<{ id: string }, OpportunityResponse>((params) => ({
@@ -40,7 +39,3 @@ export const changeInternshipDashboardCardResponseStatusQuery = createQuery({
     }
   }))
 });
-
-attachAuthHandler(getInternshipDashboardCardQuery);
-attachAuthHandler(getInternshipDashboardCardResponsesQuery);
-attachAuthHandler(changeInternshipDashboardCardResponseStatusQuery);

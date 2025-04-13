@@ -3,7 +3,6 @@ import { createQuery } from '@farfetched/core';
 import type { GroupedSkill, Project, User } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
-import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const addProjectQuery = createQuery({
   effect: createCommonRequestFx<Omit<Project, 'id'>, User>((body) => ({
@@ -33,8 +32,3 @@ export const updateUserQuery = createQuery({
     body: user
   }))
 });
-
-attachAuthHandler(addProjectQuery);
-attachAuthHandler(deleteProjectQuery);
-attachAuthHandler(getAvailableGroupedSkillsQuery);
-attachAuthHandler(updateUserQuery);

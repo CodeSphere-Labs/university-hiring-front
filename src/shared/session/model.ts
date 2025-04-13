@@ -9,22 +9,16 @@ import type { Role, User } from '@/shared/api/types';
 import { updateUserQuery } from '@/pages/Profile/api/api';
 import { showError } from '@/shared/notifications/model';
 import { logoutQuery, sessionQuery } from '@/shared/session/api';
-import { refreshQuery } from '@/shared/session/refresh';
 
 enum AuthStatus {
   Initial,
   Pending,
   Anonymous,
-  Authenticated,
-  RefreshPending
+  Authenticated
 }
 
 export const $user = createStore<User | null>(null, { name: 'user info' });
-export const $sessionPending = combine(
-  sessionQuery.$pending,
-  refreshQuery.$pending,
-  (sessionPending, refreshPending) => sessionPending || refreshPending
-);
+export const $sessionPending = combine(sessionQuery.$pending, (sessionPending) => sessionPending);
 const $authenticationStatus = createStore(AuthStatus.Initial);
 
 export const userLogouted = createEvent();
@@ -42,21 +36,9 @@ $authenticationStatus.on(sessionQuery.$succeeded, (status) => {
 });
 
 $user.on(sessionQuery.$data, (_, user) => user);
-$user.on(refreshQuery.$data, (_, user) => user);
 $user.on(updateUserQuery.finished.success, (_, { result }) => result);
 
 $authenticationStatus.on(sessionQuery.finished.success, () => AuthStatus.Authenticated);
-
-$authenticationStatus.on(refreshQuery.finished.success, () => AuthStatus.Authenticated);
-
-$authenticationStatus.on(refreshQuery.finished.failure, () => AuthStatus.Anonymous);
-
-$authenticationStatus.on(sessionQuery.finished.failure, (status) => {
-  if (status !== AuthStatus.RefreshPending) {
-    return AuthStatus.RefreshPending;
-  }
-  return status;
-});
 
 sample({
   clock: userLogouted,
@@ -77,18 +59,6 @@ sample({
 sample({
   clock: logoutQuery.finished.failure,
   target: showError('Ошибка при попытке выйти')
-});
-
-sample({
-  clock: sessionQuery.finished.failure,
-  source: $authenticationStatus,
-  filter: (status) => status === AuthStatus.RefreshPending,
-  target: refreshQuery.start
-});
-
-sample({
-  clock: refreshQuery.finished.success,
-  target: sessionQuery.start
 });
 
 // eslint-disable-next-line unused-imports/no-unused-vars
@@ -130,12 +100,12 @@ export function chainAuthorized<Params extends RouteParams>(
   sample({
     clock: sessionCheckStarted,
     source: $authenticationStatus,
-    filter: (status) => status === AuthStatus.Initial || status === AuthStatus.RefreshPending,
+    filter: (status) => status === AuthStatus.Initial,
     target: sessionQuery.start
   });
 
   sample({
-    clock: [alreadyAnonymous, refreshQuery.finished.failure],
+    clock: [alreadyAnonymous, sessionQuery.finished.failure],
     source: { params: route.$params, query: route.$query },
     filter: route.$isOpened,
     target: sessionReceivedAnonymous
@@ -189,7 +159,7 @@ export function chainAnonymous<Params extends RouteParams>(
   sample({
     clock: sessionCheckStarted,
     source: $authenticationStatus,
-    filter: (status) => status === AuthStatus.Initial || status === AuthStatus.RefreshPending,
+    filter: (status) => status === AuthStatus.Initial,
     target: sessionQuery.start
   });
 
@@ -210,7 +180,7 @@ export function chainAnonymous<Params extends RouteParams>(
   return chainRoute({
     route,
     beforeOpen: sessionCheckStarted,
-    openOn: [alreadyAnonymous, refreshQuery.finished.failure],
+    openOn: [alreadyAnonymous, sessionQuery.finished.failure],
     cancelOn: sessionReceivedAuthenticated
   });
 }

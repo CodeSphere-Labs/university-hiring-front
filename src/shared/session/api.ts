@@ -4,8 +4,6 @@ import type { User } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
 
-import { attachAuthHandler } from './auth-barrier';
-
 export const sessionQuery = createQuery({
   effect: createCommonRequestFx<void, User>({
     url: '/users/profile'
@@ -20,5 +18,3 @@ export const logoutQuery = createQuery({
     }
   }))
 });
-
-attachAuthHandler(logoutQuery);

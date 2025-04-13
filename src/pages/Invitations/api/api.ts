@@ -3,7 +3,6 @@ import { createQuery } from '@farfetched/core';
 import type { InvintationResponse, Invitation, InvitationParams } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
-import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const getInvitationsQuery = createQuery({
   effect: createCommonRequestFx<InvitationParams, InvintationResponse>((params) => ({
@@ -25,7 +24,3 @@ export const refreshInvitationQuery = createQuery({
     method: 'PATCH'
   }))
 });
-
-attachAuthHandler(getInvitationsQuery);
-attachAuthHandler(deleteInvitationQuery);
-attachAuthHandler(refreshInvitationQuery);

@@ -3,7 +3,6 @@ import { createQuery } from '@farfetched/core';
 import type { OpportunitiesResponse, OpportunityParams } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
-import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const getOpportunitiesQuery = createQuery({
   effect: createCommonRequestFx<OpportunityParams, OpportunitiesResponse>((params) => ({
@@ -25,7 +24,3 @@ export const respondToOpportunityQuery = createQuery({
     method: 'PATCH'
   }))
 });
-
-attachAuthHandler(getOpportunitiesQuery);
-attachAuthHandler(getOpportunitiesMoreQuery);
-attachAuthHandler(respondToOpportunityQuery);

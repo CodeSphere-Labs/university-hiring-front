@@ -11,7 +11,6 @@ import type {
 } from '@/shared/api/types';
 
 import { createCommonRequestFx } from '@/shared/api/requests';
-import { attachAuthHandler } from '@/shared/session/auth-barrier';
 
 export const createGroupQuery = createQuery({
   effect: createCommonRequestFx<Pick<Group, 'name'>, Group>((body) => ({
@@ -79,12 +78,3 @@ export const createPracticeQuery = createQuery({
     body
   }))
 });
-
-attachAuthHandler(createGroupQuery);
-attachAuthHandler(createInvitationQuery);
-attachAuthHandler(createOrganizationQuery);
-attachAuthHandler(getGroupsQuery);
-attachAuthHandler(getOrganizationsQuery);
-attachAuthHandler(refreshInvitationQuery);
-attachAuthHandler(createVacancyQuery);
-attachAuthHandler(createVacancyQuery);
