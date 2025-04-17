@@ -183,7 +183,7 @@ const ProfileContent = ({ user }: { user: User }) => {
       <ConditionalStudentProfile isStudent={user.role === 'STUDENT'} />
 
       <Title order={3}>Ваша организация</Title>
-      <Group>
+      <Group pb='md'>
         <OrganizationInfo user={user} />
       </Group>
     </Stack>
