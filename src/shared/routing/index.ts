@@ -16,7 +16,8 @@ export const routes = {
   invitations: createRoute(),
   invitationAccept: createRoute<{ token: string }>(),
   internshipDashboard: createRoute(),
-  internshipDashboardCard: createRoute<{ id: string }>()
+  internshipDashboardCard: createRoute<{ id: string }>(),
+  practices: createRoute()
 };
 
 export const controls = createRouterControls();
@@ -70,6 +71,10 @@ export const router = createHistoryRouter({
     {
       path: '/internship-dashboard/:id',
       route: routes.internshipDashboardCard
+    },
+    {
+      path: '/practices',
+      route: routes.practices
     }
   ],
   controls

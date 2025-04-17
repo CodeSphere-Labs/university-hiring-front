@@ -42,6 +42,10 @@ export const ErrorMessages = {
   student_already_in_group: 'Студент уже состоит в группе',
   student_not_in_group: 'Студент не состоит в группе',
 
+  // Practice related
+  practice_not_found: 'Практика не найдена',
+  practice_student_not_found: 'Студент не найден',
+
   // Opportunity related
   opportunity_not_found: 'Возможность не найдена',
   opportunity_already_exists: 'Такая возможность уже существует',

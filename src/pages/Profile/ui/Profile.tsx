@@ -15,6 +15,7 @@ import { useUnit } from 'effector-react';
 
 import type { User } from '@/shared/api/types';
 
+import { OrganizationInfo } from '@/pages/ProfileInfo/ProfileInfo';
 import { $user } from '@/shared/session/model';
 import { getRole } from '@/shared/utils';
 
@@ -180,6 +181,11 @@ const ProfileContent = ({ user }: { user: User }) => {
       </Group>
       <BaseUserForm user={user} />
       <ConditionalStudentProfile isStudent={user.role === 'STUDENT'} />
+
+      <Title order={3}>Ваша организация</Title>
+      <Group>
+        <OrganizationInfo user={user} />
+      </Group>
     </Stack>
   );
 };

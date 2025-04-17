@@ -15,7 +15,7 @@ import {
 import { IconCircleCheck, IconClock, IconClockX, IconMail } from '@tabler/icons-react';
 import { useList, useUnit } from 'effector-react';
 
-import type { InvitationFilter } from '@/shared/api/types';
+import type { CreatedByFilter } from '@/shared/api/types';
 
 import { ActionCards } from '@/features/ActionCards';
 import { WithRoleCheck } from '@/shared/hoc';
@@ -118,7 +118,7 @@ const InvitationStats = () => {
               size='md'
               value={filter}
               color='dark'
-              onChange={(value) => statsFilterChanged(value as InvitationFilter)}
+              onChange={(value) => statsFilterChanged(value as CreatedByFilter)}
             />
           </WithRoleCheck>
         </Flex>

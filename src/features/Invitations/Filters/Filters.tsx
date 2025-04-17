@@ -1,7 +1,7 @@
 import { Group, Paper, SegmentedControl, Stack, Text } from '@mantine/core';
 import { useUnit } from 'effector-react';
 
-import type { InvitationFilter, InvitationStatus } from '@/shared/api/types';
+import type { CreatedByFilter, InvitationStatus } from '@/shared/api/types';
 
 import { WithRoleCheck } from '@/shared/hoc';
 
@@ -31,7 +31,7 @@ export const InvitationsFilters = () => {
               ]}
               value={filter}
               color='dark'
-              onChange={(value) => filterChanged(value as InvitationFilter)}
+              onChange={(value) => filterChanged(value as CreatedByFilter)}
             />
           </Group>
         </WithRoleCheck>

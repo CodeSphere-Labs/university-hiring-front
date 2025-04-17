@@ -15,7 +15,7 @@ export interface ErrorResponse<T extends ErrorMessageKey = ErrorMessageKey> exte
 
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF';
 export type InvitationStatus = 'accept' | 'all' | 'expired' | 'wait';
-export type InvitationFilter = 'all' | 'createdByMe';
+export type CreatedByFilter = 'all' | 'createdByMe';
 export type OrganizationType = 'company' | 'university';
 
 export interface InvitationAcceptParams {
@@ -89,8 +89,26 @@ export interface Group {
   updatedAt: string;
 }
 
+export interface Practice {
+  address: string;
+  endDate: Date;
+  group: Group;
+  id: number;
+  name: string;
+  notes: string;
+  organization: Organization;
+  startDate: Date;
+  students: Student[];
+  university: Organization;
+}
+
 export interface GroupResponse {
   data: Group;
+  meta: Meta;
+}
+
+export interface PracticesResponse {
+  data: Practice[];
   meta: Meta;
 }
 
@@ -151,7 +169,7 @@ export interface GroupedSkill {
 }
 
 export interface InvitationParams {
-  filter: InvitationFilter;
+  filter: CreatedByFilter;
   limit?: number;
   page?: number;
   search?: string;
@@ -160,6 +178,13 @@ export interface InvitationParams {
 
 export interface GroupsParams {
   id?: number;
+  limit?: number;
+  page?: number;
+  search?: string;
+}
+
+export interface PracticesParams {
+  filter?: CreatedByFilter;
   limit?: number;
   page?: number;
   search?: string;

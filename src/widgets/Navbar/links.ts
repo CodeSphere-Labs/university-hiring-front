@@ -3,6 +3,7 @@ import type { RouteInstance } from 'atomic-router';
 
 import {
   IconBriefcase,
+  IconBuilding,
   IconClipboardList,
   IconHome,
   IconLayoutDashboard,
@@ -66,6 +67,13 @@ export const $links = createStore<Link[]>([
     icon: IconClipboardList,
     active: routes.internshipDashboard,
     roles: ['ADMIN', 'STAFF']
+  },
+  {
+    route: routes.practices,
+    label: 'Практики',
+    icon: IconBuilding,
+    active: routes.practices,
+    roles: ['ADMIN', 'UNIVERSITY_STAFF', 'STAFF', 'STUDENT']
   },
   {
     route: routes.profile,

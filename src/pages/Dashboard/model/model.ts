@@ -1,6 +1,6 @@
 import { combine, createEvent, createStore, sample } from 'effector';
 
-import type { InvitationFilter, InvitationsStats, InvitationStatus } from '@/shared/api/types';
+import type { CreatedByFilter, InvitationsStats, InvitationStatus } from '@/shared/api/types';
 
 import { createInvitationQuery } from '@/features/ActionCards/api/api';
 import { routes } from '@/shared/routing/index';
@@ -23,11 +23,11 @@ export const authorizedRouteRole = chainRole(
 
 export const redirectedToInvitations = createEvent<{
   status: InvitationStatus;
-  filter: InvitationFilter;
+  filter: CreatedByFilter;
 }>();
-export const statsFilterChanged = createEvent<InvitationFilter>();
+export const statsFilterChanged = createEvent<CreatedByFilter>();
 
-export const $invitationsStatsFilter = createStore<InvitationFilter>('createdByMe');
+export const $invitationsStatsFilter = createStore<CreatedByFilter>('createdByMe');
 $invitationsStatsFilter.on(statsFilterChanged, (_, filter) => filter);
 
 export const $invitationsStatsByMe = createStore<InvitationsStats[]>([]);

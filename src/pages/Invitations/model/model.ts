@@ -3,7 +3,7 @@ import { createEvent, createStore, sample } from 'effector';
 
 import type {
   InvintationResponse,
-  InvitationFilter,
+  CreatedByFilter,
   InvitationParams,
   InvitationStatus
 } from '@/shared/api/types';
@@ -106,7 +106,7 @@ sample({
 sample({
   clock: authorizedRouteRole.opened,
   source: authorizedRouteRole.$query,
-  fn: (query) => (query.filter as InvitationFilter) || DEFAULT_FILTER,
+  fn: (query) => (query.filter as CreatedByFilter) || DEFAULT_FILTER,
   target: $filter
 });
 
@@ -118,9 +118,7 @@ sample({
   },
   fn: ({ query, user }) => {
     const filter =
-      user?.role === 'ADMIN'
-        ? (query.filter as InvitationFilter) || DEFAULT_FILTER
-        : DEFAULT_FILTER;
+      user?.role === 'ADMIN' ? (query.filter as CreatedByFilter) || DEFAULT_FILTER : DEFAULT_FILTER;
     const status = (query.status as InvitationStatus) || DEFAULT_STATUS;
     const page = Number(query.page) || DEFAULT_PAGE;
     const limit = Number(query.limit) || DEFAULT_LIMIT;

@@ -21,6 +21,8 @@ import {
 } from '@tabler/icons-react';
 import { useUnit } from 'effector-react';
 
+import type { User } from '@/shared/api/types';
+
 import { Projects } from '@/shared/ui/Projects/Projects';
 import { getRole } from '@/shared/utils';
 
@@ -28,11 +30,7 @@ import { $user } from './model';
 
 import classes from './UserInfoIcons.module.css';
 
-const OrganizationInfo = () => {
-  const user = useUnit($user);
-
-  if (!user) return null;
-
+export const OrganizationInfo = ({ user }: { user: User }) => {
   return (
     <Paper p='xl' radius='md' withBorder>
       <Stack gap='md'>
@@ -162,7 +160,7 @@ const UserTopInfo = () => {
         </div>
       </Group>
 
-      <OrganizationInfo />
+      <OrganizationInfo user={user} />
     </Group>
   );
 };
