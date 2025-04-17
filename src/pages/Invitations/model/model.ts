@@ -2,8 +2,8 @@ import { querySync } from 'atomic-router';
 import { createEvent, createStore, sample } from 'effector';
 
 import type {
-  InvintationResponse,
   CreatedByFilter,
+  InvintationResponse,
   InvitationParams,
   InvitationStatus
 } from '@/shared/api/types';
