@@ -10,6 +10,7 @@ import { InternshipDashboardCardRoute } from './InternshipDashboardCard';
 import { InvitationAcceptRoute } from './InvitationAccept';
 import { InvitationsRoute } from './Invitations';
 import { NotFoundPage } from './NotFound/NotFound';
+import { PracticeDashboardCardRoute } from './PracticeDashboardCard';
 import { PracticesDashboardRoute } from './PracticesDashboard';
 import { ProfileRoute } from './Profile';
 import { ProfileInfoRoute } from './ProfileInfo';
@@ -29,7 +30,8 @@ export const Pages = createRoutesView({
     InvitationAcceptRoute,
     InternshipDashboardRoute,
     InternshipDashboardCardRoute,
-    PracticesDashboardRoute
+    PracticesDashboardRoute,
+    PracticeDashboardCardRoute
   ],
   otherwise: NotFoundPage
 });

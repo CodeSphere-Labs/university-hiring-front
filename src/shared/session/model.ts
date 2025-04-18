@@ -26,9 +26,8 @@ export const userLogouted = createEvent();
 // Логика обработки аутентификации:
 // 1. При первом запросе статус Initial -> Pending
 // 2. При успешном запросе статус -> Authenticated
-// 3. При ошибке запроса статус -> RefreshPending и запускается refreshQuery
-// 4. При успешном обновлении токена статус -> Authenticated и запускается sessionQuery
-// 5. При ошибке обновления токена статус -> Anonymous
+// 3. При успешном обновлении токена статус -> Authenticated и запускается sessionQuery
+// 4. При ошибке обновления токена статус -> Anonymous
 
 $authenticationStatus.on(sessionQuery.$succeeded, (status) => {
   if (status === AuthStatus.Initial) return AuthStatus.Pending;
@@ -74,9 +73,7 @@ interface ChainParams<Params extends RouteParams> {
  * 2. Если пользователь уже аутентифицирован, маршрут открывается
  * 3. Если статус Initial, запускается sessionQuery
  * 4. Если sessionQuery завершается успешно, маршрут открывается
- * 5. Если sessionQuery завершается с ошибкой, запускается refreshQuery
- * 6. Если refreshQuery завершается успешно, запускается sessionQuery
- * 7. Если refreshQuery завершается с ошибкой, маршрут не открывается и выполняется otherwise
+ * 5. Если sessionQuery завершается с ошибкой, маршрут не открывается и выполняется otherwise
  */
 export function chainAuthorized<Params extends RouteParams>(
   route: RouteInstance<Params>,
@@ -135,7 +132,6 @@ export function chainAuthorized<Params extends RouteParams>(
  * 3. Если статус Initial, запускается sessionQuery
  * 4. Если sessionQuery завершается с ошибкой, маршрут открывается
  * 5. Если sessionQuery завершается успешно, маршрут не открывается и выполняется otherwise
- * 6. Если refreshQuery завершается с ошибкой, маршрут открывается
  */
 export function chainAnonymous<Params extends RouteParams>(
   route: RouteInstance<Params>,

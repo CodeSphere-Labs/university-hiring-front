@@ -17,7 +17,8 @@ export const routes = {
   invitationAccept: createRoute<{ token: string }>(),
   internshipDashboard: createRoute(),
   internshipDashboardCard: createRoute<{ id: string }>(),
-  practices: createRoute()
+  practices: createRoute(),
+  practice: createRoute<{ id: string }>()
 };
 
 export const controls = createRouterControls();
@@ -75,6 +76,10 @@ export const router = createHistoryRouter({
     {
       path: '/practices',
       route: routes.practices
+    },
+    {
+      path: '/practice/:id',
+      route: routes.practice
     }
   ],
   controls
