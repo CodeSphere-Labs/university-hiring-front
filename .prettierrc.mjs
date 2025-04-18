@@ -1,4 +1,7 @@
 import { prettier } from '@zeroqs/prettier';
 
 /** @type {import('prettier').Config} */
-export default prettier;
+export default {
+  ...prettier,
+  endOfLine: 'crlf'
+};
