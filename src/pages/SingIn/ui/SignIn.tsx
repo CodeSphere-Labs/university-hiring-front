@@ -58,7 +58,7 @@ const SignIn = () => {
         </Button>
 
         <Group justify='center' mt='lg'>
-          <Anchor size='sm' component='button'>
+          <Anchor size='sm' type='button' component='button'>
             Забыли пароль?
           </Anchor>
         </Group>
