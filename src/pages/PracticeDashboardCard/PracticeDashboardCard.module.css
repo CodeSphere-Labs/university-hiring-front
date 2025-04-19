@@ -1,0 +1,10 @@
+.card {
+  background-color: var(--mantine-color-body);
+}
+
+.title {
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+  font-weight: 700;
+}
