@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\"",
     "preview": "vite preview",
-    "lint:fix": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\" --fix",
+    "lint": "eslint \"src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\" ",
     "prepare": "husky install"
   },
@@ -44,7 +43,6 @@
     "@vitejs/plugin-react": "^4.2.0",
     "@zeroqs/eslint": "^1.2.6",
     "@zeroqs/prettier": "^2.0.0",
-    "effector-logger": "^0.15.0",
     "husky": "^8.0.0",
     "postcss": "^8.4.47",
     "postcss-preset-mantine": "^1.17.0",

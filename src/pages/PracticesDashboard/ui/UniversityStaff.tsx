@@ -2,18 +2,16 @@ import { Grid, Group, Pagination, Stack } from '@mantine/core';
 import { IconBuilding, IconCalendar, IconUsers, IconUserSquareRounded } from '@tabler/icons-react';
 import { Link } from 'atomic-router-react';
 import { useUnit } from 'effector-react';
-import { useState } from 'react';
 
 import { withRoleCheck } from '@/shared/hoc';
 import { routes } from '@/shared/routing';
 import { getStudentWord } from '@/shared/utils';
 
 import { PracticeCard, SkeletonCards } from '../components';
-import { $loading, $practices } from '../model/model';
+import { $loading, $page, $practices, pageChanged } from '../model/model';
 
 const Info = () => {
-  const [practices, loading] = useUnit([$practices, $loading]);
-  const [activePage, setActivePage] = useState(1);
+  const [practices, loading, page] = useUnit([$practices, $loading, $page]);
 
   return (
     <Stack gap='xl'>
@@ -57,12 +55,8 @@ const Info = () => {
       </Grid>
 
       {!loading && practices.meta.totalPages > 1 && (
-        <Group justify='center'>
-          <Pagination
-            value={activePage}
-            onChange={setActivePage}
-            total={practices.meta.totalPages}
-          />
+        <Group justify='center' pb='md'>
+          <Pagination value={page} onChange={pageChanged} total={practices.meta.totalPages} />
         </Group>
       )}
     </Stack>

@@ -1,4 +1,4 @@
-import { createStore, sample } from 'effector';
+import { createEvent, createStore, sample } from 'effector';
 
 import type { PracticesResponse } from '@/shared/api/types';
 
@@ -23,6 +23,8 @@ export const authorizedRouteRole = chainRole(
   }
 );
 
+export const pageChanged = createEvent<number>();
+
 export const $practices = createStore<PracticesResponse>({
   data: [],
   meta: {
@@ -34,18 +36,25 @@ export const $practices = createStore<PracticesResponse>({
 });
 $practices.on(getPracticesDashboardQuery.finished.success, (_, { result }) => result);
 
+export const $page = createStore(1);
+$page.on(pageChanged, (_, page) => page);
+$page.on(getPracticesDashboardQuery.finished.success, (_, { result }) => result.meta.page);
+
 export const $loading = getPracticesDashboardQuery.$pending.map((pending) => pending);
 
 sample({
-  clock: [authorizedRouteRole.opened, debouncedSearchChanged, filterChanged],
+  clock: [authorizedRouteRole.opened, debouncedSearchChanged, filterChanged, pageChanged],
   source: {
     filter: $filter,
-    search: $search
+    search: $search,
+    page: $page
   },
-  fn: ({ filter, search }) =>
+  fn: ({ filter, search, page }) =>
     removeEmptyValues({
       filter,
-      search
+      search,
+      limit: 9,
+      page
     }),
   target: getPracticesDashboardQuery.start
 });
