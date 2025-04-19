@@ -12,7 +12,7 @@ const ROLE_OPTIONS = {
     { label: 'Сотрудник компании', value: 'STAFF' }
   ],
   STAFF: [{ label: 'Сотрудник компании', value: 'STAFF' }],
-  STUDENT: []
+  STUDENT: [{ label: 'Студент', value: 'STUDENT' }]
 };
 
 export const getRoleOptions = (role: Role | undefined) => (role ? ROLE_OPTIONS[role] : []);

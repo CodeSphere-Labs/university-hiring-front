@@ -46,7 +46,7 @@ export const StudentsMultiSelect = () => {
   const handleSelectAll = (checked: boolean) => {
     selectAllChanged(checked);
     if (checked) {
-      const allStudentIds = groupStudents.map((student) => student.id);
+      const allStudentIds = groupStudents.map((student) => student.studentProfile.id);
       onChange(allStudentIds);
     } else {
       onChange([]);
@@ -62,7 +62,8 @@ export const StudentsMultiSelect = () => {
     onChange(newValue);
 
     const allStudentsSelected =
-      groupStudents.length > 0 && groupStudents.every((student) => newValue.includes(student.id));
+      groupStudents.length > 0 &&
+      groupStudents.every((student) => newValue.includes(student.studentProfile.id));
     if (allStudentsSelected !== selectAll) {
       selectAllChanged(allStudentsSelected);
     }
@@ -73,7 +74,8 @@ export const StudentsMultiSelect = () => {
     onChange(newValue);
 
     const allStudentsSelected =
-      groupStudents.length > 0 && groupStudents.every((student) => newValue.includes(student.id));
+      groupStudents.length > 0 &&
+      groupStudents.every((student) => newValue.includes(student.studentProfile.id));
     if (allStudentsSelected !== selectAll) {
       selectAllChanged(allStudentsSelected);
     }
@@ -85,7 +87,7 @@ export const StudentsMultiSelect = () => {
       MAX_DISPLAYED_VALUES === value.length ? MAX_DISPLAYED_VALUES : MAX_DISPLAYED_VALUES - 1
     )
     .map((item) => {
-      const student = groupStudents.find((s) => s.id === item);
+      const student = groupStudents.find((s) => s.studentProfile.id === item);
       return (
         <Pill key={item} onRemove={() => handleValueRemove(item)} withRemoveButton>
           {student ? `${student.firstName} ${student.lastName} ${student.patronymic}` : item}
@@ -105,13 +107,13 @@ export const StudentsMultiSelect = () => {
   const options = filteredOptions.map((student) => (
     <Combobox.Option
       key={student.id}
-      active={value.includes(student.id)}
-      value={student.id.toString()}
+      active={value.includes(student.studentProfile.id)}
+      value={student.studentProfile.id.toString()}
     >
       <Group gap='sm'>
         <Checkbox
           aria-hidden
-          checked={value.includes(student.id)}
+          checked={value.includes(student.studentProfile.id)}
           style={{ pointerEvents: 'none' }}
           tabIndex={-1}
           onChange={() => {}}
