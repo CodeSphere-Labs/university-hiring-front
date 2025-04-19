@@ -1,4 +1,3 @@
-import { querySync } from 'atomic-router';
 import { createEvent, createStore, sample } from 'effector';
 
 import type {
@@ -17,7 +16,7 @@ import {
   statusChanged
 } from '@/features/Invitations/Filters/model';
 import { $search, debouncedSearchChanged } from '@/features/Invitations/Search/model';
-import { controls, routes } from '@/shared/routing/index';
+import { routes } from '@/shared/routing/index';
 import { $user, chainAuthorized, chainRole } from '@/shared/session/model';
 
 import { deleteInvitationQuery, getInvitationsQuery, refreshInvitationQuery } from '../api/api';
@@ -127,18 +126,6 @@ sample({
     return { filter, status, page, limit, search } as InvitationParams;
   },
   target: getInvitationsQuery.start
-});
-
-querySync({
-  source: {
-    filter: $filter,
-    status: $status,
-    page: $page,
-    limit: $recordsPerPage,
-    search: $search
-  },
-  route: authorizedRouteRole,
-  controls
 });
 
 sample({

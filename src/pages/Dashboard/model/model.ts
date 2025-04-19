@@ -1,3 +1,4 @@
+import { redirect } from 'atomic-router';
 import { combine, createEvent, createStore, sample } from 'effector';
 
 import type { CreatedByFilter, InvitationsStats, InvitationStatus } from '@/shared/api/types';
@@ -78,10 +79,10 @@ sample({
   target: $invitationsStatsByAll
 });
 
-sample({
+redirect({
   clock: redirectedToInvitations,
-  fn: ({ status, filter }) => ({ params: {}, query: { status, filter } }),
-  target: routes.invitations.open
+  query: ({ status, filter }) => ({ status, filter }),
+  route: routes.invitations
 });
 
 sample({

@@ -35,9 +35,26 @@ const Info = () => {
             />
           </Group>
         </WithRoleCheck>
+
+        <WithRoleCheck allowedRoles={['ADMIN', 'STAFF']}>
+          <Group>
+            <Text c='white' fw={500} size='sm'>
+              Практики:
+            </Text>
+            <SegmentedControl
+              data={[
+                { label: 'Все', value: 'all' },
+                { label: 'Закрепленные за мной', value: 'assignedToMe' }
+              ]}
+              value={filter}
+              color='dark'
+              onChange={(value) => filterChanged(value as CreatedByFilter)}
+            />
+          </Group>
+        </WithRoleCheck>
       </Stack>
     </Paper>
   );
 };
 
-export const Filter = withRoleCheck(Info, ['ADMIN', 'UNIVERSITY_STAFF']);
+export const Filter = withRoleCheck(Info, ['ADMIN', 'UNIVERSITY_STAFF', 'STAFF']);

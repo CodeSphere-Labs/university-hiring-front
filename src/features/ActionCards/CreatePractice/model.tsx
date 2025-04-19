@@ -2,12 +2,13 @@ import { modals } from '@mantine/modals';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { createForm } from 'effector-forms';
 
-import type { Group, Organization, OrganizationType, Student } from '@/shared/api/types';
+import type { Group, Organization, OrganizationType, Student, User } from '@/shared/api/types';
 
 import {
   createPracticeQuery,
   getGroupStudentsQuery,
-  getOrganizationsQuery
+  getOrganizationsQuery,
+  getOrganizationUsersQuery
 } from '@/features/ActionCards/api/api';
 import { getGroupsQuery } from '@/pages/Groups/api';
 import { validateRules } from '@/shared/config/validateRules';
@@ -34,9 +35,15 @@ $organizations.on(getOrganizationsQuery.finished.success, (_, { result }) => res
 export const $groupStudents = createStore<Student[]>([]);
 $groupStudents.on(getGroupStudentsQuery.finished.success, (_, { result }) => result);
 
+export const $organizationUsers = createStore<User[]>([]);
+$organizationUsers.on(getOrganizationUsersQuery.finished.success, (_, { result }) => result);
+
 export const $groupsLoading = getGroupsQuery.$pending.map((pending) => pending);
 export const $organizationsLoading = getOrganizationsQuery.$pending.map((pending) => pending);
 export const $groupStudentsLoading = getGroupStudentsQuery.$pending.map((pending) => pending);
+export const $organizationUsersLoading = getOrganizationUsersQuery.$pending.map(
+  (pending) => pending
+);
 
 export const form = createForm({
   fields: {
@@ -49,6 +56,10 @@ export const form = createForm({
       rules: [validateRules.required()]
     },
     organizationId: {
+      init: '',
+      rules: [validateRules.required()]
+    },
+    supervisorId: {
       init: '',
       rules: [validateRules.required()]
     },
@@ -116,13 +127,19 @@ sample({
 });
 
 sample({
+  clock: form.fields.organizationId.$value,
+  target: getOrganizationUsersQuery.start
+});
+
+sample({
   clock: form.formValidated,
   fn: ({ ...fields }) => ({
     ...fields,
     startDate: fields.startDate as Date,
     endDate: fields.endDate as Date,
     groupId: Number(fields.groupId),
-    organizationId: Number(fields.organizationId)
+    organizationId: Number(fields.organizationId),
+    supervisorId: Number(fields.supervisorId)
   }),
   target: createPracticeQuery.start
 });

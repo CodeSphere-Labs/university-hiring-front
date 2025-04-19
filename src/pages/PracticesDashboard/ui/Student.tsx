@@ -1,5 +1,5 @@
 import { Grid, Group, Pagination, Stack } from '@mantine/core';
-import { IconBuilding, IconCalendar, IconUsers } from '@tabler/icons-react';
+import { IconBuilding, IconCalendar, IconUsers, IconUserSquareRounded } from '@tabler/icons-react';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
 
@@ -26,6 +26,11 @@ const Info = () => {
                 <PracticeCard.Option
                   label={practice.organization.name}
                   icon={<IconBuilding size={16} />}
+                />
+
+                <PracticeCard.Option
+                  label={`${practice.supervisor.firstName} ${practice.supervisor.lastName}`}
+                  icon={<IconUserSquareRounded size={16} />}
                 />
 
                 <PracticeCard.Option

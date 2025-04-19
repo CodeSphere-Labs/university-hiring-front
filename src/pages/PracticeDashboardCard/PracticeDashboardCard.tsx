@@ -1,5 +1,5 @@
 import { Avatar, Badge, Card, Container, Group, Loader, Stack, Text, Title } from '@mantine/core';
-import { IconCalendar, IconMapPin, IconNotes } from '@tabler/icons-react';
+import { IconCalendar, IconMapPin, IconNotes, IconUserSquareRounded } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import { useUnit } from 'effector-react';
@@ -8,12 +8,10 @@ import { $practice, $practiceLoading } from './model';
 
 import classes from './PracticeDashboardCard.module.css';
 
-// Устанавливаем русскую локаль для dayjs
 dayjs.locale('ru');
 
 const PracticeDashboardCard = () => {
-  const practice = useUnit($practice);
-  const loading = useUnit($practiceLoading);
+  const [practice, loading] = useUnit([$practice, $practiceLoading]);
 
   if (loading) {
     return (
@@ -51,18 +49,26 @@ const PracticeDashboardCard = () => {
                 </Badge>
               </Group>
             </Stack>
-            <Group gap='xs'>
-              <IconCalendar size={20} stroke={1.5} />
-              <Text c='dimmed' size='sm'>
-                {dayjs(practice.startDate).format('D MMMM YYYY')} -{' '}
-                {dayjs(practice.endDate).format('D MMMM YYYY')}
-              </Text>
-            </Group>
           </Group>
 
           <Group gap='xs'>
             <IconMapPin size={20} stroke={1.5} />
             <Text size='sm'>{practice.address}</Text>
+          </Group>
+
+          <Group gap='xs'>
+            <IconCalendar size={20} stroke={1.5} />
+            <Text size='sm'>
+              {dayjs(practice.startDate).format('D MMMM YYYY')} -{' '}
+              {dayjs(practice.endDate).format('D MMMM YYYY')}
+            </Text>
+          </Group>
+
+          <Group gap='xs'>
+            <IconUserSquareRounded size={20} stroke={1.5} />
+            <Text size='sm'>
+              {practice.supervisor.firstName} {practice.supervisor.lastName}
+            </Text>
           </Group>
 
           {practice.notes && (

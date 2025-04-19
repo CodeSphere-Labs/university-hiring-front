@@ -7,6 +7,7 @@ import type {
   OrganizationParams,
   PracticeCreate,
   Student,
+  User,
   VacancyCreate
 } from '@/shared/api/types';
 
@@ -76,5 +77,11 @@ export const createPracticeQuery = createQuery({
     url: '/practices',
     method: 'POST',
     body
+  }))
+});
+
+export const getOrganizationUsersQuery = createQuery({
+  effect: createCommonRequestFx<string, User[]>((id) => ({
+    url: `/users/organization/${id}`
   }))
 });

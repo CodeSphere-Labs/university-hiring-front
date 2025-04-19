@@ -1,10 +1,10 @@
 import { createEvent, createStore } from 'effector';
 
-import type { CreatedByFilter } from '@/shared/api/types';
+import type { PracticeFilter } from '@/shared/api/types';
 
 export const DEFAULT_FILTER = 'all';
 
-export const filterChanged = createEvent<CreatedByFilter>();
+export const filterChanged = createEvent<PracticeFilter>();
 
-export const $filter = createStore<CreatedByFilter>(DEFAULT_FILTER);
+export const $filter = createStore<PracticeFilter>(DEFAULT_FILTER);
 $filter.on(filterChanged, (_, filter) => filter);

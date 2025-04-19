@@ -16,7 +16,9 @@ export interface ErrorResponse<T extends ErrorMessageKey = ErrorMessageKey> exte
 export type Role = 'ADMIN' | 'STAFF' | 'STUDENT' | 'UNIVERSITY_STAFF';
 export type InvitationStatus = 'accept' | 'all' | 'expired' | 'wait';
 export type CreatedByFilter = 'all' | 'createdByMe';
+export type AssignedToMeFilter = 'all' | 'assignedToMe';
 export type OrganizationType = 'company' | 'university';
+export type PracticeFilter = AssignedToMeFilter | CreatedByFilter;
 
 export interface InvitationAcceptParams {
   token: string;
@@ -99,6 +101,7 @@ export interface Practice {
   organization: Organization;
   startDate: Date;
   students: Student[];
+  supervisor: User;
   university: Organization;
 }
 
@@ -134,6 +137,7 @@ export interface PracticeCreate {
   organizationId: number;
   startDate: Date;
   studentIds: number[];
+  supervisorId: number;
 }
 
 export interface InvitationsStats {

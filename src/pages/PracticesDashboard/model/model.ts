@@ -4,6 +4,7 @@ import type { PracticesResponse } from '@/shared/api/types';
 
 import { routes } from '@/shared/routing';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
+import { removeEmptyValues } from '@/shared/utils';
 
 import { getPracticesDashboardQuery } from '../api/api';
 import { $filter, filterChanged } from './filter.model';
@@ -41,9 +42,10 @@ sample({
     filter: $filter,
     search: $search
   },
-  fn: ({ filter, search }) => ({
-    filter,
-    search
-  }),
+  fn: ({ filter, search }) =>
+    removeEmptyValues({
+      filter,
+      search
+    }),
   target: getPracticesDashboardQuery.start
 });
