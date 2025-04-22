@@ -248,7 +248,7 @@ const InternshipDashboardCard = () => {
                       // atomic-router types are not correct for mantine Link component
                       // eslint-disable-next-line ts/ban-ts-comment
                       // @ts-expect-error
-                      to={routes.profileInfo}
+                      to={routes.usersProfile}
                     >
                       Открыть профиль
                     </Button>

@@ -88,13 +88,6 @@ sample({
       };
     }
 
-    // if (result.role === 'STAFF') {
-    //   return {
-    //     ...baseData,
-    //     companyName: result.companyProfile?.companyName || '',
-    //     position: result.companyProfile?.position || '',
-    //   }
-    // }
     return baseData;
   },
   target: [baseForm.setInitialForm, studentForm.setInitialForm, companyForm.setInitialForm]

@@ -5,20 +5,22 @@ import { createBrowserHistory } from 'history';
 import { appStarted } from '@/shared/config/init';
 
 export const routes = {
-  home: createRoute(),
   signIn: createRoute(),
+
+  home: createRoute(),
   dashboard: createRoute(),
-  groups: createRoute(),
-  group: createRoute<{ id: string }>(),
   internship: createRoute(),
-  profile: createRoute(),
-  profileInfo: createRoute<{ id: string }>(),
   invitations: createRoute(),
-  invitationAccept: createRoute<{ token: string }>(),
   internshipDashboard: createRoute(),
-  internshipDashboardCard: createRoute<{ id: string }>(),
+  profile: createRoute(),
+  groups: createRoute(),
   practices: createRoute(),
-  practice: createRoute<{ id: string }>()
+
+  group: createRoute<{ id: string }>(),
+  usersProfile: createRoute<{ id: string }>(),
+  internshipDashboardCard: createRoute<{ id: string }>(),
+  practice: createRoute<{ id: string }>(),
+  invitationAccept: createRoute<{ token: string }>()
 };
 
 export const controls = createRouterControls();
@@ -55,7 +57,7 @@ export const router = createHistoryRouter({
     },
     {
       path: '/profile/:id',
-      route: routes.profileInfo
+      route: routes.usersProfile
     },
     {
       path: '/invitations',

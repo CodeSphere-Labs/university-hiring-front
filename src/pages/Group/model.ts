@@ -24,7 +24,7 @@ export const authorizedRouteRole = chainRole(authorizedRoute, ['ADMIN', 'UNIVERS
 export const goProfilePressed = createEvent<string>();
 redirect({
   clock: goProfilePressed,
-  route: routes.profileInfo,
+  route: routes.usersProfile,
   params: (id) => ({ id })
 });
 

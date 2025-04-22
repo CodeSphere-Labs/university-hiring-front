@@ -6,6 +6,7 @@ import { routes } from '@/shared/routing';
 import { chainAuthorized } from '@/shared/session/model';
 
 import { getPracticeQuery } from './api';
+import { connectFx, disconnected } from './chat.model';
 
 export const currentRoute = routes.practice;
 
@@ -22,4 +23,15 @@ sample({
   clock: authorizedRoute.opened,
   fn: ({ params }) => params.id,
   target: getPracticeQuery.start
+});
+
+sample({
+  clock: authorizedRoute.opened,
+  fn: ({ params }) => params.id,
+  target: connectFx
+});
+
+sample({
+  clock: authorizedRoute.closed,
+  target: disconnected
 });

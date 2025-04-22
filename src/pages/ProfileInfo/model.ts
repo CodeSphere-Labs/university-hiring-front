@@ -7,7 +7,7 @@ import { chainAuthorized } from '@/shared/session/model';
 
 import { getProfileInfoQuery } from './api';
 
-export const currentRoute = routes.profileInfo;
+export const currentRoute = routes.usersProfile;
 export const authorizedRoute = chainAuthorized(currentRoute, {
   otherwise: routes.signIn.open
 });
