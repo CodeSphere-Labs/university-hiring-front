@@ -116,3 +116,7 @@ sample({
   clock: sendMessageFx.doneData,
   target: messageReset
 });
+
+$messages.watch((messages) => {
+  console.log('messages', messages);
+});

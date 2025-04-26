@@ -8,9 +8,10 @@ import { $practice } from '../model';
 import { $message, $messages, messageChanged, messageSended } from './chat.model';
 
 import classes from './Chat.module.css';
+import { $user } from '@/shared/session/model';
 
 export const Chat = () => {
-  const [message, messages, practice] = useUnit([$message, $messages, $practice]);
+  const [message, messages, practice, user] = useUnit([$message, $messages, $practice, $user]);
   const viewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,6 +22,10 @@ export const Chat = () => {
 
   const isSupervisor = (userId: number | string) => {
     return practice && practice.supervisor && String(practice.supervisor.id) === String(userId);
+  };
+
+  const isMyMessage = (userId: number | string) => {
+    return user?.id === userId;
   };
 
   return (
@@ -34,13 +39,11 @@ export const Chat = () => {
           <Stack gap='md'>
             {messages.map((msg: any) => {
               const isFromSupervisor = isSupervisor(msg.user.id);
+              const isMine = isMyMessage(msg.userId);
 
               return (
-                <Group
-                  key={msg.id}
-                  className={msg.isMine ? classes.myMessage : classes.otherMessage}
-                >
-                  {!msg.isMine && (
+                <Group key={msg.id} className={isMine ? classes.myMessage : classes.otherMessage}>
+                  {!isMine && (
                     <Avatar
                       alt={`${msg.user.firstName} ${msg.user.lastName}`}
                       className={isFromSupervisor ? classes.supervisorAvatar : ''}
@@ -50,7 +53,7 @@ export const Chat = () => {
                     />
                   )}
                   <div className={classes.messageContent}>
-                    {!msg.isMine && (
+                    {!isMine && (
                       <Text
                         c='dimmed'
                         className={isFromSupervisor ? classes.supervisorName : ''}
@@ -63,7 +66,7 @@ export const Chat = () => {
                     )}
                     <Paper
                       className={
-                        msg.isMine
+                        isMine
                           ? classes.myMessageBubble
                           : isFromSupervisor
                             ? classes.supervisorMessageBubble
@@ -75,7 +78,7 @@ export const Chat = () => {
                       <Text size='sm'>{msg.content}</Text>
                     </Paper>
                     <Text c='dimmed' size='xs'>
-                      {dayjs(msg.timestamp).format('HH:mm')}
+                      {dayjs(msg.createdAt).format('HH:mm')}
                     </Text>
                   </div>
                 </Group>

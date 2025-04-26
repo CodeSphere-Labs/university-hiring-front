@@ -271,3 +271,20 @@ interface Meta {
   totalItems: number;
   totalPages: number;
 }
+
+export interface ChatUser {
+  id: number;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string | null;
+}
+
+export interface ChatMessage {
+  id: number;
+  chatId: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  user: ChatUser;
+  userId: number;
+}
