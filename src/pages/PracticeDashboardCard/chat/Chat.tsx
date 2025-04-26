@@ -4,11 +4,12 @@ import dayjs from 'dayjs';
 import { useUnit } from 'effector-react';
 import { useEffect, useRef } from 'react';
 
+import { $user } from '@/shared/session/model';
+
 import { $practice } from '../model';
 import { $message, $messages, messageChanged, messageSended } from './chat.model';
 
 import classes from './Chat.module.css';
-import { $user } from '@/shared/session/model';
 
 export const Chat = () => {
   const [message, messages, practice, user] = useUnit([$message, $messages, $practice, $user]);

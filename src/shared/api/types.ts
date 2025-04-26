@@ -273,17 +273,17 @@ interface Meta {
 }
 
 export interface ChatUser {
-  id: number;
-  firstName: string;
-  lastName: string;
   avatarUrl: string | null;
+  firstName: string;
+  id: number;
+  lastName: string;
 }
 
 export interface ChatMessage {
-  id: number;
   chatId: number;
   content: string;
   createdAt: string;
+  id: number;
   updatedAt: string;
   user: ChatUser;
   userId: number;
