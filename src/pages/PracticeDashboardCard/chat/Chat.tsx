@@ -96,7 +96,8 @@ export const Chat = () => {
         <Group
           component='form'
           // incorrect type definition for onSubmit for Group component
-          // @ts-ignore
+          // eslint-disable-next-line ts/ban-ts-comment
+          // @ts-expect-error
           onSubmit={handleSubmit}
         >
           <TextInput
