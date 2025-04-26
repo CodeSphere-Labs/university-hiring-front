@@ -16,17 +16,3 @@
 .grid > div:first-child {
   height: 100% !important;
 }
-
-.grid > .mantine-Grid-inner {
-  height: 100% !important;
-}
-
-@media (max-width: 820px) {
-  .grid > .mantine-Grid-inner {
-    flex-direction: column;
-  }
-
-  .card {
-    min-height: 60vh;
-  }
-}

@@ -48,7 +48,7 @@ const PracticeDashboardCard = () => {
   return (
     <Grid className={`shell_main ${classes.grid}`} gutter={0} h='100%'>
       <Grid.Col span={{ base: 12, md: 7 }} order={{ base: 1, md: 1 }}>
-        <Card className={classes.card} radius='md' h='100%'>
+        <Card className={classes.card} h='100%' radius='md'>
           <Stack gap='lg'>
             <Group align='flex-start' justify='space-between'>
               <Stack gap='xs'>
@@ -120,7 +120,7 @@ const PracticeDashboardCard = () => {
           </Stack>
         </Card>
       </Grid.Col>
-      <Grid.Col span={{ base: 12, md: 5 }} order={{ base: 2, md: 2 }} h={{ base: 600, md: '100%' }}>
+      <Grid.Col h={{ base: 600, md: '100%' }} span={{ base: 12, md: 5 }} order={{ base: 2, md: 2 }}>
         <Chat />
       </Grid.Col>
     </Grid>
