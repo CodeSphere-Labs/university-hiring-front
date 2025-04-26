@@ -71,14 +71,7 @@ export const $practiceId = createStore<string | null>(null)
 
 export const $messages = createStore<any>([])
   .on(historyReceived, (_, messages) => messages)
-  .on(rawMessageReceived, (state, rawMessage) => {
-    try {
-      return [...state, rawMessage];
-    } catch (e) {
-      console.error('Failed to parse message', e);
-      return state;
-    }
-  });
+  .on(rawMessageReceived, (state, rawMessage) => [...state, rawMessage]);
 
 export const sendMessageFx = createEffect(
   ({ socket, practiceId, content }: { socket: Socket; practiceId: string; content: string }) => {
@@ -97,26 +90,15 @@ sample({
     content: $message
   },
   filter: ({ socket, practiceId, content }) => !!socket && !!practiceId && !!content.trim(),
-  fn: ({ socket, practiceId, content }) => {
-    console.log('data', {
-      socket: socket!,
-      practiceId: practiceId!,
-      content
-    });
-    return {
-      socket: socket!,
-      practiceId: practiceId!,
-      content
-    };
-  },
+  fn: ({ socket, practiceId, content }) => ({
+    socket: socket!,
+    practiceId: practiceId!,
+    content
+  }),
   target: sendMessageFx
 });
 
 sample({
   clock: sendMessageFx.doneData,
   target: messageReset
-});
-
-$messages.watch((messages) => {
-  console.log('messages', messages);
 });

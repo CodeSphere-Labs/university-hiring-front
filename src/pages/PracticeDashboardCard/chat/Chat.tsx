@@ -15,11 +15,10 @@ export const Chat = () => {
   const [message, messages, practice, user] = useUnit([$message, $messages, $practice, $user]);
   const viewportRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (viewportRef.current) {
-      viewportRef.current.scrollTo({ top: viewportRef.current.scrollHeight, behavior: 'smooth' });
-    }
-  }, [messages]);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    messageSended();
+  };
 
   const isSupervisor = (userId: number | string) => {
     return practice && practice.supervisor && String(practice.supervisor.id) === String(userId);
@@ -28,6 +27,12 @@ export const Chat = () => {
   const isMyMessage = (userId: number | string) => {
     return user?.id === userId;
   };
+
+  useEffect(() => {
+    if (viewportRef.current) {
+      viewportRef.current.scrollTo({ top: viewportRef.current.scrollHeight, behavior: 'smooth' });
+    }
+  }, [messages]);
 
   return (
     <Paper className={classes.chatContainer} h='100%' p='md' shadow='xs'>
@@ -88,7 +93,12 @@ export const Chat = () => {
           </Stack>
         </ScrollArea>
 
-        <Group>
+        <Group
+          component='form'
+          // incorrect type definition for onSubmit for Group component
+          // @ts-ignore
+          onSubmit={handleSubmit}
+        >
           <TextInput
             className={classes.input}
             radius='md'
@@ -96,12 +106,7 @@ export const Chat = () => {
             onChange={(e) => messageChanged(e.currentTarget.value)}
             placeholder='Напишите сообщение...'
           />
-          <Button
-            disabled={!message.trim()}
-            radius='md'
-            variant='filled'
-            onClick={() => messageSended()}
-          >
+          <Button disabled={!message.trim()} radius='md' type='submit' variant='filled'>
             <IconSend size={18} />
           </Button>
         </Group>
