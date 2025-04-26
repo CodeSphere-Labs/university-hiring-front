@@ -64,7 +64,7 @@ const BaseUserForm = ({ user }: { user: User }) => {
   const { fields } = useForm(form as typeof baseForm);
 
   return (
-    <Group>
+    <Group className={classes.group}>
       <Title order={3}>Основная информация</Title>
       <Grid
         type='media'

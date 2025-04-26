@@ -13,3 +13,8 @@
   width: 20px;
   height: 20px;
 }
+
+.group {
+  flex-direction: column;
+  align-items: baseline;
+}

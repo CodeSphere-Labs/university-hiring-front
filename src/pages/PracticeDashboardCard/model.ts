@@ -6,7 +6,7 @@ import { routes } from '@/shared/routing';
 import { chainAuthorized } from '@/shared/session/model';
 
 import { getPracticeQuery } from './api';
-import { connectFx, disconnected } from './chat.model';
+import { connectFx, disconnected } from './chat/chat.model';
 
 export const currentRoute = routes.practice;
 

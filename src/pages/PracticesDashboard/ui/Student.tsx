@@ -1,9 +1,11 @@
 import { Grid, Group, Pagination, Stack } from '@mantine/core';
 import { IconBuilding, IconCalendar, IconUsers, IconUserSquareRounded } from '@tabler/icons-react';
+import { Link } from 'atomic-router-react';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
 
 import { withRoleCheck } from '@/shared/hoc';
+import { routes } from '@/shared/routing';
 import { getStudentWord } from '@/shared/utils';
 
 import { PracticeCard, SkeletonCards } from '../components';
@@ -21,7 +23,14 @@ const Info = () => {
         {!loading &&
           practices.data.map((practice) => (
             <Grid.Col key={practice.id} span={{ base: 12, sm: 6, md: 4 }}>
-              <PracticeCard>
+              <PracticeCard
+                params={{ id: practice.id }}
+                component={Link}
+                // atomic-router types are not correct for mantine Link component
+                // eslint-disable-next-line ts/ban-ts-comment
+                // @ts-expect-error
+                to={routes.practice}
+              >
                 <PracticeCard.Title order={4}>{practice.name}</PracticeCard.Title>
                 <PracticeCard.Option
                   label={practice.organization.name}
