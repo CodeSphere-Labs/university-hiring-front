@@ -1,11 +1,3 @@
-.icon {
-  color: var(--mantine-color-dimmed);
-}
-
-.name {
-  margin-top: 7px;
-}
-
 .input {
   & input:disabled {
     background-color: transparent;

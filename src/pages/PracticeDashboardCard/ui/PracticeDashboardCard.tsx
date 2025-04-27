@@ -15,10 +15,10 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import { useUnit } from 'effector-react';
 
-import { Chat } from './chat/Chat';
-import { $practice, $practiceLoading } from './model';
+import { Chat } from '../chat/Chat';
+import { $practice, $practiceLoading } from '../model/model';
 
-import classes from './PracticeDashboardCard.module.css';
+import classes from './styles.module.css';
 
 dayjs.locale('ru');
 

@@ -9,7 +9,7 @@ import { routes } from '@/shared/routing';
 import { sessionQuery } from '@/shared/session/api';
 import { chainAnonymous } from '@/shared/session/model';
 
-import { acceptInvitationQuery, checkInvitationQuery } from './api';
+import { acceptInvitationQuery, checkInvitationQuery } from '../api/api';
 
 export const currentRoute = routes.invitationAccept;
 export const anonymousRouteRoute = chainAnonymous(currentRoute, {

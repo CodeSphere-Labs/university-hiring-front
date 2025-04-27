@@ -10,7 +10,7 @@ import {
   getOrganizationsQuery,
   getOrganizationUsersQuery
 } from '@/features/ActionCards/api/api';
-import { getGroupsQuery } from '@/pages/Groups/api';
+import { getGroupsQuery } from '@/pages/Groups/api/api';
 import { validateRules } from '@/shared/config/validateRules';
 import { showError, showSuccess } from '@/shared/notifications/model';
 

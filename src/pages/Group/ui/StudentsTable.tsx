@@ -16,7 +16,7 @@ import {
   goProfilePressed,
   pageChanged,
   recordsPerPageChanged
-} from './model';
+} from '../model/model';
 
 import classes from './styles.module.css';
 

@@ -1,17 +1,13 @@
 import type { ReactNode } from 'react';
 
 import {
-  Avatar,
-  Badge,
   Burger,
   Button,
   Container,
   Drawer,
   Group,
   NavLink,
-  Skeleton,
   Stack,
-  Text,
   useMantineTheme
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -20,62 +16,14 @@ import { useList, useUnit } from 'effector-react';
 
 import { WithRoleCheck } from '@/shared/hoc';
 import { logoutQuery } from '@/shared/session/api';
-import { $sessionPending, $user, userLogouted } from '@/shared/session/model';
-import { getRole } from '@/shared/utils';
+import { userLogouted } from '@/shared/session/model';
 
+import { UserAvatar, UserInfo } from './components';
 import { $links } from './links';
 
-import classes from './Navbar.module.css';
+import classes from './styles.module.css';
 
-interface Props {
-  children: ReactNode;
-}
-
-const UserAvatar = () => {
-  const user = useUnit($user);
-  const pending = useUnit($sessionPending);
-
-  if (pending) {
-    return <Skeleton circle height={40} />;
-  }
-
-  if (!user) return null;
-
-  return (
-    <Avatar alt={`${user.firstName} ${user.lastName}`} radius='xl' size='md' src={user.avatarUrl} />
-  );
-};
-
-const UserInfo = () => {
-  const user = useUnit($user);
-  const pending = useUnit($sessionPending);
-
-  if (pending) {
-    return (
-      <Stack gap={0}>
-        <Skeleton height={20} mb={4} width={150} />
-        <Skeleton height={20} width={100} />
-      </Stack>
-    );
-  }
-
-  if (!user) return null;
-
-  const userRole = getRole(user.role);
-
-  return (
-    <Stack gap={0}>
-      <Text fw={700} size='md'>
-        {user.firstName} {user.lastName}
-      </Text>
-      <Badge size='sm' variant='light' color={userRole.color}>
-        {userRole.label}
-      </Badge>
-    </Stack>
-  );
-};
-
-export const Navbar = ({ children }: Props) => {
+export const Navbar = ({ children }: { children: ReactNode }) => {
   const [opened, { toggle, close }] = useDisclosure(false);
   const theme = useMantineTheme();
 

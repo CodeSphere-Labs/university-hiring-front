@@ -14,7 +14,7 @@ import {
   changeInternshipDashboardCardResponseStatusQuery,
   getInternshipDashboardCardQuery,
   getInternshipDashboardCardResponsesQuery
-} from './api';
+} from '../api/api';
 
 export const currentRoute = routes.internshipDashboardCard;
 export const authorizedRoute = chainAuthorized(currentRoute, {

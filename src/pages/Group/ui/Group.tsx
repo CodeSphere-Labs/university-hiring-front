@@ -2,10 +2,10 @@ import { Badge, Group as MantineGroup, Stack, TextInput, Title } from '@mantine/
 import { IconCalendar, IconSearch, IconUsers } from '@tabler/icons-react';
 import { useUnit } from 'effector-react';
 
-import { $group, $initialGroupLoading } from '@/pages/Group/model';
+import { $group, $initialGroupLoading } from '@/pages/Group/model/model';
 import { formatDate, getStudentWord } from '@/shared/utils';
 
-import { $search, searchChanged } from './search';
+import { $search, searchChanged } from '../model/search';
 import { StudentsTable } from './StudentsTable';
 
 const GroupHeader = () => {

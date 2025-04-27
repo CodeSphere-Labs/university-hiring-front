@@ -26,8 +26,8 @@ import {
   $opportunitiesLoading,
   $opportunitiesMoreLoading,
   endOfOpportunitiesReached
-} from './model';
-import { $search, searchChanged } from './search';
+} from '../model/model';
+import { $search, searchChanged } from '../model/search';
 
 import styles from './styles.module.css';
 

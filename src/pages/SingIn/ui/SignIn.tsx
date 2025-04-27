@@ -15,7 +15,7 @@ import { useUnit } from 'effector-react';
 
 import { $pending, loginForm } from '../model/model';
 
-import classes from './SignIn.module.css';
+import classes from './styles.module.css';
 
 const SignIn = () => {
   const { fields, submit, eachValid } = useForm(loginForm);

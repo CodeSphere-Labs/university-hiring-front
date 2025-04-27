@@ -6,10 +6,10 @@ import { useEffect, useRef } from 'react';
 
 import { $user } from '@/shared/session/model';
 
-import { $practice } from '../model';
+import { $practice } from '../model/model';
 import { $message, $messages, messageChanged, messageSended } from './chat.model';
 
-import classes from './Chat.module.css';
+import classes from './styles.module.css';
 
 export const Chat = () => {
   const [message, messages, practice, user] = useUnit([$message, $messages, $practice, $user]);

@@ -4,9 +4,9 @@ import { lazy, Suspense } from 'react';
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 import { Navbar } from '@/widgets';
 
-import { authorizedRoute, currentRoute } from './model';
+import { authorizedRoute, currentRoute } from './model/model';
 
-export const InternshipDashboardPage = lazy(() => import('./InternshipDashboard'));
+export const InternshipDashboardPage = lazy(() => import('./ui/InternshipDashboard'));
 
 const AuthorizedView = createRouteView({
   route: authorizedRoute,

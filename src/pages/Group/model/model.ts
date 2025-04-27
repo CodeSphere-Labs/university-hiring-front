@@ -6,7 +6,7 @@ import type { GroupResponse, GroupsParams } from '@/shared/api/types';
 import { controls, routes } from '@/shared/routing';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
-import { getGroupQuery, getInitialGroupQuery } from './api';
+import { getGroupQuery, getInitialGroupQuery } from '../api/api';
 import { $search, debouncedSearchChanged } from './search';
 
 const DEFAULT_PAGE = 1;

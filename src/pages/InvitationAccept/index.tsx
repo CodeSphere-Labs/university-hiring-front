@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react';
 
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 
-import { anonymousRouteRoute, currentRoute } from './model';
+import { anonymousRouteRoute, currentRoute } from './model/model';
 
 export const InvitationAcceptPage = lazy(() => import('./InvitationAccept'));
 

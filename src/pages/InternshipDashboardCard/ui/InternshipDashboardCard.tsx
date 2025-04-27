@@ -28,7 +28,6 @@ import type { OpportunityResponsesFilter } from '@/shared/api/types';
 import { routes } from '@/shared/routing';
 import { formatDate } from '@/shared/utils';
 
-import { SkeletonList } from './InternshipDashboardCardSkeleton';
 import {
   $opportinity,
   $opportinityLoading,
@@ -40,7 +39,8 @@ import {
   filterChanged,
   pageChanged,
   responseStatusChanged
-} from './model';
+} from '../model/model';
+import { SkeletonList } from './InternshipDashboardCardSkeleton';
 
 const FilterTabs = () => {
   const [status] = useUnit([$status]);

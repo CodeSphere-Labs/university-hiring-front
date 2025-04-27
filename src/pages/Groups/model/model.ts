@@ -7,7 +7,7 @@ import type { Group } from '@/shared/api/types';
 import { controls, routes } from '@/shared/routing/index';
 import { chainAuthorized, chainRole } from '@/shared/session/model';
 
-import { getGroupsQuery } from './api';
+import { getGroupsQuery } from './api/api';
 
 const DEBOUNCE_TIMEOUT = 400;
 

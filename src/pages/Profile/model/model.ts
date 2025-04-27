@@ -10,7 +10,6 @@ import { showError, showSuccess } from '@/shared/notifications/model';
 import { routes } from '@/shared/routing/index';
 import { sessionQuery } from '@/shared/session/api';
 import { $user, chainAuthorized } from '@/shared/session/model';
-import { removeEmptyValues } from '@/shared/utils';
 
 import { deleteProjectQuery, getAvailableGroupedSkillsQuery, updateUserQuery } from '../api/api';
 
@@ -55,13 +54,6 @@ sample({
 
 sample({
   clock: [baseForm.formValidated, studentForm.formValidated, companyForm.formValidated],
-  fn: (values) => {
-    if ('group' in values) {
-      const { group, ...rest } = values;
-      return removeEmptyValues(rest);
-    }
-    return removeEmptyValues(values);
-  },
   target: updateUserQuery.start
 });
 

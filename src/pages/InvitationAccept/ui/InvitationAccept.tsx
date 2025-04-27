@@ -16,7 +16,7 @@ import { ErrorMessages } from '@/shared/config/errorCodes';
 import IconInvitationError from '@/shared/images/InvitationError.png';
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 
-import { $error, $loading, $loadingAccept, form } from './model';
+import { $error, $loading, $loadingAccept, form } from '../model/model';
 
 const ErrorStatus = () => {
   const error = useUnit($error);

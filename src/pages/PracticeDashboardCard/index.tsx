@@ -4,7 +4,7 @@ import { lazy, Suspense } from 'react';
 import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 import { Navbar } from '@/widgets';
 
-import { authorizedRoute, currentRoute } from './model';
+import { authorizedRoute, currentRoute } from './model/model';
 
 export const PracticeDashboardCardPage = lazy(() => import('./PracticeDashboardCard'));
 

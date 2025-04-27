@@ -5,7 +5,7 @@ import type { User } from '@/shared/api/types';
 import { routes } from '@/shared/routing';
 import { chainAuthorized } from '@/shared/session/model';
 
-import { getProfileInfoQuery } from './api';
+import { getProfileInfoQuery } from '../api/api';
 
 export const currentRoute = routes.usersProfile;
 export const authorizedRoute = chainAuthorized(currentRoute, {

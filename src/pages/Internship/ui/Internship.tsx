@@ -26,8 +26,8 @@ import {
   $opportunitiesMoreLoading,
   endOfOpportunitiesReached,
   respondToOpportunityClicked
-} from './model';
-import { $search, searchChanged } from './search';
+} from '../model/model';
+import { $search, searchChanged } from '../model/search';
 
 const Search = () => {
   const search = useUnit($search);

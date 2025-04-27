@@ -19,7 +19,7 @@ import type { Group as GroupType } from '@/shared/api/types';
 import { routes } from '@/shared/routing';
 import { getStudentWord } from '@/shared/utils';
 
-import { $groups, $loading, $search, searchChanged } from './model';
+import { $groups, $loading, $search, searchChanged } from '../model/model';
 
 import classes from './styles.module.css';
 

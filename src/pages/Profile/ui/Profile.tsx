@@ -1,23 +1,10 @@
-import {
-  Avatar,
-  Button,
-  Grid,
-  Group,
-  Stack,
-  Text,
-  Textarea,
-  TextInput,
-  Title
-} from '@mantine/core';
-import { IconAt } from '@tabler/icons-react';
+import { Button, Grid, Group, Stack, Textarea, TextInput, Title } from '@mantine/core';
 import { useForm } from 'effector-forms';
 import { useUnit } from 'effector-react';
 
-import type { User } from '@/shared/api/types';
-
-import { OrganizationInfo } from '@/pages/ProfileInfo/ProfileInfo';
 import { $user } from '@/shared/session/model';
-import { getRole } from '@/shared/utils';
+import { OrganizationInfo } from '@/shared/ui/OrganizationInfo/OrganizationInfo';
+import { UserTopInfo } from '@/shared/ui/UserTopInfo/UserTopInfo';
 
 import type { baseForm } from '../model/model';
 
@@ -26,39 +13,8 @@ import { ConditionalStudentProfile } from './StudentProfileForm/StudentProfileFo
 
 import classes from './UserInfoIcons.module.css';
 
-const UserTopInfo = ({ user }: { user: User }) => {
-  const userRole = getRole(user.role);
-
-  return (
-    <div>
-      <Group wrap='nowrap'>
-        <Avatar
-          alt={`${user.firstName} ${user.lastName}`}
-          radius='md'
-          size={134}
-          src={user.avatarUrl}
-        />
-        <div>
-          <Text c={userRole.color} fw={700} fz='xs' tt='uppercase'>
-            {userRole.label}
-          </Text>
-
-          <Text className={classes.name} fw={500} fz='lg'>
-            {user.firstName} {user.lastName}
-          </Text>
-          <Group gap={10} mt={3} wrap='nowrap'>
-            <IconAt className={classes.icon} size={16} stroke={1.5} />
-            <Text c='dimmed' fz='xs'>
-              {user.email}
-            </Text>
-          </Group>
-        </div>
-      </Group>
-    </div>
-  );
-};
-
-const BaseUserForm = ({ user }: { user: User }) => {
+const BaseUserForm = () => {
+  const user = useUnit($user)!;
   const loading = useUnit($updateProfileLoading);
   const form = getFormByRole(user.role);
   const { fields } = useForm(form as typeof baseForm);
@@ -163,8 +119,9 @@ const BaseUserForm = ({ user }: { user: User }) => {
   );
 };
 
-const ProfileContent = ({ user }: { user: User }) => {
+const ProfileContent = () => {
   const [loading] = useUnit([$updateProfileLoading]);
+  const user = useUnit($user)!;
 
   const form = getFormByRole(user.role);
   const { isDirty, eachValid, submit } = useForm(form as typeof baseForm);
@@ -179,11 +136,11 @@ const ProfileContent = ({ user }: { user: User }) => {
           Сохранить изменения
         </Button>
       </Group>
-      <BaseUserForm user={user} />
+      <BaseUserForm />
       <ConditionalStudentProfile isStudent={user.role === 'STUDENT'} />
 
       <Title order={3}>Ваша организация</Title>
-      <Group pb='md'>
+      <Group>
         <OrganizationInfo user={user} />
       </Group>
     </Stack>
@@ -195,7 +152,7 @@ const Profile = () => {
 
   if (!user) return null;
 
-  return <ProfileContent user={user} />;
+  return <ProfileContent />;
 };
 
 export default Profile;
