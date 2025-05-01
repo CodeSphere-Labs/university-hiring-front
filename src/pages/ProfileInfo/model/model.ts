@@ -13,7 +13,9 @@ export const authorizedRoute = chainAuthorized(currentRoute, {
 });
 
 export const $user = createStore<User | null>(null);
-$user.on(getProfileInfoQuery.finished.success, (_, { result }) => result);
+$user
+  .on(getProfileInfoQuery.finished.success, (_, { result }) => result)
+  .reset(authorizedRoute.closed);
 
 sample({
   clock: authorizedRoute.opened,

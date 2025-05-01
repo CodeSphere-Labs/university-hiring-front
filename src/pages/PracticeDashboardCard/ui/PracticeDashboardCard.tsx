@@ -11,9 +11,12 @@ import {
   Title
 } from '@mantine/core';
 import { IconCalendar, IconMapPin, IconNotes, IconUserSquareRounded } from '@tabler/icons-react';
-import dayjs from 'dayjs';
+import { Link } from 'atomic-router-react';
 import 'dayjs/locale/ru';
+import dayjs from 'dayjs';
 import { useUnit } from 'effector-react';
+
+import { routes } from '@/shared/routing';
 
 import { Chat } from '../chat/Chat';
 import { $practice, $practiceLoading } from '../model/model';
@@ -103,7 +106,16 @@ const PracticeDashboardCard = () => {
               <Text fw={500}>Студенты:</Text>
               <Group gap='sm'>
                 {practice.students.map((student) => (
-                  <Group key={student.id} gap='xs'>
+                  <Group
+                    key={student.id}
+                    gap='xs'
+                    // atomic-router types are not correct for mantine Link component
+                    // eslint-disable-next-line ts/ban-ts-comment
+                    // @ts-expect-error
+                    params={{ id: String(student.id) }}
+                    component={Link}
+                    to={routes.usersProfile}
+                  >
                     <Avatar
                       alt={`${student.firstName} ${student.lastName}`}
                       radius='xl'
