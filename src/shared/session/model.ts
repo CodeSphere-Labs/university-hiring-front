@@ -75,10 +75,10 @@ interface ChainParams<Params extends RouteParams> {
  * 4. Если sessionQuery завершается успешно, маршрут открывается
  * 5. Если sessionQuery завершается с ошибкой, маршрут не открывается и выполняется otherwise
  */
-export function chainAuthorized<Params extends RouteParams>(
+export const chainAuthorized = <Params extends RouteParams>(
   route: RouteInstance<Params>,
   { otherwise }: ChainParams<Params> = {}
-): RouteInstance<Params> {
+): RouteInstance<Params> => {
   const sessionCheckStarted = createEvent<RouteParamsAndQuery<Params>>();
   const sessionReceivedAnonymous = createEvent<RouteParamsAndQuery<Params>>();
 
@@ -121,7 +121,7 @@ export function chainAuthorized<Params extends RouteParams>(
     openOn: [alreadyAuthenticated, sessionQuery.finished.success],
     cancelOn: sessionReceivedAnonymous
   });
-}
+};
 
 /**
  * Функция для защиты маршрутов, доступных только неаутентифицированным пользователям
@@ -133,10 +133,10 @@ export function chainAuthorized<Params extends RouteParams>(
  * 4. Если sessionQuery завершается с ошибкой, маршрут открывается
  * 5. Если sessionQuery завершается успешно, маршрут не открывается и выполняется otherwise
  */
-export function chainAnonymous<Params extends RouteParams>(
+export const chainAnonymous = <Params extends RouteParams>(
   route: RouteInstance<Params>,
   { otherwise }: ChainParams<Params> = {}
-): RouteInstance<Params> {
+): RouteInstance<Params> => {
   const sessionCheckStarted = createEvent<RouteParamsAndQuery<Params>>();
   const sessionReceivedAuthenticated = createEvent<RouteParamsAndQuery<Params>>();
 
@@ -179,13 +179,13 @@ export function chainAnonymous<Params extends RouteParams>(
     openOn: [alreadyAnonymous, sessionQuery.finished.failure],
     cancelOn: sessionReceivedAuthenticated
   });
-}
+};
 
-export function chainRole<Params extends RouteParams>(
+export const chainRole = <Params extends RouteParams>(
   route: RouteInstance<Params>,
   roles: Role[],
   { otherwise }: ChainParams<Params> = {}
-): RouteInstance<Params> {
+): RouteInstance<Params> => {
   const roleCheckStarted = createEvent<RouteParamsAndQuery<Params>>();
 
   sample({
@@ -218,4 +218,4 @@ export function chainRole<Params extends RouteParams>(
     openOn: [roleCheckSuccess],
     cancelOn: roleCheckFailure
   });
-}
+};

@@ -21,7 +21,7 @@ export const SupervisiorSelect = () => {
       data={data}
       disabled={organizationUsersLoading}
       label='Руководитель практики'
-      value={fields.supervisorId.value}
+      value={fields.supervisorId.value || null}
       comboboxProps={{
         position: 'bottom',
         middlewares: { flip: false, shift: true },

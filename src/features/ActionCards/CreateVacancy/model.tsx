@@ -1,19 +1,15 @@
-import { modals } from '@mantine/modals';
-import { createEffect, createEvent, createStore, sample } from 'effector';
-import { createForm } from 'effector-forms';
+import { createStore } from 'effector';
 
 import type { GroupedSkill } from '@/shared/api/types';
 
 import { createVacancyQuery } from '@/features/ActionCards/api/api';
 import { getAvailableGroupedSkillsQuery } from '@/pages/Profile/api/api';
 import { validateRules } from '@/shared/config/validateRules';
-import { showError, showSuccess } from '@/shared/notifications/model';
+import { createModalAction } from '@/shared/factories/createModalAction';
 
 import { CreateVacancy } from './CreateVacancy';
 
 import classes from './CreateVacancy.module.css';
-
-export const modalOpened = createEvent();
 
 export const $loading = createVacancyQuery.$pending.map((pending) => pending);
 export const $availableGroupedSkills = createStore<GroupedSkill[]>([]);
@@ -25,71 +21,38 @@ $availableGroupedSkills.on(
   (_, { result }) => result
 );
 
-export const form = createForm({
-  fields: {
-    title: {
-      init: '',
-      rules: [validateRules.required()]
+export const { modalOpened, form } = createModalAction({
+  Component: <CreateVacancy />,
+  errorNotification: 'Ошибка при создании вакансии',
+  formConfig: {
+    fields: {
+      title: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      description: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      skills: {
+        init: [] as string[],
+        rules: [validateRules.requiredArray()]
+      }
     },
-    description: {
-      init: '',
-      rules: [validateRules.required()]
-    },
-    skills: {
-      init: [] as string[],
-      rules: [validateRules.requiredArray()]
-    }
+    validateOn: ['submit']
   },
-  validateOn: ['submit']
-});
-
-export const modalConfirmFx = createEffect(() => {
-  form.submit();
-});
-
-const openModalFx = createEffect(() =>
-  modals.openConfirmModal({
-    title: 'Создать вакансию',
-    children: <CreateVacancy />,
-    labels: { confirm: 'Создать', cancel: 'Назад' },
-    onConfirm: () => modalConfirmFx(),
-    closeOnConfirm: false,
-    size: 'lg',
-    zIndex: 1002,
-    classNames: {
-      inner: classes.modalInner
-    }
-  })
-);
-
-const modalCloseFx = createEffect<string, void, Error>((id) => {
-  modals.close(id);
-});
-
-sample({
-  clock: modalOpened,
-  target: [form.reset, openModalFx, getAvailableGroupedSkillsQuery.start]
-});
-
-sample({
-  clock: form.formValidated,
-  target: createVacancyQuery.start
-});
-
-sample({
-  clock: createVacancyQuery.finished.success,
-  source: openModalFx.doneData,
-  target: [
-    modalCloseFx,
-    showSuccess({
-      title: 'Вакансия создана',
-      message: 'Вакансия успешно создана'
-    })
-  ]
-});
-
-sample({
-  clock: createVacancyQuery.finished.failure,
-  filter: ({ error }) => error.statusCode !== 403,
-  target: showError('Ошибка при создании вакансии')
+  labels: {
+    cancel: 'Назад',
+    confirm: 'Создать'
+  },
+  openTargets: [getAvailableGroupedSkillsQuery.start],
+  submitTarget: createVacancyQuery,
+  successNotification: {
+    title: 'Вакансия создана',
+    message: 'Вакансия успешно создана'
+  },
+  title: 'Создать вакансию',
+  modalClassNames: {
+    inner: classes.modalInner
+  }
 });

@@ -1,6 +1,4 @@
-import { modals } from '@mantine/modals';
-import { createEffect, createEvent, createStore, sample } from 'effector';
-import { createForm } from 'effector-forms';
+import { createEvent, createStore, sample } from 'effector';
 
 import type { Group, Organization, OrganizationType, Student, User } from '@/shared/api/types';
 
@@ -12,7 +10,7 @@ import {
 } from '@/features/ActionCards/api/api';
 import { getGroupsQuery } from '@/pages/Groups/api/api';
 import { validateRules } from '@/shared/config/validateRules';
-import { showError, showSuccess } from '@/shared/notifications/model';
+import { createModalAction } from '@/shared/factories/createModalAction';
 
 import { CreatePractice } from './CreatePractice';
 
@@ -20,7 +18,6 @@ import classes from './CreatePractice.module.css';
 
 const ORGANIZATION: OrganizationType = 'company';
 
-export const modalOpened = createEvent();
 export const selectAllChanged = createEvent<boolean>();
 
 export const $selectAll = createStore<boolean>(false);
@@ -45,74 +42,72 @@ export const $organizationUsersLoading = getOrganizationUsersQuery.$pending.map(
   (pending) => pending
 );
 
-export const form = createForm({
-  fields: {
-    name: {
-      init: '',
-      rules: [validateRules.required()]
+export const { modalOpened, form } = createModalAction({
+  Component: <CreatePractice />,
+  errorNotification: 'Ошибка при создании практики',
+  formConfig: {
+    fields: {
+      name: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      groupId: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      organizationId: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      supervisorId: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      studentIds: {
+        init: [] as number[],
+        rules: [validateRules.requiredArray()]
+      },
+      address: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      notes: {
+        init: '',
+        rules: []
+      },
+      startDate: {
+        init: null as Date | null,
+        rules: [validateRules.required()]
+      },
+      endDate: {
+        init: null as Date | null,
+        rules: [validateRules.required()]
+      }
     },
-    groupId: {
-      init: '',
-      rules: [validateRules.required()]
-    },
-    organizationId: {
-      init: '',
-      rules: [validateRules.required()]
-    },
-    supervisorId: {
-      init: '',
-      rules: [validateRules.required()]
-    },
-    studentIds: {
-      init: [] as number[],
-      rules: [validateRules.requiredArray()]
-    },
-    address: {
-      init: '',
-      rules: [validateRules.required()]
-    },
-    notes: {
-      init: '',
-      rules: []
-    },
-    startDate: {
-      init: null as Date | null,
-      rules: [validateRules.required()]
-    },
-    endDate: {
-      init: null as Date | null,
-      rules: [validateRules.required()]
-    }
+    validateOn: ['submit']
   },
-  validateOn: ['submit']
-});
-
-export const modalConfirmFx = createEffect(() => {
-  form.submit();
-});
-
-const modalCloseFx = createEffect<string, void, Error>((id) => {
-  modals.close(id);
-});
-
-const openModalFx = createEffect(() =>
-  modals.openConfirmModal({
-    title: 'Создать практику',
-    children: <CreatePractice />,
-    labels: { confirm: 'Создать', cancel: 'Назад' },
-    onConfirm: () => modalConfirmFx(),
-    closeOnConfirm: false,
-    size: 'lg',
-    zIndex: 1002,
-    classNames: {
-      inner: classes.modalInner
-    }
-  })
-);
-
-sample({
-  clock: modalOpened,
-  target: [form.reset, openModalFx, getGroupsQuery.start]
+  labels: {
+    cancel: 'Назад',
+    confirm: 'Создать'
+  },
+  transformValues: ({ ...fields }) => ({
+    ...fields,
+    startDate: fields.startDate as Date,
+    endDate: fields.endDate as Date,
+    groupId: Number(fields.groupId),
+    organizationId: Number(fields.organizationId),
+    supervisorId: Number(fields.supervisorId)
+  }),
+  submitTarget: createPracticeQuery,
+  openTargets: [getGroupsQuery.start],
+  successNotification: {
+    title: 'Практика создана',
+    message: 'Практика успешно создана'
+  },
+  title: 'Создать практику',
+  modalClassNames: {
+    inner: classes.modalInner
+  }
 });
 
 sample({
@@ -122,41 +117,11 @@ sample({
 });
 
 sample({
-  clock: form.fields.groupId.$value,
-  target: getGroupStudentsQuery.start
+  clock: [form.fields.groupId.$value, form.fields.organizationId.$value],
+  target: [getGroupStudentsQuery.start, getOrganizationUsersQuery.start]
 });
 
 sample({
-  clock: form.fields.organizationId.$value,
-  target: getOrganizationUsersQuery.start
-});
-
-sample({
-  clock: form.formValidated,
-  fn: ({ ...fields }) => ({
-    ...fields,
-    startDate: fields.startDate as Date,
-    endDate: fields.endDate as Date,
-    groupId: Number(fields.groupId),
-    organizationId: Number(fields.organizationId),
-    supervisorId: Number(fields.supervisorId)
-  }),
-  target: createPracticeQuery.start
-});
-
-sample({
-  clock: createPracticeQuery.finished.success,
-  source: openModalFx.doneData,
-  target: [
-    modalCloseFx,
-    showSuccess({
-      title: 'Практика создана',
-      message: 'Практика успешно создана'
-    })
-  ]
-});
-
-sample({
-  clock: createPracticeQuery.finished.failure,
-  target: [showError('Произошла ошибка при создании практики')]
+  clock: [getGroupStudentsQuery.finished.success, getOrganizationUsersQuery.finished.success],
+  target: [form.fields.studentIds.resetValue, form.fields.supervisorId.resetValue]
 });

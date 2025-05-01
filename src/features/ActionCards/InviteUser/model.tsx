@@ -1,11 +1,11 @@
 import { modals } from '@mantine/modals';
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { createForm } from 'effector-forms';
 
 import type { Group, Organization, Role } from '@/shared/api/types';
 
 import { RenewInvite } from '@/features/ActionCards/InviteUser/RenewInvite';
 import { validateRules } from '@/shared/config/validateRules';
+import { createModalAction } from '@/shared/factories/createModalAction';
 import { showError, showSuccess } from '@/shared/notifications/model';
 
 import {
@@ -20,8 +20,6 @@ import { InviteUser } from './InviteUser';
 
 import classes from './styles.module.css';
 
-export const modalOpened = createEvent();
-
 export const $organizations = createStore<Organization[]>([]);
 export const $organizationsLoading = getOrganizationsQuery.$pending.map((pending) => pending);
 $organizations.on(getOrganizationsQuery.finished.success, (_, { result }) => result);
@@ -32,57 +30,57 @@ $groups.on(getGroupsQuery.finished.success, (_, { result }) => result);
 
 export const $refreshInvitationLoading = refreshInvitationQuery.$pending.map((pending) => pending);
 
-export const form = createForm({
-  fields: {
-    organization: {
-      init: null as Organization | null,
-      rules: [validateRules.requiredObject()]
+const modalRenewInviteConfirmed = createEvent();
+const modalRenewInviteCanceled = createEvent();
+
+export const { modalOpened, form, openModalFx, modalCloseFx } = createModalAction({
+  Component: <InviteUser />,
+  formConfig: {
+    fields: {
+      organization: {
+        init: null as Organization | null,
+        rules: [validateRules.requiredObject()]
+      },
+      email: {
+        init: '',
+        rules: [validateRules.required(), validateRules.email()]
+      },
+      role: {
+        init: '',
+        rules: [validateRules.required()]
+      },
+      group: {
+        init: null as Group | null,
+        rules: [validateRules.requiredGroup()]
+      }
     },
-    email: {
-      init: '',
-      rules: [validateRules.required(), validateRules.email()]
-    },
-    role: {
-      init: '',
-      rules: [validateRules.required()]
-    },
-    group: {
-      init: null as Group | null,
-      rules: [validateRules.requiredGroup()]
-    }
+    validateOn: ['submit']
   },
-  validateOn: ['submit']
-});
-
-const modalConfirmFx = createEffect(() => {
-  form.submit();
-});
-
-const modalCloseFx = createEffect<string, void, Error>((id) => {
-  modals.close(id);
+  labels: {
+    cancel: 'Отменить',
+    confirm: 'Пригласить'
+  },
+  openTargets: [getOrganizationsQuery.start, getGroupsQuery.start],
+  transformValues: ({ organization, role, email, group }) => ({
+    organizationId: organization!.id,
+    groupId: group ? Number(group.id) : undefined,
+    email,
+    role: role as Role
+  }),
+  submitTarget: createInvitationQuery,
+  successNotification: {
+    title: 'Приглашение отправлено',
+    message: 'Приглашение успешно отправлено'
+  },
+  title: 'Пригласить пользователя',
+  modalClassNames: {
+    inner: classes.modalInner
+  }
 });
 
 const modalRenewInviteClosedFx = createEffect<string, void, Error>((id) => {
   modals.close(id);
 });
-
-const modalRenewInviteConfirmed = createEvent();
-const modalRenewInviteCanceled = createEvent();
-
-const openModalFx = createEffect(() =>
-  modals.openConfirmModal({
-    title: 'Пригласить пользователя',
-    children: <InviteUser />,
-    labels: { confirm: 'Пригласить', cancel: 'Отменить' },
-    onConfirm: () => modalConfirmFx(),
-    closeOnConfirm: false,
-    size: 'lg',
-    zIndex: 1002,
-    classNames: {
-      inner: classes.modalInner
-    }
-  })
-);
 
 const openRenewInviteModalFx = createEffect(() =>
   modals.openConfirmModal({
@@ -99,10 +97,6 @@ const openRenewInviteModalFx = createEffect(() =>
     }
   })
 );
-sample({
-  clock: modalOpened,
-  target: [form.reset, openModalFx, getOrganizationsQuery.start, getGroupsQuery.start]
-});
 
 sample({
   clock: createOrganizationQuery.finished.success,
@@ -135,31 +129,8 @@ sample({
 });
 
 sample({
-  clock: form.formValidated,
-  fn: ({ organization, role, email, group }) => ({
-    organizationId: organization!.id,
-    groupId: group ? Number(group.id) : undefined,
-    email,
-    role: role as Role
-  }),
-  target: createInvitationQuery.start
-});
-
-sample({
-  clock: createInvitationQuery.finished.success,
-  source: openModalFx.doneData,
-  target: [
-    modalCloseFx,
-    showSuccess({
-      title: 'Приглашение создано',
-      message: 'Приглашение успешно создано и отправлено'
-    })
-  ]
-});
-
-sample({
   clock: createInvitationQuery.finished.failure,
-  filter: ({ error }) => error.statusCode !== 403 && error.data?.message !== 'invintation_expired',
+  filter: ({ error }) => error.data?.message !== 'invintation_expired',
   target: showError('Ошибка при создании приглашения')
 });
 

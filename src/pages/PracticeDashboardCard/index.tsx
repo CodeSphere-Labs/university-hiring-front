@@ -6,7 +6,7 @@ import { Navbar } from '@/widgets';
 
 import { authorizedRoute, currentRoute } from './model/model';
 
-export const PracticeDashboardCardPage = lazy(() => import('./PracticeDashboardCard'));
+export const PracticeDashboardCardPage = lazy(() => import('./ui/PracticeDashboardCard'));
 
 const AuthorizedView = createRouteView({
   // at the moment of writing this, the type of authorizedRoute is not correct
