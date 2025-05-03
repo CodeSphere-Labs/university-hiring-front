@@ -5,7 +5,7 @@ import { LoadingPage } from '@/shared/ui/LoadingPage/LoadingPage';
 
 import { anonymousRouteRoute, currentRoute } from './model/model';
 
-export const InvitationAcceptPage = lazy(() => import('./InvitationAccept'));
+export const InvitationAcceptPage = lazy(() => import('./ui/InvitationAccept'));
 
 const AuthorizedView = createRouteView({
   // at the moment of writing this, the type of authorizedRoute is not correct
