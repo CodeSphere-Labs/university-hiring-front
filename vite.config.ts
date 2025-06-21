@@ -6,7 +6,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   appType: 'spa',
-  base: '/',
   build: {
     sourcemap: true
   },
@@ -19,9 +18,5 @@ export default defineConfig({
   preview: {
     port: 3000,
     host: true
-  },
-  server: {
-    host: true,
-    port: 3000
   }
 });
