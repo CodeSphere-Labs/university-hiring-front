@@ -6,7 +6,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   appType: 'spa',
-
+  build: {
+    sourcemap: true
+  },
   plugins: [react()],
   resolve: {
     alias: {

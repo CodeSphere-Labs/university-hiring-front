@@ -60,7 +60,9 @@ sample({
   target: showError('Ошибка при попытке выйти')
 });
 
-// eslint-disable-next-line unused-imports/no-unused-vars
+/* eslint-disable unused-imports/no-unused-vars */
+// eslint-disable-next-line ts/ban-ts-comment
+// @ts-expect-error
 interface ChainParams<Params extends RouteParams> {
   otherwise?: Effect<void, any, any> | Event<void>;
 }

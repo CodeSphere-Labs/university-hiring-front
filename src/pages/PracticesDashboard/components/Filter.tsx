@@ -3,12 +3,19 @@ import { useUnit } from 'effector-react';
 
 import type { CreatedByFilter } from '@/shared/api/types';
 
-import { withRoleCheck, WithRoleCheck } from '@/shared/hoc';
+import { withRoleCheck } from '@/shared/hoc';
+import { $user } from '@/shared/session/model';
 
 import { $filter, filterChanged } from '../model/filter.model';
 
 const Info = () => {
-  const filter = useUnit($filter);
+  const [filter, user] = useUnit([$filter, $user]);
+
+  const filtersData = [
+    { label: 'Все', value: 'all' },
+    { label: 'Созданные мной', value: 'createdByMe', role: 'UNIVERSITY_STAFF' },
+    { label: 'Закрепленные за мной', value: 'assignedToMe', role: 'STAFF' }
+  ].filter(({ role }) => !role || role === user?.role);
 
   return (
     <Paper bg='var(--mantine-color-blue-filled)' mb='md' p='md' radius='md' withBorder>
@@ -19,39 +26,17 @@ const Info = () => {
           </Text>
         </Group>
 
-        <WithRoleCheck allowedRoles={['ADMIN', 'UNIVERSITY_STAFF']}>
-          <Group>
-            <Text c='white' fw={500} size='sm'>
-              Источник:
-            </Text>
-            <SegmentedControl
-              data={[
-                { label: 'Все', value: 'all' },
-                { label: 'Созданные мной', value: 'createdByMe' }
-              ]}
-              value={filter}
-              color='dark'
-              onChange={(value) => filterChanged(value as CreatedByFilter)}
-            />
-          </Group>
-        </WithRoleCheck>
-
-        <WithRoleCheck allowedRoles={['ADMIN', 'STAFF']}>
-          <Group>
-            <Text c='white' fw={500} size='sm'>
-              Практики:
-            </Text>
-            <SegmentedControl
-              data={[
-                { label: 'Все', value: 'all' },
-                { label: 'Закрепленные за мной', value: 'assignedToMe' }
-              ]}
-              value={filter}
-              color='dark'
-              onChange={(value) => filterChanged(value as CreatedByFilter)}
-            />
-          </Group>
-        </WithRoleCheck>
+        <Group>
+          <Text c='white' fw={500} size='sm'>
+            Практики:
+          </Text>
+          <SegmentedControl
+            data={filtersData}
+            value={filter}
+            color='dark'
+            onChange={(value) => filterChanged(value as CreatedByFilter)}
+          />
+        </Group>
       </Stack>
     </Paper>
   );
