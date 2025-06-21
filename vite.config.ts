@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   appType: 'spa',
+  base: '/',
   build: {
     sourcemap: true
   },
