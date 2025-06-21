@@ -1,23 +1,21 @@
-FROM node:20-alpine AS base
+FROM node:20 as development
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-FROM base AS deps
 RUN yarn install --frozen-lockfile
 
-FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+COPY .env .env
 
 RUN yarn build
 
-FROM nginx:alpine AS production
+FROM nginx:stable-alpine as production
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=development /usr/src/app/dist /usr/share/nginx/html
 
-EXPOSE 80
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]

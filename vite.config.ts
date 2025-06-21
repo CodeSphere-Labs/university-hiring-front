@@ -5,22 +5,18 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  appType: 'spa',
-  build: {
-    sourcemap: true
-  },
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
     }
   },
-  preview: {
-    port: 3000,
-    host: true
-  },
   server: {
-    host: true,
-    port: 3000
+    watch: {
+      usePolling: true
+    },
+    host: true, // needed for the Docker Container port mapping to work
+    strictPort: true,
+    port: 3000 // you can replace this port with any port
   }
 });
