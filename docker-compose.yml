@@ -5,5 +5,20 @@ services:
     build:
       context: .
       target: production
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    restart: always
     ports:
       - '80:80'
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.diplom-frontend.rule=Host(`diplom-frontendd-a0qhgp-6af941-176-109-107-66.traefik.me`)
+      - traefik.http.routers.diplom-frontend.entrypoints=websecure
+      - traefik.http.routers.diplom-frontend.tls.certResolver=letsencrypt
+      - traefik.http.services.diplom-frontend.loadbalancer.server.port=80
+
+networks:
+  dokploy-network:
+    external: true
