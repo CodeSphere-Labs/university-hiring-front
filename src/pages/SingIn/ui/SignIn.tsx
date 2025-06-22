@@ -27,6 +27,11 @@ const SignIn = () => {
     submit();
   };
 
+  const handleAccountSelect = (email: string, password: string) => {
+    fields.email.onChange(email);
+    fields.password.onChange(password);
+  };
+
   return (
     <Container my={40} size={1200}>
       <Title className={classes.title} ta='center'>
@@ -75,7 +80,7 @@ const SignIn = () => {
         </Paper>
 
         <div style={{ flex: 1, minWidth: 400 }}>
-          <TestAccounts />
+          <TestAccounts onAccountSelect={handleAccountSelect} />
         </div>
       </Group>
     </Container>

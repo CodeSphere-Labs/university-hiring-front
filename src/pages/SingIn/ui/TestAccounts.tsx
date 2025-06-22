@@ -1,7 +1,11 @@
-import { Accordion, Badge, Card, Group, Stack, Text, Title } from '@mantine/core';
+import { Accordion, Badge, Button, Card, Group, Stack, Text, Title } from '@mantine/core';
 import { IconSchool, IconUser, IconUsers } from '@tabler/icons-react';
 
-const TestAccounts = () => {
+interface TestAccountsProps {
+  onAccountSelect: (email: string, password: string) => void;
+}
+
+const TestAccounts = ({ onAccountSelect }: TestAccountsProps) => {
   const students = [
     { email: 'student1@example.com', name: 'Алексей Петров Иванович' },
     { email: 'student2@example.com', name: 'Мария Сидорова Александровна' },
@@ -18,6 +22,10 @@ const TestAccounts = () => {
     { email: 'supervisor2@company.com', name: 'Анна Сидорова Ивановна', role: 'STAFF' }
   ];
 
+  const handleAccountClick = (email: string) => {
+    onAccountSelect(email, '12345');
+  };
+
   return (
     <Card padding='lg' radius='md' shadow='sm' withBorder>
       <Stack gap='md'>
@@ -28,9 +36,10 @@ const TestAccounts = () => {
 
         <Text c='dimmed' size='sm'>
           Для тестирования системы используйте следующие аккаунты.
-          <Title c='dark' fw={600} order={3}>
+          <Text fw={600} component='span'>
+            {' '}
             Пароль для всех: 12345
-          </Title>
+          </Text>
         </Text>
 
         <Accordion variant='contained'>
@@ -48,7 +57,7 @@ const TestAccounts = () => {
               <Stack gap='xs'>
                 {students.map((student) => (
                   <Group key={student.email} justify='space-between' wrap='nowrap'>
-                    <Stack gap={0}>
+                    <Stack gap={0} style={{ flex: 1 }}>
                       <Text fw={500} size='sm'>
                         {student.name}
                       </Text>
@@ -56,9 +65,18 @@ const TestAccounts = () => {
                         {student.email}
                       </Text>
                     </Stack>
-                    <Badge size='sm' variant='light' color='blue'>
-                      STUDENT
-                    </Badge>
+                    <Group gap='xs'>
+                      <Badge size='sm' variant='light' color='blue'>
+                        STUDENT
+                      </Badge>
+                      <Button
+                        size='xs'
+                        variant='light'
+                        onClick={() => handleAccountClick(student.email)}
+                      >
+                        Выбрать
+                      </Button>
+                    </Group>
                   </Group>
                 ))}
               </Stack>
@@ -79,7 +97,7 @@ const TestAccounts = () => {
               <Stack gap='xs'>
                 {staff.map((user) => (
                   <Group key={user.email} justify='space-between' wrap='nowrap'>
-                    <Stack gap={0}>
+                    <Stack gap={0} style={{ flex: 1 }}>
                       <Text fw={500} size='sm'>
                         {user.name}
                       </Text>
@@ -87,13 +105,22 @@ const TestAccounts = () => {
                         {user.email}
                       </Text>
                     </Stack>
-                    <Badge
-                      size='sm'
-                      variant='light'
-                      color={user.role === 'ADMIN' ? 'red' : 'green'}
-                    >
-                      {user.role}
-                    </Badge>
+                    <Group gap='xs'>
+                      <Badge
+                        size='sm'
+                        variant='light'
+                        color={user.role === 'ADMIN' ? 'red' : 'green'}
+                      >
+                        {user.role}
+                      </Badge>
+                      <Button
+                        size='xs'
+                        variant='light'
+                        onClick={() => handleAccountClick(user.email)}
+                      >
+                        Выбрать
+                      </Button>
+                    </Group>
                   </Group>
                 ))}
               </Stack>
