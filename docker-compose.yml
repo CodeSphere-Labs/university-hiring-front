@@ -14,7 +14,7 @@ services:
       - dokploy-network
     labels:
       - traefik.enable=true
-      - traefik.http.routers.diplom-frontend.rule=Host(`diplom-frontendd-a0qhgp-6af941-176-109-107-66.traefik.me`)
+      - traefik.http.routers.diplom-frontend.rule=Host(`diplom-test-qc0kmh-e8097e-176-109-107-66.traefik.me`)
       - traefik.http.routers.diplom-frontend.entrypoints=websecure
       - traefik.http.routers.diplom-frontend.tls.certResolver=letsencrypt
       - traefik.http.services.diplom-frontend.loadbalancer.server.port=80
